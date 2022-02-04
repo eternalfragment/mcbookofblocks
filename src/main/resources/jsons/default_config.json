@@ -1,0 +1,1231 @@
+{
+  "Comments":[
+    {
+      "_c1": "Name: non-case-sensitive name of the block recognized in-game.",
+      "_c2": "# Researchable: [0-Not Researchable, 1-Pay req_amt to unlock, 2-Meet scoreboard objective (scb_amt), 3-Requires both Pay and Scoreboard to unlock, 4-Either Pay or Scoreboard to unlock",
+      "_c3": "# req_amt: Required amt the player must pay to unlock the item via pay.",
+      "_c4": "# give_amt: Amount the player will receive per click after unlocking",
+      "_c5": "# scb_obj: Name of the scoreboard objective to use for unlocking the item",
+      "_c6": "# scb_amt: Score needed on the scoreboard objective for the item to be unlocked",
+      "_c7": "#If there are errors with the config, it will be logged in server logs/console."
+    }
+  ],
+  "Items": [
+    {
+      "Name": "menu_item",
+      "Researchable": 1,
+      "req_amt": 0,
+      "give_amt": 1,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "STONE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "GRANITE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "DIORITE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "ANDESITE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "DEEPSLATE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "COBBLED_DEEPSLATE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "CALCITE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "TUFF",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "DRIPSTONE_BLOCK",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "GRASS_BLOCK",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "DIRT",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "COARSE_DIRT",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "PODZOL",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "ROOTED_DIRT",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "CRIMSON_NYLIUM",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "COBBLESTONE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "OAK_PLANKS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SPRUCE_PLANKS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BIRCH_PLANKS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "JUNGLE_PLANKS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "ACACIA_PLANKS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "DARK_OAK_PLANKS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "CRIMSON_PLANKS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "WARPED_PLANKS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "OAK_SAPLING",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SPRUCE_SAPLING",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BIRCH_SAPLING",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "JUNGLE_SAPLING",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "ACACIA_SAPLING",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "DARK_OAK_SAPLING",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SAND",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "GRAVEL",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "AMETHYST_BLOCK",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "OAK_LOG",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SPRUCE_LOG",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BIRCH_LOG",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "JUNGLE_LOG",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "ACACIA_LOG",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "DARK_OAK_LOG",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "OAK_WOOD",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SPRUCE_WOOD",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BIRCH_WOOD",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "JUNGLE_WOOD",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "ACACIA_WOOD",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "DARK_OAK_WOOD",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "OAK_LEAVES",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SPRUCE_LEAVES",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BIRCH_LEAVES",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "JUNGLE_LEAVES",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "ACACIA_LEAVES",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "DARK_OAK_LEAVES",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "AZALEA_LEAVES",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "FLOWERING_AZALEA_LEAVES",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SPONGE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "GLASS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "TINTED_GLASS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SANDSTONE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "COBWEB",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SEAGRASS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SEA_PICKLE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "WHITE_WOOL",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "DANDELION",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "POPPY",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BLUE_ORCHID",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "ALLIUM",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "AZURE_BLUET",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "RED_TULIP",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "ORANGE_TULIP",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "WHITE_TULIP",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "PINK_TULIP",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "OXEYE_DAISY",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "CORNFLOWER",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "LILY_OF_THE_VALLEY",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BROWN_MUSHROOM",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "RED_MUSHROOM",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "CRIMSON_FUNGUS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "WARPED_FUNGUS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SUGAR_CANE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "KELP",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "MOSS_CARPET",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "MOSS_BLOCK",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BAMBOO",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SMOOTH_STONE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BRICKS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "MOSSY_COBBLESTONE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "OBSIDIAN",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "TORCH",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "END_ROD",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "CHEST",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "CRAFTING_TABLE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "FURNACE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "LADDER",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "CACTUS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "NETHERRACK",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SOUL_SAND",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SOUL_SOIL",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BASALT",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "GLOWSTONE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "STONE_BRICKS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "MOSSY_STONE_BRICKS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "GLASS_PANE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "MYCELIUM",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "END_STONE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "QUARTZ_BLOCK",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "WHITE_CARPET",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "TERRACOTTA",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SUNFLOWER",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "LILAC",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "ROSE_BUSH",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "PEONY",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SEA_LANTERN",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "MAGMA_BLOCK",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "REDSTONE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SADDLE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "ELYTRA",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "COAL",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "NETHERITE_SCRAP",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "STICK",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "STRING",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "FEATHER",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "GUNPOWDER",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "LEATHER",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "CLAY_BALL",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "SLIME_BALL",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "INK_SAC",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "GLOW_INK_SAC",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "COCOA_BEANS",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "WHITE_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "ORANGE_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "MAGENTA_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "LIGHT_BLUE_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "YELLOW_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "LIME_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "PINK_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "GRAY_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "LIGHT_GRAY_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "CYAN_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "PURPLE_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BLUE_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BROWN_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "GREEN_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "RED_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BLACK_DYE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BONE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "NAME_TAG",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "TOTEM_OF_UNDYING",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "TRIDENT",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "LANTERN",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "CRYING_OBSIDIAN",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "BLACKSTONE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "POINTED_DRIPSTONE",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    }
+  ]
+}

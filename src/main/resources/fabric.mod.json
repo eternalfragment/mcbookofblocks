@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "mjm",
+  "version": "${version}",
+
+  "name": "MC Journey Mode",
+  "description": "Journey mode.... in Minecraft!",
+  "authors": [
+    "EternalFragment"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/mjm/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.eternalfragment.mcjourneymode.Mcjourneymode"
+    ]
+  },
+  "mixins": [
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  },
+  "suggests": {
+  }
+}
