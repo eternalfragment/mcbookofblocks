@@ -48,7 +48,7 @@ Install mod by placing into mod folder. First load into a world, will generate d
 
 
 ## Extras
-There is a small datapack that provides a slight glow to the JourneyMode item when you are holding it, when used in conjunction with optifine. You can find it here.
+There is a small datapack that provides a slight glow to the JourneyMode item when you are holding it, when used in conjunction with optifine. You can find it [here](https://github.com/eternalfragment/mcjourneymode/blob/master/mjm_resource_pack.zip).
 
 ## License
 
