@@ -413,8 +413,8 @@ public class ScreenListGui extends LightweightGuiDescription {
         searchBar.setText(searchDefault);
         int windowWidth = mc.getWindow().getWidth();
         int windowHeight = mc.getWindow().getHeight();
-        double wfloor = Math.floor((windowWidth - 150) / scale);
-        double hfloor = Math.floor((windowHeight - 100) / scale);
+        double wfloor = Math.floor((windowWidth*0.60) / scale);
+        double hfloor = Math.floor((windowHeight*0.75) / scale);
         int rootWidth = (int) wfloor;
         int rootHeight = (int) hfloor;
         root.setSize(rootWidth, rootHeight);
