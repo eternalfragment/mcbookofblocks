@@ -1,6 +1,6 @@
 # MC Journey Mode
 
-REQUIREMENTS: Fabric API | MC 18+
+REQUIREMENTS: Fabric API 0.43.1+1.18 | MC 18+
 
 ## Introduction
 
