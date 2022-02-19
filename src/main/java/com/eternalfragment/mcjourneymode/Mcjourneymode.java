@@ -3,16 +3,12 @@ package com.eternalfragment.mcjourneymode;
 
 import com.eternalfragment.mcjourneymode.commands.Mjm_cmd_give;
 import com.eternalfragment.mcjourneymode.config.Config;
+import com.eternalfragment.mcjourneymode.config.ConfigScreen;
 import com.eternalfragment.mcjourneymode.gui.DoSetScreen;
 import com.eternalfragment.mcjourneymode.items.GuiItem;
 import com.eternalfragment.mcjourneymode.operators.invManager;
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -23,20 +19,19 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
-import org.json.simple.parser.*;
+import org.json.simple.parser.ParseException;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
-import static net.minecraft.server.command.CommandManager.literal;
+import java.util.function.Function;
 
 
 public class Mcjourneymode implements ModInitializer {
@@ -49,20 +44,27 @@ public class Mcjourneymode implements ModInitializer {
     public static Identifier pay_packet=null;
     public static Identifier give_packet=null;
     public static Identifier sp_dir_packet=null;
-    public static Identifier menu_populate = null;
+    public static Identifier menu_populate=null;
+    public static Identifier menu_populate_perms=null;
+    public static Identifier get_config_packet=null;
+    public static Identifier send_config_req_packet=null;
+    public static Identifier send_config_packet=null;
     public static EnvType type;//holds whether mod is loaded in client or server
+    public static int permLevel=4;
     @Override
     public void onInitialize() {
 
         mylogger.atInfo().log("Mod Booting....");
         Registry.register(Registry.ITEM, new Identifier(Mcjourneymode.MOD_ID, "menu_item"), GUI_ITEM);
         type = FabricLoader.getInstance().getEnvironmentType();
-
-        //System.out.println("Env: " + type);
-        give_packet = give_packet.tryParse("mjm:process_give");
-        pay_packet = pay_packet.tryParse("mjm:process_pay");
-        sp_dir_packet = sp_dir_packet.tryParse("mjm:sp_directory_find");
-        menu_populate = menu_populate.tryParse("mjm:menu_populate");
+        give_packet = Identifier.tryParse("mjm:process_give");
+        pay_packet = Identifier.tryParse("mjm:process_pay");
+        sp_dir_packet = Identifier.tryParse("mjm:sp_directory_find");
+        menu_populate = Identifier.tryParse("mjm:menu_populate");
+        menu_populate_perms = Identifier.tryParse("mjm:menu_populate_perms");
+        get_config_packet = Identifier.tryParse("mjm:get_config_packet");
+        send_config_req_packet = Identifier.tryParse("mjm:send_config_req_packet");
+        send_config_packet = Identifier.tryParse("mjm:send_config_packet");
 
         if (Objects.equals(type.toString(), "CLIENT")){
 
@@ -76,17 +78,31 @@ public class Mcjourneymode implements ModInitializer {
                     e.printStackTrace();
                 }
             });
+            ClientPlayNetworking.registerGlobalReceiver(send_config_packet, (client, handler, buf, pktSnd) -> {
+                Function<PacketByteBuf, String> keyConsumer = PacketByteBuf::readString;
+                Function<PacketByteBuf, String> valConsumer = PacketByteBuf::readString;
+                HashMap<String, String> getMap = new HashMap<>(buf.readMap(keyConsumer, valConsumer));
+
+                Config.configMap= Config.configStoO(getMap);
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        ConfigScreen.callBuildScreen(client,handler,buf,pktSnd);
+                    }
+                }, 100);
+            });
             ServerPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
                 //Register the client to detect when the player connects to the local server. When that happens, send a packet. If received by client, generate/load singleplayer config.
                 PacketByteBuf data = PacketByteBufs.create();
                 ServerPlayNetworking.send(handler.getPlayer(),Mcjourneymode.sp_dir_packet, data);
             });
             ClientPlayNetworking.registerGlobalReceiver(menu_populate, DoSetScreen::doSetScreen);
+            ClientPlayNetworking.registerGlobalReceiver(menu_populate_perms, DoSetScreen::doSetScreenPerms);
         }
-        if (type.toString() == "SERVER"){
+        if (Objects.equals(type.toString(), "SERVER")){
             CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> new Mjm_cmd_give(dispatcher));
             ServerLifecycleEvents.SERVER_STARTED.register((handler)->{
-                System.out.println("Server Started");
                 worldPath =  handler.getSavePath(WorldSavePath.ROOT).toString().replaceAll("\\.+$","");
                 try {
                     Config.main();
@@ -95,6 +111,23 @@ public class Mcjourneymode implements ModInitializer {
                 }
             });
         }
+        ServerPlayNetworking.registerGlobalReceiver(send_config_req_packet,  (server, player, handler, buf, pktSnd) -> {
+            //Player has sent a request to get the config. should respond with converted data
+            HashMap<String, String> transmitData = Config.configOtoS(Config.configMap);
+            PacketByteBuf data = PacketByteBufs.create();
+                data.writeMap(transmitData, PacketByteBuf::writeString, PacketByteBuf::writeString);
+                if (player.hasPermissionLevel(permLevel)){ServerPlayNetworking.send(player, send_config_packet, data);}
+                });
+        ServerPlayNetworking.registerGlobalReceiver(get_config_packet,  (server, player, handler, buf, pktSnd) -> {
+            try {
+                if (player.hasPermissionLevel(permLevel)) {
+                    Config.getConfigPacket(player, buf, handler);
+                }
+                GuiItem.sendMJMRefresh(handler.getPlayer());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         ServerPlayNetworking.registerGlobalReceiver(give_packet, (server, player, handler, buf, pktSnd) -> {
             int doInt=buf.readInt();
             ServerPlayerEntity doPlayer = handler.getPlayer();
@@ -107,6 +140,7 @@ public class Mcjourneymode implements ModInitializer {
             try {
                 HashMap<String, int[]> playerFile = PlayerFileManager.getPlayerFile(handler.getPlayer());
                 String iName = String.valueOf(Registry.ITEM.get(getData[0]).asItem());
+                assert playerFile != null;
                 int[] iDetails = playerFile.get(iName);
                 Object[] configInfo = Config.configMap.get(iName);
                 //iDetails[0] -- unlocked

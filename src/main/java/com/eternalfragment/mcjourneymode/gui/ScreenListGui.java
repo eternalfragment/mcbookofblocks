@@ -30,13 +30,11 @@ import java.util.HashMap;
 import java.util.function.Consumer;
 @Environment(EnvType.CLIENT)
 public class ScreenListGui extends LightweightGuiDescription {
-    public ScreenListGui(HashMap<String, Object[]> data, String searchDefault) {
+    public ScreenListGui(HashMap<String, Object[]> data, String searchDefault,boolean perms) {
         EnvType type = FabricLoader.getInstance().getEnvironmentType();
         if (type.toString() == "CLIENT") {
 
             class contentGenerator {
-
-
                 static final int cellHpadding = 15;
                 static final int cellVpadding = 8;
                 public static Identifier pay_packet = null;
@@ -163,18 +161,14 @@ public class ScreenListGui extends LightweightGuiDescription {
                             }
                             boolean showItem = false;
                             String name = "" + Registry.ITEM.get((int)itemData[0]).asItem().getName();
-                            if (ranItem == false) {
+                            if (!ranItem) {
                                 //if its not a random item, show it by default
                                 showItem = true;
                             }
                             if (unlocked) {
-                                if ((int)itemData[4] == 1) {
-                                    //if unlocked filter is set, and this object is unlocked
-                                    showItem = true;
-                                } else {
-                                    //if the item isn't unlocked, do not show when filter set
-                                    showItem = false;
-                                }
+                                //if unlocked filter is set, and this object is unlocked
+                                //if the item isn't unlocked, do not show when filter set
+                                showItem = (int) itemData[4] == 1;
                             }
                             if ((int)itemData[0] == 0) {
                                 showItem = false;
@@ -184,12 +178,8 @@ public class ScreenListGui extends LightweightGuiDescription {
                             }
                             if ((!filter.equals(""))) {
                                 //if the filter is not empty
-                                if (name.contains(filter)) {
-                                    //if the name of the object contains the filter
-                                    showItem = true;
-                                }else{
-                                    showItem=false;
-                                }
+                                //if the name of the object contains the filter
+                                showItem = name.contains(filter);
                             }
                             if (generatedItems >= maxItems) {
                                 //if the number of items generated is already more than the max limit, do not display any more
@@ -231,8 +221,7 @@ public class ScreenListGui extends LightweightGuiDescription {
                                         int itemID = Integer.parseInt(itemIDLabel[holdMe].getText().asString());
                                         PacketByteBuf data = PacketByteBufs.create();
                                         data.writeInt(itemID);
-                                        give_packet = give_packet.tryParse("mjm:process_give");
-                                        ClientPlayNetworking.send(give_packet, data);
+                                        ClientPlayNetworking.send(Mcjourneymode.give_packet, data);
                                     });
                                     item[it].setSize(totalWidth, 60);
                                     int currentWidth = 0;
@@ -363,8 +352,7 @@ public class ScreenListGui extends LightweightGuiDescription {
                                         playerUnlockMap.put(String.valueOf(Registry.ITEM.get(itemID).asItem()), plOb);
                                         PacketByteBuf data = PacketByteBufs.create();
                                         data.writeIntArray(dataArr);
-                                        pay_packet = pay_packet.tryParse("mjm:process_pay");
-                                        ClientPlayNetworking.send(pay_packet, data);
+                                        ClientPlayNetworking.send(Mcjourneymode.pay_packet, data);
                                     });
                                     item[it].setSize(totalWidth, 60);
                                     int currentWidth = 0;
@@ -390,7 +378,6 @@ public class ScreenListGui extends LightweightGuiDescription {
                             WLabel lblEmpty = new WLabel("-Search for items above-");
                             lblEmpty.setColor(textColor_RED.toRgb());
                             myTallPanel.add(lblEmpty, 25, 25);
-                        } else {
                         }
                     } else {
                         //this means nothing was loaded. means admin disabled all items, or glitch with config.
@@ -418,7 +405,7 @@ public class ScreenListGui extends LightweightGuiDescription {
         int rootWidth = (int) wfloor;
         int rootHeight = (int) hfloor;
         root.setSize(rootWidth, rootHeight);
-        int searchScale = (root.getWidth() / 18) - 8;
+        int searchScale = (root.getWidth() / 18) - 10;
         WScrollPanel scrollPanel = new WScrollPanel(myTallPanel);
         WToggleButton toggleButton = new WToggleButton(new LiteralText("Only Unlocked"));
         toggleButton.setOnToggle(on -> {
@@ -439,6 +426,14 @@ public class ScreenListGui extends LightweightGuiDescription {
         root.add(searchBar, 1, 1, searchScale, 1);
         int searchButtonX = (int) Math.floor((searchBar.getX() + searchBar.getWidth()) / 18) + 1;
         root.add(toggleButton, searchButtonX, 1, 2, 1);
+        if (perms) {
+            WButton configButton = new WButton(new LiteralText("⚙"));
+            configButton.setOnClick(() -> {
+                PacketByteBuf clickData = PacketByteBufs.create();
+                ClientPlayNetworking.send(Mcjourneymode.send_config_req_packet, clickData);
+            });
+            root.add(configButton, (root.getWidth() / 18) - 2, 1, 1, 1);
+        }
         contentGenerator.generatePanels(data, toggleButton.getToggle(), searchDefault, wrapContents, root, thisDescription);
         setRootPanel(root);
         root.validate(this);

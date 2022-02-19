@@ -12,7 +12,6 @@ import java.util.List;
 
 public final class Mjm_cmd_give  {
     public Mjm_cmd_give(CommandDispatcher<ServerCommandSource> dispatcher){
-        System.out.println("REGISTERED MJM COMMAND");
         dispatcher.register(
                 CommandManager.literal("mjm").requires(source -> source.hasPermissionLevel(4))
                         .then(CommandManager.literal("give")
@@ -29,9 +28,6 @@ public final class Mjm_cmd_give  {
                                 .requires(source -> source.hasPermissionLevel(4))
                                 .executes((command)->{
                                     Collection<ServerPlayerEntity> toPlayer= List.of(command.getSource().getPlayer());
-                                    //ServerPlayerEntity cmdSource = command.getSource().getPlayer();
-                                    ///assert toPlayer != null;
-                                    //toPlayer.add(cmdSource);
                                     CommandFunctions.giveMjmItem(toPlayer,command.getSource().getPlayer());
                                     return 0;
                                 })

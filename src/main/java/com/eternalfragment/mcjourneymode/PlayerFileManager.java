@@ -2,12 +2,8 @@ package com.eternalfragment.mcjourneymode;
 
 import com.eternalfragment.mcjourneymode.config.Config;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScoreboardObjective;
-import net.minecraft.scoreboard.ScoreboardPlayerScore;
 import net.minecraft.text.Text;
-import net.minecraft.util.registry.Registry;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,42 +13,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 public class PlayerFileManager {
 
-    public static boolean inventoryManager(PlayerEntity user, Item name, int remove) {
-        //Remove items from players inventory
-        int removed = 0;
-        int Count = user.getInventory().count(name);
-        if (Count < remove) {
-            user.sendMessage(Text.of("Inventory does not contain " + remove + " of " + name), false);
-            return false;
-        } else {
-            int inv_size = user.getInventory().size();
-            for (var i = 0; i < inv_size; i++) {
-                ItemStack stack = user.getInventory().getStack(i);
-                int itemNum = stack.getCount();
-                Item item = stack.getItem();
-                String itemName = item.toString();
-                if (itemName == name.toString()) {
-                    int localRemoved = Math.min(remove - removed, itemNum);
-                    user.getInventory().removeStack(i, localRemoved);
-                    removed = removed + localRemoved;
-                }
-                return true;
-            }
-        }
-        return false;
-    }
     public static boolean playerFileCreate(PlayerEntity user) throws IOException {
         //Create player's mjm tracking file if not existing
-        boolean success = false;
         String userID = user.getUuidAsString();
-        ClassLoader cl = ClassLoader.getSystemClassLoader();
         File f = new File(Mcjourneymode.worldPath + "/" + Mcjourneymode.modPlayerDir + userID + ".json");
         if (f.exists()) {
             return true;
@@ -66,10 +35,8 @@ public class PlayerFileManager {
     }
     public static HashMap<String, int[]> getPlayerFile(PlayerEntity user) throws IOException, ParseException {
         //get the player's file as map for tracking what the player has unlocked and their progress
-        HashMap<String, int[]> mjmPlayerData = new HashMap<String, int[]>();
+        HashMap<String, int[]> mjmPlayerData = new HashMap<>();
         String userID = user.getUuidAsString();
-        boolean plFile = false;
-        ClassLoader cl = ClassLoader.getSystemClassLoader();
         File f = new File(Mcjourneymode.worldPath + "\\" + Mcjourneymode.modPlayerDir + userID + ".json");
         if (f.exists()) {
             try {
@@ -78,28 +45,21 @@ public class PlayerFileManager {
             if (jo.get("Items") != null) {
                 //check if the player file has an 'items' wrapper. if not, error with player file
                 JSONArray ja = (JSONArray) jo.get("Items");
-                Iterator itr2 = ja.iterator();
-                while (itr2.hasNext()) {
-                    Iterator<Map.Entry> itr1 = ((Map) itr2.next()).entrySet().iterator();
+                for (Object o : ja) {
+                    Iterator<Map.Entry> itr1 = ((Map) o).entrySet().iterator();
                     String namevalue = "";
                     int[] settingvalue = new int[2];
                     while (itr1.hasNext()) {
                         Map.Entry pair = itr1.next();
                         String key = (String) pair.getKey();
                         switch (key) {
-                            case "Name":
+                            case "Name" -> {
                                 namevalue = (String) pair.getValue();
                                 namevalue = namevalue.toLowerCase().replaceAll("[^a-zA-Z0-9.+_-]", "");
-                                break;
-                            case "unlocked":
-                                settingvalue[0] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
-                                break;
-                            case "paid":
-                                settingvalue[1] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
-                                break;
-                            default:
-                                Mcjourneymode.mylogger.atError().log("INVALID CONFIG IMPORT: " + pair.getValue());
-                                break;
+                            }
+                            case "unlocked" -> settingvalue[0] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
+                            case "paid" -> settingvalue[1] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
+                            default -> Mcjourneymode.mylogger.atError().log("INVALID CONFIG IMPORT: " + pair.getValue());
                         }
                     }
 
@@ -116,7 +76,6 @@ public class PlayerFileManager {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("EE No player file");
             Mcjourneymode.mylogger.atFatal().log("Error with player config file: " + userID);
             return null;
         }
@@ -144,7 +103,6 @@ public class PlayerFileManager {
         HashMap<String, int[]> mjmPlayerData = new HashMap<String, int[]>();
         String userID = user.getUuidAsString();
         boolean plFile = false;
-        ClassLoader cl = ClassLoader.getSystemClassLoader();
         File f = new File(Mcjourneymode.worldPath + "\\" + Mcjourneymode.modPlayerDir + userID + ".json");
         if (f.exists()) {
             plFile = true;
@@ -227,19 +185,16 @@ public class PlayerFileManager {
                                 //if the new paid amt meets the required amt --CHECK WHAT TYPE OF UNLOCK IT IS
                                 switch ((int)itemConfig[1]){
                                     case 1: pldata[0]=1; break;//Only needs pay
-                                    case 2: if (scoreMet==true){pldata[0]=1;}break;//Scoreboard only
-                                    case 3: if (scoreMet==true){pldata[0]=1;}break;//Pay & Scoreboard
+                                    case 2: if (scoreMet){pldata[0]=1;}break;//Scoreboard only
+                                    case 3: if (scoreMet){pldata[0]=1;}break;//Pay & Scoreboard
                                     case 4: pldata[0]=1; break;//Either/or
                                     default: Mcjourneymode.mylogger.atError().log("Invalid Item Research Status for item: "+itemConfig[0]);break;
                                 }
-
                             }
 
                             mjmPlayerData.put(item, pldata);
                             //pldata = mjmPlayerData.get(item);
-
                             JSONObject plFileJson = setPlayerFile(mjmPlayerData);
-
                             FileWriter writer = new FileWriter(f);
                             writer.write(plFileJson.toJSONString());
                             writer.flush();
@@ -265,15 +220,14 @@ public class PlayerFileManager {
                             if ((int)itemConfig[2]<=amt){
                                 switch ((int)itemConfig[1]){
                                     case 1: pldata[0]=1; break;//Only needs pay
-                                    case 2: if (scoreMet==true){pldata[0]=1;}break;//Scoreboard only
-                                    case 3: if (scoreMet==true){pldata[0]=1;}break;//Pay & Scoreboard
+                                    case 2: if (scoreMet){pldata[0]=1;}break;//Scoreboard only
+                                    case 3: if (scoreMet){pldata[0]=1;}break;//Pay & Scoreboard
                                     case 4: pldata[0]=1; break;//Either/or
                                     default: Mcjourneymode.mylogger.atError().log("Invalid Item Research Status for item: "+itemConfig[0]);break;
                                 }
                             }
                             mjmPlayerData.put(item, pldata);
                             JSONObject plFileJson = setPlayerFile(mjmPlayerData);
-
                             FileWriter writer = new FileWriter(f);
                             writer.write(plFileJson.toJSONString());
                             writer.flush();
@@ -298,7 +252,6 @@ public class PlayerFileManager {
 
         /*Iterate over config to create default map to send to player*/
         for (String name : configMap.keySet()) {
-
             name = name.toLowerCase();
             configData = configMap.get(name);
             int[] stuff = new int[7];
@@ -314,11 +267,10 @@ public class PlayerFileManager {
             scbStuff[1]=(int)configData[5]; //scoreboard objective goal
             mjmPlayerSend.put(name, stuff);
             mjmScoreboardData.put(name,scbStuff);
-
-
         }
         int[] playerstuff;
         int[] configData2;
+        assert mjmPlayerData != null;
         for (String name : mjmPlayerData.keySet()) {
             name = name.toLowerCase();
             playerstuff = mjmPlayerData.get(name);
@@ -338,12 +290,9 @@ public class PlayerFileManager {
             boolean unlockable = true;
             if (itemConfig!=null)
             {
-
-
                 if ((int) itemConfig[1] > 0) {
                     int scbPerc = -1;
                     boolean scoreMet = false;
-
                     if ((int) itemConfig[1] > 1)
                     {
                         ScoreboardObjective thisObjective = user.getScoreboard().getObjective((String) itemConfig[4]);
@@ -360,7 +309,6 @@ public class PlayerFileManager {
                                 } else if ((int) itemConfig[1] == 4) {
                                     Mcjourneymode.mylogger.atError().log("Item config requests scoreboard objective, none found. Item enabled without scoreboard. Scoreboard: " + itemConfig[4] + "| Unlockable #: " + itemConfig[1] + "| Item ID: " + itemConfig[0]);
                                 }
-
                             }
                         } else {
                             int thisScore = user.getScoreboard().getPlayerScore(user.getDisplayName().asString(), user.getScoreboard().getObjective((String) itemConfig[4])).getScore();
@@ -372,9 +320,7 @@ public class PlayerFileManager {
                             }
                         }
                     }
-
                     if (unlockable){
-
                     configData3[6] = scbPerc;
                     switch ((int) itemConfig[1]) {
                         case 1:
@@ -384,19 +330,19 @@ public class PlayerFileManager {
                             }
                             break;//Only needs pay
                         case 2:
-                            if (scoreMet == true) {
+                            if (scoreMet) {
                                 configData3[4] = 1;
                                 writePlayerFile(user, name, 0);
                             }
                             break;//Scoreboard only
                         case 3:
-                            if ((scoreMet == true) & (configData3[5] >= (int) itemConfig[2])) {
+                            if ((scoreMet) & (configData3[5] >= (int) itemConfig[2])) {
                                 configData3[4] = 1;
                                 writePlayerFile(user, name, 0);
                             }
                             break;//Pay & Scoreboard
                         case 4:
-                            if ((scoreMet == true) || (configData3[5] >= (int) itemConfig[2])) {
+                            if ((scoreMet) || (configData3[5] >= (int) itemConfig[2])) {
                                 configData3[4] = 1;
                                 writePlayerFile(user, name, 0);
                             }
@@ -410,7 +356,6 @@ public class PlayerFileManager {
             }
                mjmPlayerSend.put(name, configData3);
         }
-
         return mjmPlayerSend;
     }
 

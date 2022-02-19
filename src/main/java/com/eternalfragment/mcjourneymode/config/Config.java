@@ -2,19 +2,28 @@ package com.eternalfragment.mcjourneymode.config;
 
 
 import com.eternalfragment.mcjourneymode.Mcjourneymode;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.spongepowered.include.com.google.gson.JsonParseException;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.function.Function;
 
 public class Config {
-    public static HashMap<String, Object[]> configMap = new HashMap<String, Object[]>();
 
+    public static HashMap<String, Object[]> configMap = new HashMap<String, Object[]>();
+    //Global config map structure ['name'][0-ITEM ID, 1-researchable,2-req_amt,3-give-amt,4-scb_obj,5-scb_amt];
+    private static FileWriter file;
     public static boolean copyContent(File a, File b) throws Exception {
         try (FileInputStream in = new FileInputStream(a); FileOutputStream out = new FileOutputStream(b)) {
             int n;
@@ -54,7 +63,7 @@ public class Config {
         try {
             InputStream in = Config.class.getClassLoader().getResourceAsStream(resourcePath);
             if (in == null) {
-                System.out.println("ERROR NULL IN CLASSLOADER");
+                Mcjourneymode.mylogger.atError().log("ERROR NULL IN CLASSLOADER");
                 return null;
             }
             File tempFile = File.createTempFile(String.valueOf(in.hashCode()), ".tmp");
@@ -127,16 +136,15 @@ public class Config {
         }
     }
     static void getConfig() throws Exception {
-        //map structure ['name'][0-ITEM ID, 1-researchable,2-req_amt,3-give-amt];
+        //map structure ['name'][0-ITEM ID, 1-researchable,2-req_amt,3-give-amt,4-scb_obj,5-scb_amt];
         try {
             Object obj = new JSONParser().parse(new FileReader(Mcjourneymode.worldPath + "/" + Mcjourneymode.modDir + "config.json"));
             JSONObject jo = (JSONObject) obj;
             JSONArray ja = (JSONArray) jo.get("Items");
-            System.out.println("WORKIN");
             for (Object o : ja) {
                 Iterator<Map.Entry> itr1 = ((Map) o).entrySet().iterator();
-                String namevalue = "";
-                Object[] settingvalue = new Object[6];
+                String nameValue = "";
+                Object[] settingValue = new Object[6];
                 //Setting Value Value Breakdown
                 //0- Item ID (gotten from name in config)
                 //1- Researchable status
@@ -154,21 +162,21 @@ public class Config {
                     String key = (String) pair.getKey();
                     switch (key) {
                         case "Name" -> {
-                            namevalue = (String) pair.getValue();
-                            namevalue = namevalue.toLowerCase().replaceAll("[^a-zA-Z0-9.+_-]", "");
-                            int itemID = GetItemIdFromName.getItemIdFromName(namevalue);
-                            settingvalue[0] = itemID;
+                            nameValue = (String) pair.getValue();
+                            nameValue = nameValue.toLowerCase().replaceAll("[^a-zA-Z0-9.+_-]", "");
+                            int itemID = GetItemIdFromName.getItemIdFromName(nameValue);
+                            settingValue[0] = itemID;
                         }
-                        case "Researchable" -> settingvalue[1] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
-                        case "req_amt" -> settingvalue[2] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
-                        case "give_amt" -> settingvalue[3] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
-                        case "scb_obj" -> settingvalue[4] = pair.getValue().toString().replaceAll("[^a-zA-Z0-9.+_-]", "");
-                        case "scb_amt" -> settingvalue[5] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
+                        case "Researchable" -> settingValue[1] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
+                        case "req_amt" -> settingValue[2] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
+                        case "give_amt" -> settingValue[3] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
+                        case "scb_obj" -> settingValue[4] = pair.getValue().toString().replaceAll("[^a-zA-Z0-9.+_-]", "");
+                        case "scb_amt" -> settingValue[5] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
                         default -> Mcjourneymode.mylogger.atError().log("INVALID CONFIG IMPORT: " + pair.getValue());
                     }
                 }
-                if ((int) settingvalue[1] != 0) {
-                    configMap.put(namevalue, settingvalue);
+                if (((int) settingValue[1] != 0)&&((int)settingValue[0]!=-1)) {
+                    configMap.put(nameValue, settingValue);
                 }
             }
         }
@@ -177,11 +185,89 @@ public class Config {
             e.printStackTrace();
         }
     }
+    static void setConfig() throws Exception{
+        //map structure ['name'][0-ITEM ID, 1-researchable,2-req_amt,3-give-amt,4-scb_obj,5-scb_amt];
+        //Get data from config map, and store it into file
+        JsonArray ja = new JsonArray();
+        int numEntries=configMap.size();
+        JsonObject[] jo = new JsonObject[numEntries];
+        JsonObject joP = new JsonObject();
+        int joIt=0;
+        for (Map.Entry<String, Object[]> entry : configMap.entrySet()) {
+            Object[] ob = entry.getValue();
+            jo[joIt]= new JsonObject();
+            jo[joIt].addProperty("Name", entry.getKey());
+            jo[joIt].addProperty("Researchable", (Number) ob[1]);
+            jo[joIt].addProperty("req_amt", (Number) ob[2]);
+            jo[joIt].addProperty("give_amt", (Number) ob[3]);
+            jo[joIt].addProperty("scb_obj", (String) ob[4]);
+            jo[joIt].addProperty("scb_amt", (Number) ob[5]);
+            ja.add(jo[joIt]);
+            joIt++;
+        }
+        joP.add("Items",ja);
+        Gson gson= new GsonBuilder().setPrettyPrinting().create();
+        String prettyJson = gson.toJson(joP);
+
+        try{
+            file = new FileWriter(Mcjourneymode.worldPath + "/" + Mcjourneymode.modDir + "config.json");
+            file.write(prettyJson);
+            Mcjourneymode.mylogger.atInfo().log("Successfully wrote config to file");
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally{
+            file.flush();
+            file.close();
+        }
+    }
     public static void main() throws Exception {
         setupConfig();
         getConfig();
     }
     public static HashMap<String, Object[]> playerConfigMap = new HashMap<>();
     //playerConfigMap: ['ItemName'][0-ITEM ID, 1-researchable,2-req_amt,3-give_amt, 4-paid_amt, 5-unocked];
-    public static HashMap<String, int[]> globalConfigMap = new HashMap<>();//TODO: implement possible weather
+    public static HashMap<String, int[]> globalConfigMap = new HashMap<>();//TODO:POSSIBLE-- implement other options other than the research/unlock process
+    public static HashMap<String, Object[]> configStoO(HashMap<String,String> stringMap){
+        HashMap<String,Object[]> newMap=new HashMap<>();
+        for (Map.Entry<String,String> entry: stringMap.entrySet()){
+            String key=entry.getKey();
+            String value=entry.getValue();
+            String[] oldSettingValue= value.split("[|]");//Split string based on | delimiter
+            Object[] settingvalue = new Object[6];//new Object[] to hold data
+            //Cleaning Name/key
+            String namevalue = key;
+            namevalue = namevalue.toLowerCase().replaceAll("[^a-zA-Z0-9.+_-]", "");
+            //Cleaning/setting Item ID
+            int itemID = GetItemIdFromName.getItemIdFromName(namevalue);
+            settingvalue[0] = itemID;
+            settingvalue[1] = Math.abs(Integer.parseInt(oldSettingValue[1].toString().replaceAll("[^0-9]", "")));
+            settingvalue[2] = Math.abs(Integer.parseInt(oldSettingValue[2].toString().replaceAll("[^0-9]", "")));
+            settingvalue[3] = Math.abs(Integer.parseInt(oldSettingValue[3].toString().replaceAll("[^0-9]", "")));
+            settingvalue[4] = oldSettingValue[4].toString().replaceAll("[^a-zA-Z0-9.+_-]", "");
+            settingvalue[5] = Math.abs(Integer.parseInt(oldSettingValue[5].toString().replaceAll("[^0-9]", "")));
+            newMap.put(namevalue,settingvalue);
+        }
+        return newMap;
+    }
+    public static HashMap<String, String> configOtoS(HashMap<String,Object[]> objMap){
+        HashMap<String, String> tempConfigMap = new HashMap<String, String>();
+        for (Map.Entry<String, Object[]> entry : objMap.entrySet()) {
+            String nameKey = entry.getKey();
+            Object[] data = entry.getValue();
+            String strData=data[0]+"|"+data[1]+"|"+data[2]+"|"+data[3]+"|"+data[4]+"|"+data[5];
+            tempConfigMap.put(nameKey,strData);
+        }
+        return tempConfigMap;
+    }
+    public static void getConfigPacket(PlayerEntity player, PacketByteBuf buf, ServerPlayNetworkHandler handler) throws Exception {
+        Function<PacketByteBuf, String> keyConsumer = PacketByteBuf::readString;
+        Function<PacketByteBuf, String> valConsumer = PacketByteBuf::readString;
+        HashMap<String, String> getMap = new HashMap<String, String>(buf.readMap(keyConsumer, valConsumer));
+        HashMap<String,Object[]> newMap=configStoO(getMap);
+        Mcjourneymode.mylogger.atInfo().log("Player updated config: "+player.getName());
+        configMap=newMap;
+        setConfig();
+
+    }
+
 }

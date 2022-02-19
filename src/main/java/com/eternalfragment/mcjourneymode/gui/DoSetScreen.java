@@ -16,7 +16,17 @@ public class DoSetScreen {
         Function<PacketByteBuf, Object[]> valConsumer = (PacketByteBuf pbb) -> (Object[]) ArrayUtils.toObject(pbb.readIntArray());
         Config.playerConfigMap = new HashMap<String, Object[]>(buf.readMap(keyConsumer, valConsumer));
         client.execute(() -> {
-            ScreenList daScreen = new ScreenList(new ScreenListGui(Config.playerConfigMap, ""));
+            ScreenList daScreen = new ScreenList(new ScreenListGui(Config.playerConfigMap, "",false));
+            MinecraftClient.getInstance().setScreen(daScreen);
+        });
+
+    }
+    public static void doSetScreenPerms(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender){
+        Function<PacketByteBuf, String> keyConsumer = PacketByteBuf::readString;
+        Function<PacketByteBuf, Object[]> valConsumer = (PacketByteBuf pbb) -> (Object[]) ArrayUtils.toObject(pbb.readIntArray());
+        Config.playerConfigMap = new HashMap<String, Object[]>(buf.readMap(keyConsumer, valConsumer));
+        client.execute(() -> {
+            ScreenList daScreen = new ScreenList(new ScreenListGui(Config.playerConfigMap, "",true));
             MinecraftClient.getInstance().setScreen(daScreen);
         });
 

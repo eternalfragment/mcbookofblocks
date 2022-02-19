@@ -1,3 +1,5 @@
 {
-  "item.mjm.menu_item": "JourneyMode Menu"
+  "item.mjm.menu_item": "JourneyMode Menu",
+  "mjm.config.title": "JourneyMode Config",
+  "mjm.config.menu.titleGeneral": "General"
 }
