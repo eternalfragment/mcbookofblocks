@@ -57,14 +57,14 @@ public class Mcjourneymode implements ModInitializer {
         mylogger.atInfo().log("Mod Booting....");
         Registry.register(Registry.ITEM, new Identifier(Mcjourneymode.MOD_ID, "menu_item"), GUI_ITEM);
         type = FabricLoader.getInstance().getEnvironmentType();
-        give_packet = Identifier.tryParse("mjm:process_give");
-        pay_packet = Identifier.tryParse("mjm:process_pay");
-        sp_dir_packet = Identifier.tryParse("mjm:sp_directory_find");
-        menu_populate = Identifier.tryParse("mjm:menu_populate");
-        menu_populate_perms = Identifier.tryParse("mjm:menu_populate_perms");
-        get_config_packet = Identifier.tryParse("mjm:get_config_packet");
-        send_config_req_packet = Identifier.tryParse("mjm:send_config_req_packet");
-        send_config_packet = Identifier.tryParse("mjm:send_config_packet");
+        give_packet =  give_packet.tryParse("mjm:process_give");
+        pay_packet = pay_packet.tryParse("mjm:process_pay");
+        sp_dir_packet = sp_dir_packet.tryParse("mjm:sp_directory_find");
+        menu_populate = menu_populate.tryParse("mjm:menu_populate");
+        menu_populate_perms = menu_populate_perms.tryParse("mjm:menu_populate_perms");
+        get_config_packet = get_config_packet.tryParse("mjm:get_config_packet");
+        send_config_req_packet = send_config_req_packet.tryParse("mjm:send_config_req_packet");
+        send_config_packet = send_config_packet.tryParse("mjm:send_config_packet");
 
         if (Objects.equals(type.toString(), "CLIENT")){
 
@@ -84,16 +84,12 @@ public class Mcjourneymode implements ModInitializer {
                 HashMap<String, String> getMap = new HashMap<>(buf.readMap(keyConsumer, valConsumer));
 
                 Config.configMap= Config.configStoO(getMap);
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        ConfigScreen.callBuildScreen(client,handler,buf,pktSnd);
-                    }
-                }, 100);
+                ConfigScreen.callBuildScreen(client,handler,buf,pktSnd);
+
             });
             ServerPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
                 //Register the client to detect when the player connects to the local server. When that happens, send a packet. If received by client, generate/load singleplayer config.
+
                 PacketByteBuf data = PacketByteBufs.create();
                 ServerPlayNetworking.send(handler.getPlayer(),Mcjourneymode.sp_dir_packet, data);
             });
@@ -111,6 +107,7 @@ public class Mcjourneymode implements ModInitializer {
                 }
             });
         }
+
         ServerPlayNetworking.registerGlobalReceiver(send_config_req_packet,  (server, player, handler, buf, pktSnd) -> {
             //Player has sent a request to get the config. should respond with converted data
             HashMap<String, String> transmitData = Config.configOtoS(Config.configMap);

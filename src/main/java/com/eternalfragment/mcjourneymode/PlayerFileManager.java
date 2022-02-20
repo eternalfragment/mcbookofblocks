@@ -22,7 +22,7 @@ public class PlayerFileManager {
     public static boolean playerFileCreate(PlayerEntity user) throws IOException {
         //Create player's mjm tracking file if not existing
         String userID = user.getUuidAsString();
-        File f = new File(Mcjourneymode.worldPath + "/" + Mcjourneymode.modPlayerDir + userID + ".json");
+        File f = new File(Mcjourneymode.worldPath + "\\" + Mcjourneymode.modPlayerDir + userID + ".json");
         if (f.exists()) {
             return true;
         } else {
@@ -145,7 +145,6 @@ public class PlayerFileManager {
         //Function should only be called by system checking amt needed, after amt removed from acct
         String userID = user.getUuidAsString();
         boolean plFile = false;
-        ClassLoader cl = ClassLoader.getSystemClassLoader();
         File f = new File(Mcjourneymode.worldPath + "\\" + Mcjourneymode.modPlayerDir + userID + ".json");
         if (f.exists()) {
             plFile = true;
@@ -270,7 +269,6 @@ public class PlayerFileManager {
         }
         int[] playerstuff;
         int[] configData2;
-        assert mjmPlayerData != null;
         for (String name : mjmPlayerData.keySet()) {
             name = name.toLowerCase();
             playerstuff = mjmPlayerData.get(name);
