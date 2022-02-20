@@ -12,6 +12,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
@@ -114,7 +115,11 @@ public class ConfigScreen {
             int finali = i;
             String object =nameArray[finali];
             Object[] ob = localConfigMap.get(object);
-            String categoryName=Registry.ITEM.get((Integer) ob[0]).getGroup().getName();
+            ItemGroup grp = Registry.ITEM.get((Integer) ob[0]).getGroup();
+            String categoryName= "Misc";
+            if (grp!=null){
+                categoryName=grp.getName();
+            }
             categoryName=categoryName.replace("_"," ");
             categoryName=WordUtils.capitalizeFully(categoryName);
             ConfigCategory thisCategory = builder.getOrCreateCategory(Text.of(categoryName));
@@ -124,7 +129,7 @@ public class ConfigScreen {
             cleanObject=cleanObject.replace("_"," ");
             cleanObject=WordUtils.capitalizeFully(cleanObject);
             thisCategory.addEntry(entryBuilder.startTextDescription(Text.of("              "+cleanObject)).build());
-            thisCategory.addEntry(entryBuilder.startDropdownMenu(new TranslatableText("Item"),  DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(configItem[i].get()))
+            thisCategory.addEntry(entryBuilder.startDropdownMenu(new TranslatableText("Item"),  DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(configItem[finali].get()))
                     .setDefaultValue(Registry.ITEM.get((Integer) ob[0])) // You should define a default value here
                     .setSelections(Registry.ITEM.stream().collect(Collectors.toSet()))
                     .setSaveConsumer(item -> configItem[finali].set((Item) item)) // You should save it here, cast the item because Java is "smart"
