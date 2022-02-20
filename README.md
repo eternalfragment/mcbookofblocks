@@ -51,7 +51,7 @@ A player with Permission lvl 4 (OP) can use the command "/mjm give <@p>" to give
 
 Players can also craft the MJM Menu Item with 4 paper, 4 ender pearls, and 1 diamond
 
-<img src="D:\MC_Mod_Development\mcjourneymode\src\main\resources\imgs\mjm_recipe.png">
+<img src="https://github.com/eternalfragment/mcjourneymode/blob/master/src/main/resources/imgs/mjm_recipe.png">
 
 ## Extras
 There is a small datapack that provides a slight glow to the JourneyMode item when you are holding it, when used in conjunction with optifine. You can find it [here](https://github.com/eternalfragment/mcjourneymode/blob/master/mjm_resource_pack.zip).
