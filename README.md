@@ -34,10 +34,15 @@ With the JourneyMode screen up, those with permissions (perm lvl 4 required / OP
 Clicking on this button will show the config settings for the mod. Within these settings you can add new items to the options, as well as edit existing items.
 
 Each item has 4 methods for researching. 
-#####1 - Pay only (default); This requires the player to pay 'x' number of this item to unlock. 
-#####2 - Scoreboard Only; This requires the player to reach a certain score on the scoreboard defined for this item
-#####3 - Pay -or- Scoreboard; Meet either of the criteria to unlock
-#####4 - Pay & Scoreboard; Meet both criteria to unlock
+
+1 - Pay only (default); This requires the player to pay 'x' number of this item to unlock. 
+
+2 - Scoreboard Only; This requires the player to reach a certain score on the scoreboard defined for this item
+
+3 - Pay -or- Scoreboard; Meet either of the criteria to unlock
+
+4 - Pay & Scoreboard; Meet both criteria to unlock
+
 You can also set the pay amount, the name of the scoreboard objective, as well as the goal for the scoreboard objective to meet.
 Saving the config will instantly adjust those options in-game, and save it to the config file.
 
