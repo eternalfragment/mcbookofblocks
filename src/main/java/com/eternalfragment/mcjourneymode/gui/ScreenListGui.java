@@ -22,6 +22,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.text.WordUtils;
@@ -40,7 +41,7 @@ public class ScreenListGui extends LightweightGuiDescription {
                 public static Identifier pay_packet = null;
                 public static Identifier give_packet = null;
 
-                static void generatePanels(HashMap<String, Object[]> newData, boolean unlocked, String FilterTxt, WScrollPanel[] wrapContents, WGridPanel root, GuiDescription passThis) {
+                static void generatePanels(HashMap<String, Object[]> newData, boolean unlocked, String FilterTxt, WScrollPanel[] wrapContents, WGridPanel root, GuiDescription passThis, boolean perms) {
                     //TODO: establish mod's general config passing to this method for proper generation? or.. pass to parent method to generate at window open
                     root.remove(wrapContents[0]);
                     Config.playerConfigMap = newData;
@@ -80,6 +81,7 @@ public class ScreenListGui extends LightweightGuiDescription {
                         WButton[] butpay = new WButton[numItems];
                         WLabel[] noItems = new WLabel[numItems];
                         WBar[] achProg=new WBar[numItems];
+                        WButton[] butEdit = new WButton[numItems];
                         PropertyDelegate[] thisProp= new PropertyDelegate[numItems];
 
                         int[] rowTracker;
@@ -209,7 +211,7 @@ public class ScreenListGui extends LightweightGuiDescription {
                                     int lblLen = itemName.length();
                                     int totalWidth = Math.max(160, scalingIcon[it].getWidth() + (lblLen * 6));
                                     /*Button for Giving Item*/
-                                    butpay[it] = new WButton(Text.of("GET"));//NEED TO ADD ACTION OF BUTTOn
+                                    butpay[it] = new WButton(new TranslatableText("mjm.gui.but.get"));
                                     /* Add modules to the panel */
                                     item[it].add(scalingIcon[it], 6, 6, 48, 48);
                                     item[it].add(itemNameLabel[it], 56, 5, lblLen * 6, 12);
@@ -223,6 +225,17 @@ public class ScreenListGui extends LightweightGuiDescription {
                                         data.writeInt(itemID);
                                         ClientPlayNetworking.send(Mcjourneymode.give_packet, data);
                                     });
+                                    if (perms){
+                                        butEdit[it]=new WButton(new LiteralText("⚙"));
+                                        Object[] finalItemData = itemData;
+                                        butEdit[it].setOnClick(()->{
+                                            PacketByteBuf clickData = PacketByteBufs.create();
+                                            clickData.writeString(String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()));
+                                            ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
+                                        });
+                                        item[it].add(butEdit[it],totalWidth-18,3,12,8);
+                                    }
+
                                     item[it].setSize(totalWidth, 60);
                                     int currentWidth = 0;
                                     int lastItemW = 0;
@@ -281,7 +294,7 @@ public class ScreenListGui extends LightweightGuiDescription {
                                         thisProp[it].set(1, 100);
                                         achProg[it] = new WBar(barBg, barProg, 0, 1, WBar.Direction.UP);
                                         achProg[it].setProperties(thisProp[it]);
-                                        achProg[it].withTooltip("Achievement Progress: " + itemData[6] + "%");
+                                        achProg[it].withTooltip(new TranslatableText("mjm.gui.tooltip.scbProg").getString()+": " + itemData[6] + "%");
                                     }
                                     //int totalWidth = Math.max(180, scalingIcon[it].getWidth() + itemNameLabel[it].getWidth() + 40);
                                     int totalWidth = Math.max(160, scalingIcon[it].getWidth() + (lblLen * 6));
@@ -314,10 +327,10 @@ public class ScreenListGui extends LightweightGuiDescription {
                                         paySlider[it].setSize(totalWidth - 64 - 36 - 12, 12);
                                         paySlider[it].setLabelUpdater(value -> new LiteralText("amt: " + value));
                                     } else {
-                                        noItems[it] = new WLabel("-no items-");
+                                        noItems[it] = new WLabel("-"+new TranslatableText("mjm.gui.lbl.none").getString()+"-");
                                     }
                                     /*Button for payment submit*/
-                                    butpay[it] = new WButton(Text.of("Pay"));//NEED TO ADD ACTION OF BUTTOn
+                                    butpay[it] = new WButton(new TranslatableText("mjm.gui.but.pay"));
                                     /* Add modules to the panel */
                                     item[it].add(scalingIcon[it], 6, 6, 48, 48);
                                     item[it].add(itemNameLabel[it], 56, 5, lblLen * 6, 12);
@@ -336,7 +349,7 @@ public class ScreenListGui extends LightweightGuiDescription {
                                         }
                                     }
                                     else{
-                                        item[it].add(new WLabel("-Scoreboard ONLY-"), 56, 28);
+                                        item[it].add(new WLabel("-"+new TranslatableText("mjm.gui.lbl.scbOnly").getString()+"-"), 56, 28);
                                     }
                                     itemIDLabel[it].setText(Text.of(String.valueOf(itemData[0])));
                                     int holdMe = it;
@@ -354,6 +367,16 @@ public class ScreenListGui extends LightweightGuiDescription {
                                         data.writeIntArray(dataArr);
                                         ClientPlayNetworking.send(Mcjourneymode.pay_packet, data);
                                     });
+                                    if (perms){
+                                        butEdit[it]=new WButton(new LiteralText("⚙"));
+                                        Object[] finalItemData1 = itemData;
+                                        butEdit[it].setOnClick(()->{
+                                            PacketByteBuf clickData = PacketByteBufs.create();
+                                            clickData.writeString(String.valueOf(Registry.ITEM.get((int) finalItemData1[0]).asItem()));
+                                            ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
+                                        });
+                                        item[it].add(butEdit[it],totalWidth-18,3,12,8);
+                                    }
                                     item[it].setSize(totalWidth, 60);
                                     int currentWidth = 0;
                                     int lastItemW = 0;
@@ -375,13 +398,13 @@ public class ScreenListGui extends LightweightGuiDescription {
                         }
                         if (generatedItems == 0) {
                             //this means nothing was displayed due to filter settings
-                            WLabel lblEmpty = new WLabel("-Search for items above-");
+                            WLabel lblEmpty = new WLabel("-"+new TranslatableText("mjm.gui.lbl.search").getString()+"-");
                             lblEmpty.setColor(textColor_RED.toRgb());
                             myTallPanel.add(lblEmpty, 25, 25);
                         }
                     } else {
                         //this means nothing was loaded. means admin disabled all items, or glitch with config.
-                        WLabel lblEmpty = new WLabel("No items are available");
+                        WLabel lblEmpty = new WLabel(new TranslatableText("mjm.gui.lbl.noneAvail"));
                         lblEmpty.setColor(textColor_RED.toRgb());
                         myTallPanel.add(lblEmpty, 25, 25);
                     }
@@ -412,14 +435,14 @@ public class ScreenListGui extends LightweightGuiDescription {
             String filterText = searchBar.getText();
             // This code runs on the client when you toggle the button.
             boolean onlyUnlocked = toggleButton.getToggle();
-            contentGenerator.generatePanels(data, toggleButton.getToggle(), filterText, wrapContents, root, thisDescription);
+            contentGenerator.generatePanels(data, toggleButton.getToggle(), filterText, wrapContents, root, thisDescription,perms);
         });
         Consumer<String> searchConsumer = new Consumer<String>() {
             @Override
             public void accept(String s) {
                 String filterText = searchBar.getText();
                 boolean onlyUnlocked = toggleButton.getToggle();
-                contentGenerator.generatePanels(data, toggleButton.getToggle(), filterText, wrapContents, root, thisDescription);
+                contentGenerator.generatePanels(data, toggleButton.getToggle(), filterText, wrapContents, root, thisDescription,perms);
             }
         };
         searchBar.setChangedListener(searchConsumer);
@@ -434,7 +457,7 @@ public class ScreenListGui extends LightweightGuiDescription {
             });
             root.add(configButton, (root.getWidth() / 18) - 2, 1, 1, 1);
         }
-        contentGenerator.generatePanels(data, toggleButton.getToggle(), searchDefault, wrapContents, root, thisDescription);
+        contentGenerator.generatePanels(data, toggleButton.getToggle(), searchDefault, wrapContents, root, thisDescription,perms);
         setRootPanel(root);
         root.validate(this);
     }

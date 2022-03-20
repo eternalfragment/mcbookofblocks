@@ -1,5 +1,24 @@
 {
   "item.mjm.menu_item": "JourneyMode Menu",
   "mjm.config.title": "JourneyMode Config",
-  "mjm.config.menu.titleGeneral": "General"
+  "mjm.config.menu.titleGeneral": "General",
+  "mjm.config.menu.addItem": "Add Item to Config",
+  "mjm.config.menu.item": "Item",
+  "mjm.config.menu.researchable": "Researchable",
+  "mjm.config.menu.resAmt": "Research Amount",
+  "mjm.config.menu.giveAmt": "Give Amount",
+  "mjm.config.menu.scbName": "Scoreboard Objective Name",
+  "mjm.config.menu.scbGoal": "Scoreboard Objective Goal",
+  "mjm.config.menu.research.remove": "Remove",
+  "mjm.config.menu.research.pay": "Pay Only",
+  "mjm.config.menu.research.score": "Scoreboard Only",
+  "mjm.config.menu.research.payascore": "Pay & Scoreboard",
+  "mjm.config.menu.research.payoscore": "Pay -or- Scoreboard",
+  "mjm.gui.but.get": "GET",
+  "mjm.gui.tooltip.scbProg": "Scoreboard Progress",
+  "mjm.gui.lbl.none": "no items",
+  "mjm.gui.but.pay": "Pay",
+  "mjm.gui.lbl.scbOnly": "Scoreboard ONLY",
+  "mjm.gui.lbl.search": "Search for items above",
+  "mjm.gui.lbl.noneAvail": "No Items are available"
 }

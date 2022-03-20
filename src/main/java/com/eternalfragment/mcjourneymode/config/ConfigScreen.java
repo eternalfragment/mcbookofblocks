@@ -54,12 +54,11 @@ public class ConfigScreen {
             @Override
             public Iterator<String> iterator() {
                 List<String> ulchoices= new ArrayList<String>();
-                ulchoices.add("0 - None");
-                ulchoices.add("1 - Pay Only");
-                ulchoices.add("2 - Scoreboard Only");
-                ulchoices.add("3 - Pay & Scoreboard");
-                ulchoices.add("4 - Pay -or- Scoreboard");
-
+                ulchoices.add("0 - "+new TranslatableText("mjm.config.menu.research.remove").getString());
+                ulchoices.add("1 - "+new TranslatableText("mjm.config.menu.research.pay").getString());
+                ulchoices.add("2 - "+new TranslatableText("mjm.config.menu.research.score").getString());
+                ulchoices.add("3 - "+new TranslatableText("mjm.config.menu.research.payascore").getString());
+                ulchoices.add("4 - "+new TranslatableText("mjm.config.menu.research.payoscore").getString());
                 Iterator<String> ulIterator = ulchoices.iterator();
                 return ulIterator;
             }
@@ -72,35 +71,36 @@ public class ConfigScreen {
         AtomicReference<Integer> addScbAmt= new AtomicReference();
         ConfigCategory general = builder.getOrCreateCategory(new TranslatableText("mjm.config.menu.titleGeneral"));
         //New Item listing in General Tab
-        general.addEntry(entryBuilder.startTextDescription(Text.of("Add Item to Config")).build());
-        general.addEntry(entryBuilder.startDropdownMenu(new TranslatableText("Item"),  DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.DIRT))
+        general.addEntry(entryBuilder.startTextDescription(new TranslatableText("mjm.config.menu.addItem")).build());
+        general.addEntry(entryBuilder.startDropdownMenu(new TranslatableText("mjm.config.menu.item"),  DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.DIRT))
                 .setDefaultValue(Items.DIRT) // You should define a default value here
                 .setSelections(Registry.ITEM.stream().collect(Collectors.toSet()))
                 .setSaveConsumer(item -> addItem.set(item)) // You should save it here, cast the item because Java is "smart"
                 .build());
         //Researchable Option
-        general.addEntry(entryBuilder.startStringDropdownMenu(Text.of("Researchable"), "1- Pay Only")
-                .setDefaultValue("1- Pay Only")
+
+        general.addEntry(entryBuilder.startStringDropdownMenu(new TranslatableText("mjm.config.menu.researchable"), "1 - "+new TranslatableText("mjm.config.menu.research.pay").getString())
+                .setDefaultValue("1 - "+new TranslatableText("mjm.config.menu.research.pay").getString())
                 .setSelections(resSelections)
                 .setSaveConsumer(result->addResearchable.set(result))
                 .build());
         //Research Amount
-        general.addEntry(entryBuilder.startIntField(Text.of("Research Amount"), 512)
+        general.addEntry(entryBuilder.startIntField(new TranslatableText("mjm.config.menu.resAmt"), 512)
                 .setDefaultValue(512)
                 .setSaveConsumer(result->addReqAmt.set(result))
                 .build());
         //Give Amount
-        general.addEntry(entryBuilder.startIntSlider(Text.of("Give Amt"), 64,1,64)
+        general.addEntry(entryBuilder.startIntSlider(new TranslatableText("mjm.config.menu.giveAmt"), 64,1,64)
                 .setDefaultValue(64)
                 .setSaveConsumer(result->addGiveAmt.set(result))
                 .build());
         //Scoreboard Objective
-        general.addEntry(entryBuilder.startStrField(Text.of("Scoreboard Objective Name"),"")
+        general.addEntry(entryBuilder.startStrField(new TranslatableText("mjm.config.menu.scbName"),"")
                 .setDefaultValue("")
                 .setSaveConsumer(result->addScbObj.set(result))
                 .build());
         //Scoreboard Amount
-        general.addEntry(entryBuilder.startIntField(Text.of("Scoreboard Objective Goal"), 0)
+        general.addEntry(entryBuilder.startIntField(new TranslatableText("mjm.config.menu.scbGoal"), 0)
                 .setDefaultValue(0)
                 .setSaveConsumer(result->addScbAmt.set(result))
                 .build());
@@ -129,14 +129,14 @@ public class ConfigScreen {
             cleanObject=cleanObject.replace("_"," ");
             cleanObject=WordUtils.capitalizeFully(cleanObject);
             thisCategory.addEntry(entryBuilder.startTextDescription(Text.of("              "+cleanObject)).build());
-            thisCategory.addEntry(entryBuilder.startDropdownMenu(new TranslatableText("Item"),  DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(configItem[finali].get()))
+            thisCategory.addEntry(entryBuilder.startDropdownMenu(new TranslatableText("mjm.config.menu.item"),  DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(configItem[finali].get()))
                     .setDefaultValue(Registry.ITEM.get((Integer) ob[0])) // You should define a default value here
                     .setSelections(Registry.ITEM.stream().collect(Collectors.toSet()))
                     .setSaveConsumer(item -> configItem[finali].set((Item) item)) // You should save it here, cast the item because Java is "smart"
                     .build());
             //Researchable Option
             configResearchable[finali] = new AtomicReference(ob[1]);
-            thisCategory.addEntry(entryBuilder.startStringDropdownMenu(Text.of("Researchable"), Integer.toString((Integer) ob[1]))
+            thisCategory.addEntry(entryBuilder.startStringDropdownMenu(new TranslatableText("mjm.config.menu.researchable"), Integer.toString((Integer) ob[1]))
                     .setDefaultValue(Integer.toString((Integer) ob[1]))
                     .setSelections(resSelections)
                     .setSaveConsumer(result->configResearchable[finali].set(result))
@@ -144,28 +144,28 @@ public class ConfigScreen {
             //Research Amount
             configReqAmt[finali]=new AtomicReference(ob[2]);
             int reqAmt =configReqAmt[finali].get();
-            thisCategory.addEntry(entryBuilder.startIntField(Text.of("Research Amount"), reqAmt)
+            thisCategory.addEntry(entryBuilder.startIntField(new TranslatableText("mjm.config.menu.resAmt"), reqAmt)
                     .setDefaultValue(reqAmt)
                     .setSaveConsumer(result->configReqAmt[finali].set(result))
                     .build());
             //Give Amount
             configGiveAmt[finali]=new AtomicReference(ob[3]);
             int giveAmt=configGiveAmt[finali].get();
-            thisCategory.addEntry(entryBuilder.startIntSlider(Text.of("Give Amt"), giveAmt,1,64)
+            thisCategory.addEntry(entryBuilder.startIntSlider(new TranslatableText("mjm.config.menu.giveAmt"), giveAmt,1,64)
                     .setDefaultValue(giveAmt)
                     .setSaveConsumer(result->configGiveAmt[finali].set(result))
                     .build());
             //Scoreboard Objective
             configScbObj[finali]=new AtomicReference(ob[4]);
             String scbObj=configScbObj[finali].get();
-            thisCategory.addEntry(entryBuilder.startStrField(Text.of("Scoreboard Objective Name"),scbObj)
+            thisCategory.addEntry(entryBuilder.startStrField(new TranslatableText("mjm.config.menu.scbName"),scbObj)
                     .setDefaultValue(scbObj)
                     .setSaveConsumer(result->configScbObj[finali].set(result))
                     .build());
             //Scoreboard Amount
             configScbAmt[finali]=new AtomicReference(ob[5]);
             int scbAmt =configScbAmt[finali].get();
-            thisCategory.addEntry(entryBuilder.startIntField(Text.of("Scoreboard Objective Goal"), scbAmt)
+            thisCategory.addEntry(entryBuilder.startIntField(new TranslatableText("mjm.config.menu.scbGoal"), scbAmt)
                     .setDefaultValue(scbAmt)
                     .setSaveConsumer(result->configScbAmt[finali].set(result))
                     .build());
@@ -239,6 +239,6 @@ public class ConfigScreen {
             ClientPlayNetworking.send(Mcjourneymode.get_config_packet, data);//send the config data set here to the server for parsing/saving.
         });
         Screen screen = builder.build();//Build the screen
-        MinecraftClient.getInstance().setScreen(screen); //Set teh screen
+        MinecraftClient.getInstance().setScreen(screen); //Set the screen
     }
 }

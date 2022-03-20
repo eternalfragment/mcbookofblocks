@@ -4,6 +4,7 @@ package com.eternalfragment.mcjourneymode;
 import com.eternalfragment.mcjourneymode.commands.Mjm_cmd_give;
 import com.eternalfragment.mcjourneymode.config.Config;
 import com.eternalfragment.mcjourneymode.config.ConfigScreen;
+import com.eternalfragment.mcjourneymode.config.SingleConfigScreen;
 import com.eternalfragment.mcjourneymode.gui.DoSetScreen;
 import com.eternalfragment.mcjourneymode.items.GuiItem;
 import com.eternalfragment.mcjourneymode.operators.invManager;
@@ -27,10 +28,7 @@ import org.apache.logging.log4j.LogManager;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.function.Function;
 
 
@@ -48,7 +46,10 @@ public class Mcjourneymode implements ModInitializer {
     public static Identifier menu_populate_perms=null;
     public static Identifier get_config_packet=null;
     public static Identifier send_config_req_packet=null;
+    public static Identifier send_single_config_req_packet=null;
     public static Identifier send_config_packet=null;
+    public static Identifier send_single_config_packet=null;
+    public static Identifier get_single_config_packet=null;
     public static EnvType type;//holds whether mod is loaded in client or server
     public static int permLevel=4;
     @Override
@@ -64,7 +65,10 @@ public class Mcjourneymode implements ModInitializer {
         menu_populate_perms = menu_populate_perms.tryParse("mjm:menu_populate_perms");
         get_config_packet = get_config_packet.tryParse("mjm:get_config_packet");
         send_config_req_packet = send_config_req_packet.tryParse("mjm:send_config_req_packet");
+        send_single_config_req_packet=send_single_config_req_packet.tryParse("mjm:send_single_config_req_packet");
         send_config_packet = send_config_packet.tryParse("mjm:send_config_packet");
+        send_single_config_packet=send_single_config_packet.tryParse("mjm:send_single_config_packet");
+        get_single_config_packet=get_single_config_packet.tryParse("mjm:get_single_config_packet");
 
         if (Objects.equals(type.toString(), "CLIENT")){
 
@@ -87,6 +91,21 @@ public class Mcjourneymode implements ModInitializer {
                 ConfigScreen.callBuildScreen(client,handler,buf,pktSnd);
 
             });
+            ClientPlayNetworking.registerGlobalReceiver(send_single_config_packet, (client, handler, buf, pktSnd) -> {
+                Function<PacketByteBuf, String> keyConsumer = PacketByteBuf::readString;
+                Function<PacketByteBuf, String> valConsumer = PacketByteBuf::readString;
+                HashMap<String, String> getMap = new HashMap<>(buf.readMap(keyConsumer, valConsumer));
+                HashMap<String, Object[]> single = Config.configStoO(getMap);
+                String openName="";
+                for (Map.Entry<String, Object[]> entry : single.entrySet()) {
+                    String nameKey = entry.getKey();
+                    Object[] data = entry.getValue();
+                    openName=nameKey;
+                    Config.configMap.put(nameKey,data);//take data sent, and update local config map
+                }
+                SingleConfigScreen.callBuildScreen(client,handler,buf,pktSnd,openName);
+            });
+
             ServerPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
                 //Register the client to detect when the player connects to the local server. When that happens, send a packet. If received by client, generate/load singleplayer config.
 
@@ -107,7 +126,7 @@ public class Mcjourneymode implements ModInitializer {
                 }
             });
         }
-
+        //TODO: create packet receiver for individual config. Packet should sent string that contains item name
         ServerPlayNetworking.registerGlobalReceiver(send_config_req_packet,  (server, player, handler, buf, pktSnd) -> {
             //Player has sent a request to get the config. should respond with converted data
             HashMap<String, String> transmitData = Config.configOtoS(Config.configMap);
@@ -115,10 +134,38 @@ public class Mcjourneymode implements ModInitializer {
                 data.writeMap(transmitData, PacketByteBuf::writeString, PacketByteBuf::writeString);
                 if (player.hasPermissionLevel(permLevel)){ServerPlayNetworking.send(player, send_config_packet, data);}
                 });
+        ServerPlayNetworking.registerGlobalReceiver(send_single_config_req_packet,  (server, player, handler, buf, pktSnd) -> {
+            //Player has sent a request to get the config. should respond with converted data
+
+            if (player.hasPermissionLevel(permLevel)){
+            String itemGet=buf.readString();
+                System.out.println("Single pack recd: "+itemGet);
+            Object[] ob = Config.configMap.get(itemGet);
+            if (ob!=null) {
+                HashMap<String, Object[]> sendMap = new HashMap<>();
+                sendMap.put(itemGet, ob);
+                HashMap<String, String> transmitData = Config.configOtoS(sendMap);
+                PacketByteBuf data = PacketByteBufs.create();
+                data.writeMap(transmitData, PacketByteBuf::writeString, PacketByteBuf::writeString);
+                System.out.println("Data here, and sent");
+                ServerPlayNetworking.send(player, send_single_config_packet, data);
+                }else{System.out.println("OB NULL");}
+            }
+        });
         ServerPlayNetworking.registerGlobalReceiver(get_config_packet,  (server, player, handler, buf, pktSnd) -> {
             try {
                 if (player.hasPermissionLevel(permLevel)) {
                     Config.getConfigPacket(player, buf, handler);
+                }
+                GuiItem.sendMJMRefresh(handler.getPlayer());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        ServerPlayNetworking.registerGlobalReceiver(get_single_config_packet,  (server, player, handler, buf, pktSnd) -> {
+            try {
+                if (player.hasPermissionLevel(permLevel)) {
+                    Config.getSingleConfigPacket(player, buf, handler);
                 }
                 GuiItem.sendMJMRefresh(handler.getPlayer());
             } catch (Exception e) {

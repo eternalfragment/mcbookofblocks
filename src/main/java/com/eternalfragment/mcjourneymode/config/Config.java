@@ -259,6 +259,10 @@ public class Config {
         }
         return tempConfigMap;
     }
+    public static String configEntryOtoS(Object[] data){
+            String strData=data[0]+"|"+data[1]+"|"+data[2]+"|"+data[3]+"|"+data[4]+"|"+data[5];
+        return strData;
+    }
     public static void getConfigPacket(PlayerEntity player, PacketByteBuf buf, ServerPlayNetworkHandler handler) throws Exception {
         Function<PacketByteBuf, String> keyConsumer = PacketByteBuf::readString;
         Function<PacketByteBuf, String> valConsumer = PacketByteBuf::readString;
@@ -266,6 +270,25 @@ public class Config {
         HashMap<String,Object[]> newMap=configStoO(getMap);
         Mcjourneymode.mylogger.atInfo().log("Player updated config: "+player.getName());
         configMap=newMap;
+        setConfig();
+
+    }
+    public static void getSingleConfigPacket(PlayerEntity player, PacketByteBuf buf, ServerPlayNetworkHandler handler) throws Exception {
+        Function<PacketByteBuf, String> keyConsumer = PacketByteBuf::readString;
+        Function<PacketByteBuf, String> valConsumer = PacketByteBuf::readString;
+        HashMap<String, String> getMap = new HashMap<String, String>(buf.readMap(keyConsumer, valConsumer));
+        HashMap<String,Object[]> newMap=configStoO(getMap);
+        for (Map.Entry<String, Object[]> entry : newMap.entrySet()) {
+            String nameKey = entry.getKey();
+            Object[] data = entry.getValue();
+            if ((int)data[1]==0){
+                //if the data says researchable is 0, remove item from the config
+                configMap.remove(nameKey);
+            }else{
+                configMap.put(nameKey,data);//take data sent, and update local config map
+            }
+        }
+        Mcjourneymode.mylogger.atInfo().log("Player updated config: "+player.getName());
         setConfig();
 
     }
