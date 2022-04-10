@@ -324,6 +324,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                                 ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
                                             }
                                         });
+                                        jmItem[it].setOnMiddleClick(()->{});
                                         jmItemSlot[it].add(jmItem[it], 0, 0);
                                         row = (int) Math.floor(pDisplayed / (panelMaxW));
                                         col = pDisplayed - ((panelMaxW) * row);
@@ -354,6 +355,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                                 ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
                                             }
                                         });
+                                        jmItem[it].setOnMiddleClick(()->{});
                                         jmItemSlot[it].add(jmItem[it], 0, 0);
                                         row = (int) Math.floor(prDisplayed / (panelMaxW));
                                         col = prDisplayed - ((panelMaxW) * row);
@@ -385,6 +387,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                                 ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
                                             }
                                         });
+                                        jmItem[it].setOnMiddleClick(()->{});
                                         jmItemSlot[it].add(jmItem[it], 0, 0);
                                         row = (int) Math.floor(aDisplayed / (panelMaxW));
                                         col = aDisplayed - ((panelMaxW) * row);
