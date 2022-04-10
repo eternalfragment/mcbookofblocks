@@ -54,5 +54,29 @@ public class invManager {
             }
         }
     }
+    public static int inv_clearItem(ServerPlayerEntity player,int itemID){
+        ItemStack findStack = Registry.ITEM.get(itemID).getDefaultStack();
+        boolean keepSearch = true;
+        int numRemoved=0;
+        int numInInventory=player.getInventory().count(Registry.ITEM.get(itemID));
+        while (keepSearch){
+            if (numRemoved<numInInventory){
+                int amtLeftRemove=numInInventory-numRemoved;
+                int itemIndex = player.getInventory().indexOf(findStack);
+                if (itemIndex >=0){
+                    int numInStack = player.getInventory().getStack(itemIndex).getCount();
+                    int removeAmt=Math.min(numInStack,amtLeftRemove);
+                    player.getInventory().removeStack(itemIndex,removeAmt);
+                    numRemoved=numRemoved+removeAmt;
+                }else{
+                    keepSearch=false;
+                }
+            }else{
+                keepSearch=false;
+            }
+        }
+        return numRemoved;
+
+    }
 
 }

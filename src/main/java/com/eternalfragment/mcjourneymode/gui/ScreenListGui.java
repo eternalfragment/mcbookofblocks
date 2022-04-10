@@ -286,6 +286,12 @@ public class ScreenListGui extends LightweightGuiDescription{
                                                 ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
                                             }
                                         });
+                                        jmItem[it].setOnMiddleClick(()->{
+                                            int itemID = Integer.parseInt(finalItemData[0].toString());
+                                            PacketByteBuf data = PacketByteBufs.create();
+                                            data.writeInt(itemID);
+                                            ClientPlayNetworking.send(Mcjourneymode.clear_packet, data);
+                                        });
                                         jmItemSlot[it].add(jmItem[it], 0, 0);
                                         row = (int) Math.floor(uDisplayed / (panelMaxW));
                                         col = uDisplayed - ((panelMaxW) * row);

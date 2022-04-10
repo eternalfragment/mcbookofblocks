@@ -21,9 +21,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.registry.Registry;
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.logging.log4j.LogManager;
 import org.json.simple.parser.ParseException;
 
@@ -42,6 +44,7 @@ public class Mcjourneymode implements ModInitializer {
     public static Identifier pay_packet=null;
     public static Identifier give_packet=null;
     public static Identifier give_packet_single=null;
+    public static Identifier clear_packet=null;
     public static Identifier sp_dir_packet=null;
     public static Identifier menu_populate=null;
     public static Identifier menu_populate_perms=null;
@@ -62,6 +65,7 @@ public class Mcjourneymode implements ModInitializer {
         give_packet =  give_packet.tryParse("mjm:process_give");
         give_packet_single=give_packet_single.tryParse("mjm:process_give_single");
         pay_packet = pay_packet.tryParse("mjm:process_pay");
+        clear_packet = clear_packet.tryParse("mjm:process_clear");
         sp_dir_packet = sp_dir_packet.tryParse("mjm:sp_directory_find");
         menu_populate = menu_populate.tryParse("mjm:menu_populate");
         menu_populate_perms = menu_populate_perms.tryParse("mjm:menu_populate_perms");
@@ -152,6 +156,15 @@ public class Mcjourneymode implements ModInitializer {
                 }else{System.out.println("OB NULL");}
             }
         });
+        ServerPlayNetworking.registerGlobalReceiver(clear_packet,(server,player,handler,buf,pktSnd)->{
+                int itemID=buf.readInt();
+                int cleared=invManager.inv_clearItem(player,itemID);
+                String itemName = String.valueOf(Registry.ITEM.get(itemID).asItem());
+                itemName = itemName.replaceAll("_", " ").toLowerCase();
+                itemName = WordUtils.capitalizeFully(itemName);
+                player.sendMessage(Text.of("Cleared "+cleared+" "+itemName+"'s from inventory."), false);
+        });
+
         ServerPlayNetworking.registerGlobalReceiver(get_config_packet,  (server, player, handler, buf, pktSnd) -> {
             try {
                 if (player.hasPermissionLevel(permLevel)) {

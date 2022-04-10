@@ -29,6 +29,7 @@ public class WJMItem extends WWidget {
 
     @Nullable private Runnable onClick;
     @Nullable private Runnable onRightClick;
+    @Nullable private Runnable onMiddleClick;
 
     public WJMItem(List<ItemStack> items) {
         setItems(items);
@@ -117,6 +118,9 @@ public class WJMItem extends WWidget {
                 if (button==1){
                     onRightClick.run();
                 }
+                if (button==2){
+                    onMiddleClick.run();
+                }
 
             }
             return InputResult.PROCESSED;
@@ -140,6 +144,10 @@ public class WJMItem extends WWidget {
     }
     public WJMItem setOnRightClick(@Nullable Runnable onClick) {
         this.onRightClick = onClick;
+        return this;
+    }
+    public WJMItem setOnMiddleClick(@Nullable Runnable onClick) {
+        this.onMiddleClick = onClick;
         return this;
     }
     public boolean isEnabled() {
