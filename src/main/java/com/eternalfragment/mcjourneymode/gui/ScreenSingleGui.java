@@ -200,18 +200,13 @@ public class ScreenSingleGui extends LightweightGuiDescription{
 
                     WButton butBack=new WButton(Text.of("BACK"));
                     butBack.setOnClick(()-> mc.execute(() -> {
-                        ScreenList daScreen = new ScreenList(new ScreenListGui(Config.playerConfigMap, "",false));
+                        ScreenList daScreen = new ScreenList(new ScreenListGui(Config.playerConfigMap, "",perms));
                         MinecraftClient.getInstance().setScreen(daScreen);
                     }));
                     root.add(butBack,0,0,32,16);
                     item.setSize(totalWidth,66);
                     root.add(item, cellSize, 2*cellSize,totalWidth,66);
-
                 }
-
-
-
-
 
             }else{
                 WLabel lblEmpty = new WLabel(new TranslatableText("mjm.gui.lbl.noneAvail"));
@@ -219,28 +214,14 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                 root.add(lblEmpty, 1, 1);
                 root.setSize(2,4);
             }
-
-            root.validate(passThis);
-
-
-
-
-
-
-
-
-
-
-
-
-
-            if (perms) {
+            //root.validate(passThis);
+            if (perms) {/*
                 WButton configButton = new WButton(new LiteralText("⚙"));
                 configButton.setOnClick(() -> {
                     PacketByteBuf clickData = PacketByteBufs.create();
                     ClientPlayNetworking.send(Mcjourneymode.send_config_req_packet, clickData);
                 });
-                root.add(configButton, (root.getWidth() / 18) - 2, 1, 1, 1);
+                root.add(configButton, (root.getWidth() / 18) - 2, 1, 1, 1);*/
             }
             setRootPanel(root);
             root.validate(this);
