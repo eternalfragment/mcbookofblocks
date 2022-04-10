@@ -29,6 +29,5 @@ public class DoSetScreen {
             ScreenList daScreen = new ScreenList(new ScreenListGui(Config.playerConfigMap, "",true));
             MinecraftClient.getInstance().setScreen(daScreen);
         });
-
     }
 }

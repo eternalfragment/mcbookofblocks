@@ -42,11 +42,11 @@ public class invManager {
             return 0;
         }
     }
-    public static void inv_giveItem(ServerPlayerEntity player, int itemID){
+    public static void inv_giveItem(ServerPlayerEntity player, int itemID, boolean fullStack){
         int amt=1;
         String itemName=String.valueOf(Registry.ITEM.get(itemID).asItem());
         Object[] iConfig = Config.configMap.get(itemName);
-        amt=(int)iConfig[3];
+        if (fullStack) {amt=(int)iConfig[3];}
         for (int i=0; i<amt; i++){
             if(!player.getInventory().insertStack(new ItemStack(Registry.ITEM.get(itemID).asItem()))){
                 //Inventory full?

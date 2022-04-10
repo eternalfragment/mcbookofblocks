@@ -12,13 +12,16 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.HashMap;
 
-public class GuiItem extends Item {
+public class GuiItem extends Item{
+    private DefaultedList<ItemStack> items = DefaultedList.ofSize(32, ItemStack.EMPTY);
+
     public GuiItem(Settings settings) {
         super(settings);
     }

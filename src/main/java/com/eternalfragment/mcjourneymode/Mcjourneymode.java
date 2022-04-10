@@ -41,6 +41,7 @@ public class Mcjourneymode implements ModInitializer {
     public static final String modPlayerDir = "mcjourneymode\\players\\";
     public static Identifier pay_packet=null;
     public static Identifier give_packet=null;
+    public static Identifier give_packet_single=null;
     public static Identifier sp_dir_packet=null;
     public static Identifier menu_populate=null;
     public static Identifier menu_populate_perms=null;
@@ -59,6 +60,7 @@ public class Mcjourneymode implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier(Mcjourneymode.MOD_ID, "menu_item"), GUI_ITEM);
         type = FabricLoader.getInstance().getEnvironmentType();
         give_packet =  give_packet.tryParse("mjm:process_give");
+        give_packet_single=give_packet_single.tryParse("mjm:process_give_single");
         pay_packet = pay_packet.tryParse("mjm:process_pay");
         sp_dir_packet = sp_dir_packet.tryParse("mjm:sp_directory_find");
         menu_populate = menu_populate.tryParse("mjm:menu_populate");
@@ -139,7 +141,6 @@ public class Mcjourneymode implements ModInitializer {
 
             if (player.hasPermissionLevel(permLevel)){
             String itemGet=buf.readString();
-                System.out.println("Single pack recd: "+itemGet);
             Object[] ob = Config.configMap.get(itemGet);
             if (ob!=null) {
                 HashMap<String, Object[]> sendMap = new HashMap<>();
@@ -147,7 +148,6 @@ public class Mcjourneymode implements ModInitializer {
                 HashMap<String, String> transmitData = Config.configOtoS(sendMap);
                 PacketByteBuf data = PacketByteBufs.create();
                 data.writeMap(transmitData, PacketByteBuf::writeString, PacketByteBuf::writeString);
-                System.out.println("Data here, and sent");
                 ServerPlayNetworking.send(player, send_single_config_packet, data);
                 }else{System.out.println("OB NULL");}
             }
@@ -176,7 +176,13 @@ public class Mcjourneymode implements ModInitializer {
             int doInt=buf.readInt();
             ServerPlayerEntity doPlayer = handler.getPlayer();
             //SERVER -- Register give-item packet listener
-            invManager.inv_giveItem(doPlayer,doInt);
+            invManager.inv_giveItem(doPlayer,doInt,true);
+        });
+        ServerPlayNetworking.registerGlobalReceiver(give_packet_single, (server, player, handler, buf, pktSnd) -> {
+            int doInt=buf.readInt();
+            ServerPlayerEntity doPlayer = handler.getPlayer();
+            //SERVER -- Register give-item packet listener
+            invManager.inv_giveItem(doPlayer,doInt,false);
         });
         ServerPlayNetworking.registerGlobalReceiver(pay_packet, (server, player, handler, buf, pktSnd) -> {
             //SERVER -- Register pay-item packet listener
@@ -231,6 +237,7 @@ public class Mcjourneymode implements ModInitializer {
                 }
             }, 100);
         });
+
         mylogger.atInfo().log("Mod Initialized");
 
     }
