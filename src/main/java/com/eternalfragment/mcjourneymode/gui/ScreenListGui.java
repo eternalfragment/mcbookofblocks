@@ -312,7 +312,7 @@ public class ScreenListGui extends LightweightGuiDescription{
 
                                         jmItem[it].setOnClick(() -> {
                                             mc.execute(() -> {
-                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",false,String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()),passThis));
+                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()),passThis));
                                                 MinecraftClient.getInstance().setScreen(daScreen);
                                             });
 
@@ -343,7 +343,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         };
                                         jmItem[it].setOnClick(() -> {
                                             mc.execute(() -> {
-                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",false,String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()),passThis));
+                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()),passThis));
                                                 MinecraftClient.getInstance().setScreen(daScreen);
                                             });
 
@@ -375,7 +375,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         };
                                         jmItem[it].setOnClick(() -> {
                                             mc.execute(() -> {
-                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",false,String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()),passThis));
+                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()),passThis));
                                                 MinecraftClient.getInstance().setScreen(daScreen);
                                             });
 
