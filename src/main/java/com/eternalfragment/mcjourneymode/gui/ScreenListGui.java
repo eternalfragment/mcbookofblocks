@@ -18,6 +18,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -25,11 +26,84 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.function.Consumer;
-@Environment(EnvType.CLIENT)
 
+
+
+class ObjectStats{
+    private int ItemID;
+    private int Researchable;
+    private int Req_Amt;
+    private int Give_Amt;
+    private int Paid_Amt;
+    private int Unlocked;
+    private int Category;
+    private String Group;
+
+    //playerConfigMap: ['ItemName'][0-ITEM ID, 1-researchable,2-req_amt,3-give_amt, 4-paid_amt, 5-unocked];
+    //[ID]-
+    //[0]-ItemID
+    //[1]-Researchable
+    //[2]-req_amt
+    //[3]-give_amt
+    //[4]-paid_amt
+    //[5]-unlocked
+    //[6]-Category: 1-unlocked, 2-potential, 3-progress, 4-other
+    //[7]-Group (string from MC index)
+
+    public void setValues(int id,int res,int req,int giv,int pd,int ul,int ca,String gr){
+        ItemID=id;
+        Researchable=res;
+        Req_Amt=req;
+        Give_Amt=giv;
+        Paid_Amt=pd;
+        Unlocked=ul;
+        Group=gr;
+        Category=ca;}
+    public int getItemID(){return ItemID;}
+    public int getResearchable(){return Researchable;}
+    public int getReq_Amt(){return Req_Amt;}
+    public int getPaid_Amt(){return Paid_Amt;}
+    public int getGive_Amt(){return Give_Amt;}
+    public int getUnlocked(){return Unlocked;}
+    public int getCategory(){return Category;}
+    public String getGroup(){return Group;}
+}
+
+@Environment(EnvType.CLIENT)
 public class ScreenListGui extends LightweightGuiDescription{
+
+    // Function to sort by column
+    public static void sortbyCategory(Object arr[][])
+    {
+        // Using built-in sort function Arrays.sort
+        Arrays.sort(arr, new Comparator<Object[]>() {
+
+            @Override
+            // Compare values according to columns
+            public int compare(final Object[] entry1,
+                               final Object[] entry2) {
+
+                // To sort in descending order revert
+                // the '>' Operator
+                //System.out.println(entry1[7]);
+                //System.out.println(Arrays.toString(entry1));
+                if (entry1[7]!=null) {
+                    String ob1 = (String) entry1[7];
+                    String ob2 = (String) entry2[7];
+                    if (ob1.charAt(1) > ob2.charAt(1))
+                        return 1;
+                    else
+                        return -1;
+                }
+                return 0;
+            }
+        });  // End of function call sort().
+    }
+
     public ScreenListGui(HashMap<String, Object[]> data, String searchDefault,boolean perms) {
         EnvType type = FabricLoader.getInstance().getEnvironmentType();
         if (type.toString() == "CLIENT") {
@@ -100,6 +174,19 @@ public class ScreenListGui extends LightweightGuiDescription{
                         int prd = 0;
                         int ttd = 0;
                         int ad = 0;
+
+                        int cd=0;
+                        ObjectStats[] allObjects= new ObjectStats[numItems];
+                        //[ID]-
+                        //[0]-ItemID
+                        //[1]-Researchable
+                        //[2]-req_amt
+                        //[3]-give_amt
+                        //[4]-paid_amt
+                        //[5]-unlocked
+                        //[6]-Grouping: 1-unlocked, 2-potential, 3-progress, 4-other
+                        //[7]-Category (string from MC index)
+
                         for (String name : playerUnlockMap.keySet()) {
                             Object[] itemData = playerUnlockMap.get(name);
                             //if the data has been transmitted with an injected 'not researchable' for any reason, abort
@@ -107,26 +194,38 @@ public class ScreenListGui extends LightweightGuiDescription{
                                 //0-ID, 1-Unlockable, 2-Req amt, 3-Give amt, 4-Player Unlocked, 5-Paid Amt, 6-Research Percentage
                                 //TODO: Add an int tracker that reports the % done of an objective, and add to the progress if its in progress
                                 //ScoreboardObjective thisObjective = player.getScoreboard().getObjective((String) itemConfig[4]);
+                                //Copy the item data to master list
+                               // System.out.println("Data: "+itemData[0]+" | "+itemData[1]+" | "+itemData[2]+" | "+itemData[3]+" | "+itemData[4]+" | "+itemData[5]+" | ");
+                                allObjects[cd]=new ObjectStats();
+
+                                ItemGroup grp = (Registry.ITEM.get((int) itemData[0]).asItem().getGroup());
+                                String categoryName= "Misc";
+                                if (grp!=null){
+                                    categoryName = grp.getName();
+                                }
+                                int catVal=0;
                                 //if the item is unlocked, add to unlocked array
                                 if ((int) itemData[4] == 1) {
-                                    unlockedData[ud] = itemData;
+                                    catVal=1;
                                     ud++;
                                     ttd++;
                                 } else if ((player.getInventory().count(Registry.ITEM.get((int) itemData[0]).asItem()) > 0) && (((int) itemData[1] == 1) || ((int) itemData[1] == 3) || ((int) itemData[1] == 4))) {
                                     //if the player has the item in their inventory, and the item is required in the research status
-                                    potentialData[pd] = itemData;
+                                    catVal=2;
                                     pd++;
                                     ttd++;
                                 } else if (((int) itemData[5] > 0) || ((int) itemData[6] > 0)) {
                                     //if player has started the process of unlocking add to list
-                                    progressData[prd] = itemData;
+                                    catVal=3;
                                     prd++;
                                     ttd++;
                                 } else {
-                                    ALLData[ad] = itemData;
+                                    catVal=4;
                                     ad++;
                                     ttd++;
                                 }
+                                allObjects[cd].setValues((int)itemData[0],(int)itemData[1],(int)itemData[2],(int)itemData[3],(int)itemData[4],(int)itemData[5],catVal,categoryName);
+                            cd++;
                             }
                         }
                         int _pd = 0;
@@ -134,12 +233,6 @@ public class ScreenListGui extends LightweightGuiDescription{
                         int _ud = 0;
                         int _ad = 0;
                         int numToGen = ttd;
-                       /* if ((!filter.equals(""))) {
-                            //if the filter is 'on' load through all the entires
-                            numToGen = ttd;
-                        } else {
-                            numToGen = pd + prd + ud + ad;
-                        }*/
 
                         //Take the number of loaded for each type, and set the size of the main container
                         int uPanelRows = 1;
@@ -177,61 +270,30 @@ public class ScreenListGui extends LightweightGuiDescription{
 
                         }
 
-
-                        WLabel testLbl = new WLabel("Max Row: " + panelMaxW + "; U Rows: " + uPanelRows);
-
-
                         int panelVOffset = 1;
                         Insets itemInset = new Insets(2, 2);
-
-
                         int uDisplayed = 0;
                         int pDisplayed = 0;
                         int prDisplayed = 0;
                         int aDisplayed = 0;
+                        Arrays.sort(allObjects,Comparator.comparing(ObjectStats::getItemID).thenComparing(ObjectStats::getGroup));
                         for (int ccd = 0; ccd < numToGen; ccd++) {
                             Object[] itemData = new Object[6];
                             int itemType = 0;//1-unlocked, 2-potential, 3-progress, 4-random
-                            boolean ranItem = true;
-                            if (_ud < ud) {
-                                //if the number of generated unlockables is less than the number of available
-                                ranItem = false;
-                                itemData = unlockedData[_ud];
-                                itemType = 1;
-                                _ud++;
-                            } else if (_pd < pd) {
-                                ranItem = false;
-                                itemData = potentialData[_pd];
-                                itemType = 2;
-                                _pd++;
-                            } else if (_prd < prd) {
-                                ranItem = false;
-                                itemData = progressData[_prd];
-                                itemType = 3;
-                                _prd++;
-                            }
-                            if ((ccd >= (ud + prd + pd)) || ((ud + prd + pd) == 0)) {
-                                //if the counter is beyond the 3 sorts, or the 3 sorts are empty, set the data to all the data (used for text-search)
-                                ranItem = false;
-                                itemData = ALLData[_ad];
-                                itemType = 4;
-                                _ad++;
-                            }
-                            boolean showItem = false;
-                            String name = "" + Registry.ITEM.get((int) itemData[0]).asItem().getName();
 
-                            if (!ranItem) {
-                                //if its not a random item, show it by default
-                                showItem = true;
-                            }
-                            if ((int) itemData[0] == 0) {
+                            ObjectStats thisObject = allObjects[ccd];
+                            itemType=thisObject.getCategory();
+                            boolean showItem = true;
+                            String name = "" + Registry.ITEM.get(thisObject.getItemID()).asItem().getName();
+
+                            if (thisObject.getItemID() == 0) {
                                 showItem = false;
                             }
-                            if ((int) itemData[1] == 0) {
+                            if (thisObject.getResearchable() == 0) {
                                 showItem = false;
                             }
 
-                            String itemName = String.valueOf(Registry.ITEM.get((int) itemData[0]).asItem());
+                            String itemName = String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem());
                             itemName = itemName.replaceAll("_", " ").toLowerCase();
                             itemName = WordUtils.capitalizeFully(itemName);
 
@@ -243,7 +305,7 @@ public class ScreenListGui extends LightweightGuiDescription{
 
                             if (showItem) {
                                 generatedItems++;
-                                int itemCount = player.getInventory().count(Registry.ITEM.get((int) itemData[0]).asItem());
+                                int itemCount = player.getInventory().count(Registry.ITEM.get(thisObject.getItemID()).asItem());
                                 jmItemSlot[it] = new WGridPanel();
                                 jmItemSlot[it].setBackgroundPainter(contents);
                                 jmItemSlot[it].setInsets(itemInset);
@@ -252,28 +314,29 @@ public class ScreenListGui extends LightweightGuiDescription{
                                 int col = 0;
 
                                 String finalItemName = itemName;
-                                Object[] finalItemData = itemData;
-                                String finalFilterTxt = FilterTxt;
+                                //Object[] finalItemData = itemData;
+                                //String finalFilterTxt = FilterTxt;
                                 switch (itemType) {
                                     case 1:
                                         //Unlocked panel
 
-                                        jmItem[it] = new WJMItem(Registry.ITEM.get((int) finalItemData[0]).asItem().getDefaultStack()) {
+                                        jmItem[it] = new WJMItem(Registry.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
                                             @Environment(EnvType.CLIENT)
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
                                                 tooltip.add(Text.of(finalItemName));
-                                                tooltip.add(Text.of("Click to give | Shift+Click for Stack"));
+                                                tooltip.add(Text.of("Click to give | Shift+Click for "+thisObject.getGive_Amt()));
+                                                tooltip.add(Text.of("Middle click to clear from inventory"));
                                             }
                                         };
                                         jmItem[it].setOnClick(() -> {
                                             if (Screen.hasShiftDown()) {
-                                                int itemID = Integer.parseInt(finalItemData[0].toString());
+                                                int itemID = thisObject.getItemID();
                                                 PacketByteBuf data = PacketByteBufs.create();
                                                 data.writeInt(itemID);
                                                 ClientPlayNetworking.send(Mcjourneymode.give_packet, data);
                                             } else {
-                                                int itemID = Integer.parseInt(finalItemData[0].toString());
+                                                int itemID = thisObject.getItemID();
                                                 PacketByteBuf data = PacketByteBufs.create();
                                                 data.writeInt(itemID);
                                                 ClientPlayNetworking.send(Mcjourneymode.give_packet_single, data);
@@ -282,12 +345,12 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         jmItem[it].setOnRightClick(() -> {
                                             if (perms) {
                                                 PacketByteBuf clickData = PacketByteBufs.create();
-                                                clickData.writeString(String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()));
+                                                clickData.writeString(String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()));
                                                 ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
                                             }
                                         });
                                         jmItem[it].setOnMiddleClick(()->{
-                                            int itemID = Integer.parseInt(finalItemData[0].toString());
+                                            int itemID = thisObject.getItemID();
                                             PacketByteBuf data = PacketByteBufs.create();
                                             data.writeInt(itemID);
                                             ClientPlayNetworking.send(Mcjourneymode.clear_packet, data);
@@ -301,18 +364,18 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         break;
                                     case 2:
                                         //Potential panel
-                                        jmItem[it] = new WJMItem(Registry.ITEM.get((int) finalItemData[0]).asItem().getDefaultStack()) {
+                                        jmItem[it] = new WJMItem(Registry.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
                                             @Environment(EnvType.CLIENT)
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
                                                 tooltip.add(Text.of(finalItemName));
-                                                tooltip.add(Text.of(finalItemData[5] + "/" + finalItemData[2]));
+                                                tooltip.add(Text.of(thisObject.getPaid_Amt() + "/" + thisObject.getReq_Amt()));
                                             }
                                         };
 
                                         jmItem[it].setOnClick(() -> {
                                             mc.execute(() -> {
-                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()),passThis));
+                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()),passThis));
                                                 MinecraftClient.getInstance().setScreen(daScreen);
                                             });
 
@@ -320,7 +383,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         jmItem[it].setOnRightClick(() -> {
                                             if (perms) {
                                                 PacketByteBuf clickData = PacketByteBufs.create();
-                                                clickData.writeString(String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()));
+                                                clickData.writeString(String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()));
                                                 ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
                                             }
                                         });
@@ -333,17 +396,17 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         break;
                                     case 3:
                                         //Progress panel
-                                        jmItem[it] = new WJMItem(Registry.ITEM.get((int) finalItemData[0]).asItem().getDefaultStack()) {
+                                        jmItem[it] = new WJMItem(Registry.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
                                             @Environment(EnvType.CLIENT)
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
                                                 tooltip.add(Text.of(finalItemName));
-                                                tooltip.add(Text.of(finalItemData[5] + "/" + finalItemData[2]));
+                                                tooltip.add(Text.of(thisObject.getPaid_Amt() + "/" + thisObject.getReq_Amt()));
                                             }
                                         };
                                         jmItem[it].setOnClick(() -> {
                                             mc.execute(() -> {
-                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()),passThis));
+                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()),passThis));
                                                 MinecraftClient.getInstance().setScreen(daScreen);
                                             });
 
@@ -351,7 +414,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         jmItem[it].setOnRightClick(() -> {
                                             if (perms) {
                                                 PacketByteBuf clickData = PacketByteBufs.create();
-                                                clickData.writeString(String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()));
+                                                clickData.writeString(String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()));
                                                 ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
                                             }
                                         });
@@ -365,17 +428,17 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         break;
                                     case 4:
                                         //All panel
-                                        jmItem[it] = new WJMItem(Registry.ITEM.get((int) finalItemData[0]).asItem().getDefaultStack()) {
+                                        jmItem[it] = new WJMItem(Registry.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
                                             @Environment(EnvType.CLIENT)
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
                                                 tooltip.add(Text.of(finalItemName));
-                                                tooltip.add(Text.of(finalItemData[5] + "/" + finalItemData[2]));
+                                                tooltip.add(Text.of(thisObject.getPaid_Amt() + "/" + thisObject.getReq_Amt()));
                                             }
                                         };
                                         jmItem[it].setOnClick(() -> {
                                             mc.execute(() -> {
-                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()),passThis));
+                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()),passThis));
                                                 MinecraftClient.getInstance().setScreen(daScreen);
                                             });
 
@@ -383,7 +446,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         jmItem[it].setOnRightClick(() -> {
                                             if (perms) {
                                                 PacketByteBuf clickData = PacketByteBufs.create();
-                                                clickData.writeString(String.valueOf(Registry.ITEM.get((int) finalItemData[0]).asItem()));
+                                                clickData.writeString(String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()));
                                                 ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
                                             }
                                         });
@@ -492,3 +555,5 @@ public class ScreenListGui extends LightweightGuiDescription{
     }
     }
 }
+
+
