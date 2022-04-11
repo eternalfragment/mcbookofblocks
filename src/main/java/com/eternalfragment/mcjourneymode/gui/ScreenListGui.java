@@ -224,7 +224,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                     ad++;
                                     ttd++;
                                 }
-                                allObjects[cd].setValues((int)itemData[0],(int)itemData[1],(int)itemData[2],(int)itemData[3],(int)itemData[4],(int)itemData[5],catVal,categoryName);
+                                allObjects[cd].setValues((int)itemData[0],(int)itemData[1],(int)itemData[2],(int)itemData[3],(int)itemData[5],(int)itemData[4],catVal,categoryName);
                             cd++;
                             }
                         }
@@ -465,7 +465,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                         }
                         int finalPanelMaxW = panelMaxW;
 
-                        panelUnlocked.setBackgroundPainter(contents);
+                        //panelUnlocked.setBackgroundPainter(contents);
                         WLabel uLbl = new WLabel("Unlocked Items");
                         uLbl.setVerticalAlignment(VerticalAlignment.BOTTOM);
                         int uRowstoShow = Math.max((int) Math.ceil(uDisplayed / (panelMaxW - 1)), 1);
@@ -473,7 +473,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                         myTallPanel.add(panelUnlocked, 1, panelVOffset, finalPanelMaxW, uRowstoShow);
                         int uSize = Math.max(ud / finalPanelMaxW + ((ud % finalPanelMaxW == 0) ? 0 : 1), 1);
 
-                        panelPotential.setBackgroundPainter(contents);
+                        //panelPotential.setBackgroundPainter(contents);
                         WLabel pLbl = new WLabel("In Inventory");
                         pLbl.setVerticalAlignment(VerticalAlignment.BOTTOM);
                         int pRowstoShow = Math.max((int) Math.ceil(pDisplayed / (panelMaxW - 1)), 1);
@@ -482,7 +482,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                         int pSize = Math.max(pd / finalPanelMaxW + ((pd % finalPanelMaxW == 0) ? 0 : 1), 1);
 
 
-                        panelProgress.setBackgroundPainter(contents);
+                        //panelProgress.setBackgroundPainter(contents);
                         WLabel prLbl = new WLabel("In Progress");
                         prLbl.setVerticalAlignment(VerticalAlignment.BOTTOM);
                         int prRowstoShow = Math.max((int) Math.ceil(prDisplayed / (panelMaxW - 1)), 1);
@@ -490,7 +490,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                         myTallPanel.add(panelProgress, 1, panelVOffset + uSize + pSize + 2, finalPanelMaxW, prRowstoShow);
                         int prSize = Math.max(prd / finalPanelMaxW + ((prd % finalPanelMaxW == 0) ? 0 : 1), 1);
 
-                        panelAll.setBackgroundPainter(contents);
+                        //panelAll.setBackgroundPainter(contents);
                         WLabel aLbl = new WLabel("Other");
                         aLbl.setVerticalAlignment(VerticalAlignment.BOTTOM);
                         int aRowstoShow = Math.max((int) Math.ceil(aDisplayed / (panelMaxW - 1)), 1);
