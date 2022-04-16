@@ -15,17 +15,17 @@ public class CommandFunctions {
                 boolean bl = serverPlayerEntity.getInventory().insertStack(Mcjourneymode.GUI_ITEM.asItem().getDefaultStack());
                 if ((bl) && (emptySlot != -1)) {
                     if (serverPlayerEntity != cmdOriginator) {
-                        cmdOriginator.sendMessage(Text.of(new TranslatableText("mjm.msg.mjmitem.gavePlayer").toString() +" \"" + serverPlayerEntity.getDisplayName().asString() + "\" "+new TranslatableText("mjm.msg.mjmitem.jmItem").toString()), false);
+                        cmdOriginator.sendMessage(Text.of(new TranslatableText("mjm.msg.mjmitem.gavePlayer").getString() +" \"" + serverPlayerEntity.getDisplayName().asString() + "\" "+new TranslatableText("mjm.msg.mjmitem.jmItem").getString()), false);
                     }
-                    serverPlayerEntity.sendMessage(Text.of(new TranslatableText("mjm.msg.mjmitem.youGiven").toString()), false);
+                    serverPlayerEntity.sendMessage(Text.of(new TranslatableText("mjm.msg.mjmitem.youGiven").getString()), false);
                 } else {
                     if (serverPlayerEntity != cmdOriginator) {
-                        cmdOriginator.sendMessage(Text.of(new TranslatableText("mjm.msg.mjmitem.Player").toString()+" \"" + serverPlayerEntity.getDisplayName().asString() + "\" "+new TranslatableText("mjm.msg.mjmitem.invFull").toString()), false);
+                        cmdOriginator.sendMessage(Text.of(new TranslatableText("mjm.msg.mjmitem.Player").getString()+" \"" + serverPlayerEntity.getDisplayName().asString() + "\" "+new TranslatableText("mjm.msg.mjmitem.invFull").getString()), false);
                     }
-                    serverPlayerEntity.sendMessage(Text.of(new TranslatableText("mjm.msg.mjmitem.invFullNotice").toString()), false);
+                    serverPlayerEntity.sendMessage(Text.of(new TranslatableText("mjm.msg.mjmitem.invFullNotice").getString()), false);
                 }
             } else {
-                cmdOriginator.sendMessage(Text.of(new TranslatableText("mjm.msg.mjmitem.Player").toString()+" \"" + serverPlayerEntity.getDisplayName().asString() + "\" "+new TranslatableText("mjm.msg.mjmitem.already").toString()), false);
+                cmdOriginator.sendMessage(Text.of(new TranslatableText("mjm.msg.mjmitem.Player").getString()+" \"" + serverPlayerEntity.getDisplayName().asString() + "\" "+new TranslatableText("mjm.msg.mjmitem.already").getString()), false);
             }
         }
     }

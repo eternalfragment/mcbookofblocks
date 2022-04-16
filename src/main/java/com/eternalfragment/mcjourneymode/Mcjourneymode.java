@@ -166,7 +166,7 @@ public class Mcjourneymode implements ModInitializer {
                 String itemName = String.valueOf(Registry.ITEM.get(itemID).asItem());
                 itemName = itemName.replaceAll("_", " ").toLowerCase();
                 itemName = WordUtils.capitalizeFully(itemName);
-                player.sendMessage(Text.of(new TranslatableText("mjm.msg.cleared").toString()+" "+cleared+" "+itemName+new TranslatableText("mjm.msg.fromInventory").toString()), false);
+                player.sendMessage(Text.of(new TranslatableText("mjm.msg.cleared").getString()+" "+cleared+" "+itemName+new TranslatableText("mjm.msg.fromInventory").getString()), false);
         });
 
         ServerPlayNetworking.registerGlobalReceiver(get_config_packet,  (server, player, handler, buf, pktSnd) -> {

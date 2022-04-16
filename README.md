@@ -63,6 +63,7 @@ Players can also craft the MJM Menu Item with 4 paper, 4 ender pearls, and 1 dia
 
 Right click while holding the JourneyMode Menu Item, and it will open the menu. The menu will load 4 categories for the items: Unlocked, In inventory, In progress, and Other.
 
+<img src="https://github.com/eternalfragment/mcjourneymode/blob/master/src/main/resources/imgs/mjm_gui.png">
 
 "Unlocked" has items that are unlocked and available to summon. If you Left Click, it will give you 1 of the item. If you Shift+Left Click, you will be given the 'give amount' set in the config for that item. These items may have a yellow icon at the top right if you have them in your inventory. Clicking with the middle mouse button (scroll wheel) will clear your inventory of that item if its unlocked.
 

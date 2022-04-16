@@ -338,7 +338,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
                                                 tooltip.add(Text.of(finalItemName));
-                                                tooltip.add(Text.of(new TranslatableText("mjm.gui.tooltip.lcgive")+" | "+new TranslatableText("mjm.gui.tooltip.lcsgive")+" "+thisObject.getGive_Amt()));
+                                                tooltip.add(Text.of(new TranslatableText("mjm.gui.tooltip.lcgive").getString()+" | "+new TranslatableText("mjm.gui.tooltip.lcsgive").getString()+" "+thisObject.getGive_Amt()));
                                                 tooltip.add(new TranslatableText("mjm.gui.tooltip.mcclear"));
                                             }
                                         };
