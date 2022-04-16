@@ -25,12 +25,13 @@ Default values are provided, but you can add your own preferences via the config
 
 Place the mod jar in the mods folder for either server or client. Default configuration will generate.
 
-The default config that generates includes about 150 items and basic building materials, and some examples of various configuration options. 
-By default, the menu_item (what brings up the JourneyMode Screen) is free.
+The default config that generates includes about 150 items and basic building materials, and some examples of various configuration options.
 
 ## Config
 With the JourneyMode screen up, those with permissions (perm lvl 4 required / OP), will see a gear in the top right of the JourneyMode screen.
 Clicking on this button will show the config settings for the mod. Within these settings you can add new items to the options, as well as edit existing items.
+
+You can also right-click any item within the JourneyMode item screen to open the options for a single item.
 
 Each item has 4 methods for unlocking. 
 
@@ -48,7 +49,7 @@ Saving the config will instantly adjust those options in-game, and save it to th
 An example for adding a scoreboard objective. In game, do the command "/scoreboard objectives add Zombie_Kill_Tracker minecraft.killed:minecraft.zombie
 ". This will create a scoreboard objective called 'Zombie_Kill_Tracker', which will track each time players kill zombies. You would enter 'Zombie_Kill_Tracker' into the scoreboard name, and set the goal to be whatever you wanted.
 
---NOTE: A player will unlock an item when the criteria is met, and they open the JourneyMode menu. Changing the goals to unlock the item will not remove the unlock from players who already unlocked it.
+--NOTE: A player will unlock an item when the criteria is met, and they open the JourneyMode menu. Changing the goals to unlock the item may not remove the unlock from players who already unlocked it.
 
 ## Usage
 
@@ -60,13 +61,20 @@ Players can also craft the MJM Menu Item with 4 paper, 4 ender pearls, and 1 dia
 
 <img src="https://github.com/eternalfragment/mcjourneymode/blob/master/src/main/resources/imgs/mjm_recipe.png">
 
-Right click while holding the JourneyMode Menu Item, and it will open the menu. By default, you will see the Menu Item as the only unlocked item.
-If your inventory is empty, you will not see anything else.
-The menu will First show unlocked items. Then items that you have started to unlock (both paid and scoreboard progress). The last thing it will show is items that can be unlocked, and you have in your inventory.
+Right click while holding the JourneyMode Menu Item, and it will open the menu. The menu will load 4 categories for the items: Unlocked, In inventory, In progress, and Other.
 
-You can use the search bar to search for specific items, and if they are able to be unlocked, they will show in the menu.
 
-Once a player completes the requirements to unlock the item, it will be unlocked ONLY when they open the MJM Menu.
+"Unlocked" has items that are unlocked and available to summon. If you Left Click, it will give you 1 of the item. If you Shift+Left Click, you will be given the 'give amount' set in the config for that item. These items may have a yellow icon at the top right if you have them in your inventory. Clicking with the middle mouse button (scroll wheel) will clear your inventory of that item if its unlocked.
+
+"In Inventory" has items that are not unlocked, but are currently in your inventory. If you left click, it will open a screen showing the unlock progress for the item.
+
+"In progress" has items that are not unlocked, and not in your inventory, but have the unlocking process started. 
+
+"Other" has all other items included in the config.
+
+You can use the search bar to search for specific items. The displayed items will be filtered by the text provided.
+
+Once a player completes the requirements to unlock the item, it will be unlocked when they open the MJM Menu.
 
 ## Extras
 There is a small datapack that provides a slight glow to the JourneyMode item when you are holding it, when used in conjunction with optifine. You can find it [here](https://github.com/eternalfragment/mcjourneymode/blob/master/mjm_resource_pack.zip).

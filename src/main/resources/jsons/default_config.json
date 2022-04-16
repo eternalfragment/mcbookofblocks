@@ -1,1194 +1,1351 @@
 {
-  "Comments":[
-    {
-      "_c1": "Name: non-case-sensitive name of the block recognized in-game.",
-      "_c2": "# Researchable: [0-Not Researchable, 1-Pay req_amt to unlock, 2-Meet scoreboard objective (scb_amt), 3-Requires both Pay and Scoreboard to unlock, 4-Either Pay or Scoreboard to unlock",
-      "_c3": "# req_amt: Required amt the player must pay to unlock the item via pay.",
-      "_c4": "# give_amt: Amount the player will receive per click after unlocking",
-      "_c5": "# scb_obj: Name of the scoreboard objective to use for unlocking the item",
-      "_c6": "# scb_amt: Score needed on the scoreboard objective for the item to be unlocked",
-      "_c7": "#If there are errors with the config, it will be logged in server logs/console."
-    }
-  ],
   "Items": [
     {
-      "Name": "menu_item",
+      "Name": "light_blue_dye",
       "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "purple_dye",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "oak_sapling",
+      "Researchable": 1,
+      "req_amt": 32,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "soul_sand",
+      "Researchable": 1,
+      "req_amt": 128,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "horn_coral_block",
+      "Researchable": 1,
+      "req_amt": 16,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "tube_coral_block",
+      "Researchable": 1,
+      "req_amt": 16,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "mossy_cobblestone",
+      "Researchable": 1,
+      "req_amt": 64,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "green_dye",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "horn_coral",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "brain_coral_block",
+      "Researchable": 1,
+      "req_amt": 16,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "white_concrete_powder",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "prismarine_bricks",
+      "Researchable": 1,
+      "req_amt": 32,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "white_tulip",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "azure_bluet",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "slime_ball",
+      "Researchable": 1,
+      "req_amt": 384,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "podzol",
+      "Researchable": 1,
+      "req_amt": 1,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "cobbled_deepslate",
+      "Researchable": 1,
+      "req_amt": 320,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "stick",
+      "Researchable": 1,
+      "req_amt": 512,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "andesite",
+      "Researchable": 1,
+      "req_amt": 128,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "acacia_leaves",
+      "Researchable": 1,
+      "req_amt": 256,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "fire_coral_block",
+      "Researchable": 1,
+      "req_amt": 16,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "warped_nylium",
+      "Researchable": 1,
+      "req_amt": 1,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "diorite",
+      "Researchable": 1,
+      "req_amt": 128,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "orange_tulip",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "deepslate",
+      "Researchable": 1,
+      "req_amt": 128,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "dark_oak_sapling",
+      "Researchable": 1,
+      "req_amt": 32,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "cobweb",
+      "Researchable": 1,
+      "req_amt": 256,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "purple_concrete",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "dark_oak_planks",
+      "Researchable": 1,
+      "req_amt": 256,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "tube_coral_fan",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "allium",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "grass_block",
+      "Researchable": 1,
+      "req_amt": 1,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "magenta_dye",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "nether_brick",
+      "Researchable": 1,
+      "req_amt": 432,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "jungle_leaves",
+      "Researchable": 1,
+      "req_amt": 256,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "leather",
+      "Researchable": 1,
+      "req_amt": 128,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "light_blue_concrete",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "lime_dye",
+      "Researchable": 1,
+      "req_amt": 8,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "cracked_nether_bricks",
+      "Researchable": 1,
+      "req_amt": 64,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "gravel",
+      "Researchable": 1,
+      "req_amt": 128,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "waxed_oxidized_copper",
+      "Researchable": 1,
+      "req_amt": 32,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "villager_spawn_egg",
+      "Researchable": 2,
       "req_amt": 0,
+      "give_amt": 12,
+      "scb_obj": "mjmVillagerKill",
+      "scb_amt": 20
+    },
+    {
+      "Name": "acacia_log",
+      "Researchable": 1,
+      "req_amt": 320,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "dripstone_block",
+      "Researchable": 1,
+      "req_amt": 32,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "tuff",
+      "Researchable": 1,
+      "req_amt": 128,
+      "give_amt": 64,
+      "scb_obj": "",
+      "scb_amt": 0
+    },
+    {
+      "Name": "zombie_spawn_egg",
+      "Researchable": 2,
+      "req_amt": 512,
       "give_amt": 1,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "STONE",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "GRANITE",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "DIORITE",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "ANDESITE",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "DEEPSLATE",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "COBBLED_DEEPSLATE",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "CALCITE",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "TUFF",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "DRIPSTONE_BLOCK",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "GRASS_BLOCK",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "DIRT",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "COARSE_DIRT",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "PODZOL",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "ROOTED_DIRT",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "CRIMSON_NYLIUM",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "COBBLESTONE",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "OAK_PLANKS",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "SPRUCE_PLANKS",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "BIRCH_PLANKS",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "JUNGLE_PLANKS",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "ACACIA_PLANKS",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "DARK_OAK_PLANKS",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "CRIMSON_PLANKS",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
-    },
-    {
-      "Name": "WARPED_PLANKS",
-      "Researchable": 1,
-      "req_amt": 512,
-      "give_amt": 64,
-      "scb_obj": "",
-      "scb_amt": 0
+      "scb_obj": "mjmZombieKill",
+      "scb_amt": 30
     },
     {
-      "Name": "OAK_SAPLING",
+      "Name": "peony",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SPRUCE_SAPLING",
+      "Name": "white_dye",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BIRCH_SAPLING",
+      "Name": "gray_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "JUNGLE_SAPLING",
+      "Name": "oxeye_daisy",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "ACACIA_SAPLING",
+      "Name": "redstone",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 576,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "DARK_OAK_SAPLING",
+      "Name": "dark_oak_log",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 320,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SAND",
+      "Name": "red_sand",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "GRAVEL",
+      "Name": "rooted_dirt",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 1,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "AMETHYST_BLOCK",
+      "Name": "poppy",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "OAK_LOG",
+      "Name": "light_gray_dye",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SPRUCE_LOG",
+      "Name": "crimson_nylium",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 1,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BIRCH_LOG",
+      "Name": "azalea_leaves",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "JUNGLE_LOG",
+      "Name": "clay",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 16,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "ACACIA_LOG",
+      "Name": "red_dye",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "DARK_OAK_LOG",
+      "Name": "iron_ingot",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 576,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "OAK_WOOD",
+      "Name": "brown_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SPRUCE_WOOD",
+      "Name": "cactus",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BIRCH_WOOD",
+      "Name": "nether_bricks",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "JUNGLE_WOOD",
+      "Name": "black_dye",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "ACACIA_WOOD",
+      "Name": "green_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "DARK_OAK_WOOD",
+      "Name": "spruce_log",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 320,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "OAK_LEAVES",
+      "Name": "white_wool",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 128,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SPRUCE_LEAVES",
+      "Name": "green_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BIRCH_LEAVES",
+      "Name": "kelp",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 128,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "JUNGLE_LEAVES",
+      "Name": "acacia_planks",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "ACACIA_LEAVES",
+      "Name": "sunflower",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "DARK_OAK_LEAVES",
+      "Name": "brown_dye",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "AZALEA_LEAVES",
+      "Name": "yellow_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "FLOWERING_AZALEA_LEAVES",
+      "Name": "amethyst_shard",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SPONGE",
+      "Name": "purple_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "GLASS",
+      "Name": "cornflower",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "TINTED_GLASS",
+      "Name": "spruce_leaves",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SANDSTONE",
+      "Name": "smooth_stone",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 144,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "COBWEB",
+      "Name": "red_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SEAGRASS",
+      "Name": "light_gray_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SEA_PICKLE",
+      "Name": "spruce_sapling",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 32,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "WHITE_WOOL",
+      "Name": "prismarine",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "DANDELION",
+      "Name": "waxed_exposed_copper",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 32,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "POPPY",
+      "Name": "cyan_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BLUE_ORCHID",
+      "Name": "horn_coral_fan",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "ALLIUM",
+      "Name": "lime_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "AZURE_BLUET",
+      "Name": "calcite",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "RED_TULIP",
+      "Name": "pink_tulip",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "ORANGE_TULIP",
+      "Name": "black_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "WHITE_TULIP",
+      "Name": "blue_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "PINK_TULIP",
+      "Name": "light_blue_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "OXEYE_DAISY",
+      "Name": "dandelion",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "CORNFLOWER",
+      "Name": "pink_dye",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "LILY_OF_THE_VALLEY",
+      "Name": "brain_coral",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BROWN_MUSHROOM",
+      "Name": "magenta_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "RED_MUSHROOM",
+      "Name": "rose_bush",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "CRIMSON_FUNGUS",
+      "Name": "spruce_planks",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "WARPED_FUNGUS",
+      "Name": "yellow_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SUGAR_CANE",
+      "Name": "cracked_deepslate_bricks",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "KELP",
+      "Name": "vine",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "MOSS_CARPET",
+      "Name": "oak_leaves",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "MOSS_BLOCK",
+      "Name": "sea_pickle",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 32,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BAMBOO",
+      "Name": "light_gray_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SMOOTH_STONE",
+      "Name": "brown_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BRICKS",
+      "Name": "cyan_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "MOSSY_COBBLESTONE",
+      "Name": "glass",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 128,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "OBSIDIAN",
+      "Name": "obsidian",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 128,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "TORCH",
+      "Name": "bubble_coral_block",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 16,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "END_ROD",
+      "Name": "dirt",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 16,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "CHEST",
+      "Name": "orange_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "CRAFTING_TABLE",
+      "Name": "azalea",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 32,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "FURNACE",
+      "Name": "white_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "LADDER",
+      "Name": "red_tulip",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "CACTUS",
+      "Name": "sand",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 128,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "NETHERRACK",
+      "Name": "glow_lichen",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SOUL_SAND",
+      "Name": "oak_log",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 320,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SOUL_SOIL",
+      "Name": "jungle_planks",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BASALT",
+      "Name": "lime_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "GLOWSTONE",
+      "Name": "birch_sapling",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 32,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "STONE_BRICKS",
+      "Name": "coal",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "MOSSY_STONE_BRICKS",
+      "Name": "dark_oak_leaves",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "GLASS_PANE",
+      "Name": "waxed_copper_block",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 32,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "MYCELIUM",
+      "Name": "blue_dye",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "END_STONE",
+      "Name": "amethyst_block",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "QUARTZ_BLOCK",
+      "Name": "jungle_sapling",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 32,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "WHITE_CARPET",
+      "Name": "warped_planks",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "TERRACOTTA",
+      "Name": "blackstone",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SUNFLOWER",
+      "Name": "red_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "LILAC",
+      "Name": "crimson_stem",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "ROSE_BUSH",
+      "Name": "crimson_planks",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "PEONY",
+      "Name": "oxidized_copper",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 32,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SEA_LANTERN",
+      "Name": "fire_coral_fan",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "MAGMA_BLOCK",
+      "Name": "stone_bricks",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 432,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "REDSTONE",
+      "Name": "bubble_coral_fan",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SADDLE",
+      "Name": "cracked_stone_bricks",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "ELYTRA",
+      "Name": "orange_dye",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "COAL",
+      "Name": "polished_basalt",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 32,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "NETHERITE_SCRAP",
+      "Name": "bubble_coral",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "STICK",
+      "Name": "basalt",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 384,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "STRING",
+      "Name": "lilac",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "FEATHER",
+      "Name": "deepslate_bricks",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 384,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "GUNPOWDER",
+      "Name": "cobblestone",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 640,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "LEATHER",
+      "Name": "jungle_log",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 320,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "CLAY_BALL",
+      "Name": "lily_of_the_valley",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "SLIME_BALL",
+      "Name": "fire_coral",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "INK_SAC",
+      "Name": "netherrack",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 1728,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "GLOW_INK_SAC",
+      "Name": "blue_orchid",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "COCOA_BEANS",
+      "Name": "yellow_dye",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "WHITE_DYE",
+      "Name": "birch_log",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 320,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "ORANGE_DYE",
+      "Name": "birch_planks",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "MAGENTA_DYE",
+      "Name": "oak_planks",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "LIGHT_BLUE_DYE",
+      "Name": "birch_leaves",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 256,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "YELLOW_DYE",
+      "Name": "gray_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "LIME_DYE",
+      "Name": "warped_stem",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "PINK_DYE",
+      "Name": "tube_coral",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "GRAY_DYE",
+      "Name": "gray_dye",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "LIGHT_GRAY_DYE",
+      "Name": "stone",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 320,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "CYAN_DYE",
+      "Name": "dark_prismarine",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 32,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "PURPLE_DYE",
+      "Name": "flowering_azalea",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 32,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BLUE_DYE",
+      "Name": "smooth_basalt",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 64,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BROWN_DYE",
+      "Name": "black_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "GREEN_DYE",
+      "Name": "brain_coral_fan",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "RED_DYE",
+      "Name": "cyan_dye",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BLACK_DYE",
+      "Name": "blue_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BONE",
+      "Name": "flowering_azalea_leaves",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 16,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "NAME_TAG",
+      "Name": "granite",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 128,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "TOTEM_OF_UNDYING",
+      "Name": "waxed_weathered_copper",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 32,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "TRIDENT",
+      "Name": "magma_block",
       "Researchable": 1,
       "req_amt": 512,
       "give_amt": 64,
@@ -1196,33 +1353,33 @@
       "scb_amt": 0
     },
     {
-      "Name": "LANTERN",
+      "Name": "magenta_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "CRYING_OBSIDIAN",
+      "Name": "pink_concrete_powder",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "BLACKSTONE",
+      "Name": "orange_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
     },
     {
-      "Name": "POINTED_DRIPSTONE",
+      "Name": "pink_concrete",
       "Researchable": 1,
-      "req_amt": 512,
+      "req_amt": 8,
       "give_amt": 64,
       "scb_obj": "",
       "scb_amt": 0
