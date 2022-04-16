@@ -7,6 +7,7 @@ import com.eternalfragment.mcjourneymode.config.ConfigScreen;
 import com.eternalfragment.mcjourneymode.config.SingleConfigScreen;
 import com.eternalfragment.mcjourneymode.gui.DoSetScreen;
 import com.eternalfragment.mcjourneymode.items.GuiItem;
+import com.eternalfragment.mcjourneymode.items.MjmInInventoryAlertItem;
 import com.eternalfragment.mcjourneymode.operators.invManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
@@ -22,6 +23,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.registry.Registry;
@@ -37,6 +39,7 @@ import java.util.function.Function;
 public class Mcjourneymode implements ModInitializer {
     public static org.apache.logging.log4j.Logger mylogger = LogManager.getLogger();
     public static Item GUI_ITEM = new GuiItem(new Item.Settings().group(ItemGroup.MISC).maxCount(1));
+    public static Item InInventoryAlertItem = new MjmInInventoryAlertItem(new Item.Settings().maxCount(0));
     public static String worldPath = "world"; //default setting is 'world' if system is unable to detect world from settings, it will default to this
     public static final String MOD_ID = "mjm";
     public static final String modDir = "mcjourneymode\\";
@@ -61,6 +64,7 @@ public class Mcjourneymode implements ModInitializer {
 
         mylogger.atInfo().log("Mod Booting....");
         Registry.register(Registry.ITEM, new Identifier(Mcjourneymode.MOD_ID, "menu_item"), GUI_ITEM);
+        Registry.register(Registry.ITEM, new Identifier(Mcjourneymode.MOD_ID, "in_inv_alert"), InInventoryAlertItem);
         type = FabricLoader.getInstance().getEnvironmentType();
         give_packet =  give_packet.tryParse("mjm:process_give");
         give_packet_single=give_packet_single.tryParse("mjm:process_give_single");
@@ -162,7 +166,7 @@ public class Mcjourneymode implements ModInitializer {
                 String itemName = String.valueOf(Registry.ITEM.get(itemID).asItem());
                 itemName = itemName.replaceAll("_", " ").toLowerCase();
                 itemName = WordUtils.capitalizeFully(itemName);
-                player.sendMessage(Text.of("Cleared "+cleared+" "+itemName+"'s from inventory."), false);
+                player.sendMessage(Text.of(new TranslatableText("mjm.msg.cleared").toString()+" "+cleared+" "+itemName+new TranslatableText("mjm.msg.fromInventory").toString()), false);
         });
 
         ServerPlayNetworking.registerGlobalReceiver(get_config_packet,  (server, player, handler, buf, pktSnd) -> {

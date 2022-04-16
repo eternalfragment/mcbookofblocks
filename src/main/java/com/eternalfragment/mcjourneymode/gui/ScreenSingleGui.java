@@ -194,11 +194,11 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                         ClientPlayNetworking.send(Mcjourneymode.pay_packet, dataclick);
                     });
                     root.setSize(totalWidth+18,126);
-                    WLabel payLbl=new WLabel("Pay Items to Unlock");
+                    WLabel payLbl=new WLabel(new TranslatableText("mjm.gui.lbl.paytounlock"));
                     payLbl.setHorizontalAlignment(HorizontalAlignment.CENTER);
                     root.add(payLbl, cellSize, cellSize,root.getWidth(),18);
 
-                    WButton butBack=new WButton(Text.of("BACK"));
+                    WButton butBack=new WButton(new TranslatableText("mjm.gui.but.Back"));
                     butBack.setOnClick(()-> mc.execute(() -> {
                         ScreenList daScreen = new ScreenList(new ScreenListGui(Config.playerConfigMap, "",perms));
                         MinecraftClient.getInstance().setScreen(daScreen);

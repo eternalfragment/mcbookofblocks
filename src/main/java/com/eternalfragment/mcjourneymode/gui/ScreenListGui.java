@@ -154,11 +154,24 @@ public class ScreenListGui extends LightweightGuiDescription{
                         //Array of containers for objects in the gui
 
                         WJMItem[] jmItem = new WJMItem[numItems];
+                        WJMItemAlert[] alertIcon=new WJMItemAlert[numItems];
                         WGridPanel[] jmItemSlot = new WGridPanel[numItems];
                         WGridPanel panelUnlocked = new WGridPanel(jmItemSize);
                         WGridPanel panelProgress = new WGridPanel(jmItemSize);
                         WGridPanel panelPotential = new WGridPanel(jmItemSize);
                         WGridPanel panelAll = new WGridPanel(jmItemSize);
+                        WLabel lblUnlocked=new WLabel(Text.of("-"+new TranslatableText("mjm.gui.lbl.noDisplay").getString()+"-"));
+                        lblUnlocked.setColor(textColor_RED.toRgb());
+                        panelUnlocked.add(lblUnlocked,0,0);
+                        WLabel lblProgress=new WLabel(Text.of("-"+new TranslatableText("mjm.gui.lbl.noDisplay").getString()+"-"));
+                        lblProgress.setColor(textColor_RED.toRgb());
+                        panelProgress.add(lblProgress,0,0);
+                        WLabel lblPotential=new WLabel(Text.of("-"+new TranslatableText("mjm.gui.lbl.noDisplay").getString()+"-"));
+                        lblPotential.setColor(textColor_RED.toRgb());
+                        panelPotential.add(lblPotential,0,0);
+                        WLabel lblAll=new WLabel(Text.of("-"+new TranslatableText("mjm.gui.lbl.noDisplay").getString()+"-"));
+                        lblAll.setColor(textColor_RED.toRgb());
+                        panelAll.add(lblAll,0,0);
                         int panelMaxW = (int) Math.floor((scrollW * 18) / 20) - 2;
                         int[] rowTracker;
                         int it = 0;
@@ -319,14 +332,14 @@ public class ScreenListGui extends LightweightGuiDescription{
                                 switch (itemType) {
                                     case 1:
                                         //Unlocked panel
-
+                                        panelUnlocked.remove(lblUnlocked);
                                         jmItem[it] = new WJMItem(Registry.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
                                             @Environment(EnvType.CLIENT)
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
                                                 tooltip.add(Text.of(finalItemName));
-                                                tooltip.add(Text.of("Click to give | Shift+Click for "+thisObject.getGive_Amt()));
-                                                tooltip.add(Text.of("Middle click to clear from inventory"));
+                                                tooltip.add(Text.of(new TranslatableText("mjm.gui.tooltip.lcgive")+" | "+new TranslatableText("mjm.gui.tooltip.lcsgive")+" "+thisObject.getGive_Amt()));
+                                                tooltip.add(new TranslatableText("mjm.gui.tooltip.mcclear"));
                                             }
                                         };
                                         jmItem[it].setOnClick(() -> {
@@ -355,15 +368,20 @@ public class ScreenListGui extends LightweightGuiDescription{
                                             data.writeInt(itemID);
                                             ClientPlayNetworking.send(Mcjourneymode.clear_packet, data);
                                         });
+
+                                        if (itemCount>0) {
+                                            alertIcon[it]=new WJMItemAlert(Mcjourneymode.InInventoryAlertItem.getDefaultStack());
+                                            jmItemSlot[it].add(alertIcon[it],0,0);}
                                         jmItemSlot[it].add(jmItem[it], 0, 0);
+
                                         row = (int) Math.floor(uDisplayed / (panelMaxW));
                                         col = uDisplayed - ((panelMaxW) * row);
                                         panelUnlocked.add(jmItemSlot[it], col, row);
-
                                         uDisplayed++;
                                         break;
                                     case 2:
                                         //Potential panel
+                                        panelPotential.remove(lblPotential);
                                         jmItem[it] = new WJMItem(Registry.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
                                             @Environment(EnvType.CLIENT)
                                             @Override
@@ -396,6 +414,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         break;
                                     case 3:
                                         //Progress panel
+                                        panelProgress.remove(lblProgress);
                                         jmItem[it] = new WJMItem(Registry.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
                                             @Environment(EnvType.CLIENT)
                                             @Override
@@ -428,6 +447,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         break;
                                     case 4:
                                         //All panel
+                                        panelAll.remove(lblAll);
                                         jmItem[it] = new WJMItem(Registry.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
                                             @Environment(EnvType.CLIENT)
                                             @Override
@@ -466,7 +486,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                         int finalPanelMaxW = panelMaxW;
 
                         //panelUnlocked.setBackgroundPainter(contents);
-                        WLabel uLbl = new WLabel("Unlocked Items");
+                        WLabel uLbl = new WLabel(new TranslatableText("mjm.gui.lbl.title.ul"));
                         uLbl.setVerticalAlignment(VerticalAlignment.BOTTOM);
                         int uRowstoShow = Math.max((int) Math.ceil(uDisplayed / (panelMaxW - 1)), 1);
                         myTallPanel.add(uLbl, 1, panelVOffset - 1);
@@ -474,7 +494,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                         int uSize = Math.max(ud / finalPanelMaxW + ((ud % finalPanelMaxW == 0) ? 0 : 1), 1);
 
                         //panelPotential.setBackgroundPainter(contents);
-                        WLabel pLbl = new WLabel("In Inventory");
+                        WLabel pLbl = new WLabel(new TranslatableText("mjm.gui.lbl.title.ii"));
                         pLbl.setVerticalAlignment(VerticalAlignment.BOTTOM);
                         int pRowstoShow = Math.max((int) Math.ceil(pDisplayed / (panelMaxW - 1)), 1);
                         myTallPanel.add(pLbl, 1, panelVOffset + uSize);
@@ -483,7 +503,7 @@ public class ScreenListGui extends LightweightGuiDescription{
 
 
                         //panelProgress.setBackgroundPainter(contents);
-                        WLabel prLbl = new WLabel("In Progress");
+                        WLabel prLbl = new WLabel(new TranslatableText("mjm.gui.lbl.title.ip"));
                         prLbl.setVerticalAlignment(VerticalAlignment.BOTTOM);
                         int prRowstoShow = Math.max((int) Math.ceil(prDisplayed / (panelMaxW - 1)), 1);
                         myTallPanel.add(prLbl, 1, panelVOffset + uSize + pSize + 1);
@@ -491,7 +511,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                         int prSize = Math.max(prd / finalPanelMaxW + ((prd % finalPanelMaxW == 0) ? 0 : 1), 1);
 
                         //panelAll.setBackgroundPainter(contents);
-                        WLabel aLbl = new WLabel("Other");
+                        WLabel aLbl = new WLabel(new TranslatableText("mjm.gui.lbl.title.o"));
                         aLbl.setVerticalAlignment(VerticalAlignment.BOTTOM);
                         int aRowstoShow = Math.max((int) Math.ceil(aDisplayed / (panelMaxW - 1)), 1);
                         myTallPanel.add(aLbl, 1, panelVOffset + uSize + pSize + prSize + 2);
@@ -500,7 +520,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                             //this means nothing was displayed due to filter settings
                             WLabel lblEmpty = new WLabel("-" + new TranslatableText("mjm.gui.lbl.search").getString() + "-");
                             lblEmpty.setColor(textColor_RED.toRgb());
-                            myTallPanel.add(lblEmpty, 1, 1);
+                            myTallPanel.add(lblEmpty, 0, 0);
                         }
                     } else {
                         //this means nothing was loaded. means admin disabled all items, or glitch with config.
@@ -519,7 +539,7 @@ public class ScreenListGui extends LightweightGuiDescription{
             WScrollPanel[] wrapContents = new WScrollPanel[1];
             double scale = mc.getWindow().getScaleFactor();
             WGridPanel root = new WGridPanel();
-            WTextField searchBar = new WTextField(Text.of("Search"));
+            WTextField searchBar = new WTextField(new TranslatableText("mjm.gui.lbl.title.search"));
             searchBar.setText(searchDefault);
             int windowWidth = mc.getWindow().getWidth();
             int windowHeight = mc.getWindow().getHeight();
