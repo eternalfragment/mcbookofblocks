@@ -13,7 +13,9 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -35,7 +37,7 @@ public class WJMItem extends WWidget {
         setItems(items);
     }
 
-    public WJMItem(Tag<? extends ItemConvertible> tag) {
+    public WJMItem(TagKey<? extends ItemConvertible> tag) {
         this(getRenderStacks(tag));
     }
 
@@ -95,11 +97,12 @@ public class WJMItem extends WWidget {
         return this;
     }
 
-    private static List<ItemStack> getRenderStacks(Tag<? extends ItemConvertible> tag) {
+    private static List<ItemStack> getRenderStacks(TagKey<? extends ItemConvertible> tag) {
         ImmutableList.Builder<ItemStack> builder = ImmutableList.builder();
+        Registry<ItemConvertible> registry = (Registry<ItemConvertible>) Registry.REGISTRIES.get(tag.registry().getValue());
 
-        for (ItemConvertible item : tag.values()) {
-            builder.add(new ItemStack(item));
+        for (RegistryEntry<ItemConvertible> item : registry.getOrCreateEntryList((TagKey<ItemConvertible>) tag)) {
+            builder.add(new ItemStack((ItemConvertible) item));
         }
 
         return builder.build();

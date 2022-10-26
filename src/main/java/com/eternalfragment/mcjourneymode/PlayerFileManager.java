@@ -175,7 +175,7 @@ public class PlayerFileManager {
                                     Mcjourneymode.mylogger.atError().log("Item config requires scoreboard objective, none found. Config #: "+itemConfig[1]+"| Item ID: " + itemConfig[0]);
                                 }
                             }else{
-                                int thisScore = user.getScoreboard().getPlayerScore(user.getDisplayName().asString(), user.getScoreboard().getObjective((String) itemConfig[4])).getScore();
+                                int thisScore = user.getScoreboard().getPlayerScore(String.valueOf(user.getDisplayName().getString()), user.getScoreboard().getObjective((String) itemConfig[4])).getScore();
                                 int scoreTarget = (int)itemConfig[5];
                                 if (thisScore>=scoreTarget){scoreMet=true;}
                             }
@@ -210,7 +210,7 @@ public class PlayerFileManager {
                                     Mcjourneymode.mylogger.atError().log("Item config requires scoreboard objective, none found. Config #: "+itemConfig[1]+"| Item ID: " + itemConfig[0]);
                                 }
                             }else{
-                                int thisScore = user.getScoreboard().getPlayerScore(user.getDisplayName().asString(), user.getScoreboard().getObjective((String) itemConfig[4])).getScore();
+                                int thisScore = user.getScoreboard().getPlayerScore(String.valueOf(user.getDisplayName().getString()), user.getScoreboard().getObjective((String) itemConfig[4])).getScore();
                                 int scoreTarget = (int)itemConfig[5];
                                 if (thisScore>=scoreTarget){scoreMet=true;}
                             }
@@ -309,10 +309,13 @@ public class PlayerFileManager {
                                 }
                             }
                         } else {
-                            int thisScore = user.getScoreboard().getPlayerScore(user.getDisplayName().asString(), user.getScoreboard().getObjective((String) itemConfig[4])).getScore();
+                            int thisScore = user.getScoreboard().getPlayerScore(String.valueOf(user.getDisplayName().getString()), user.getScoreboard().getObjective((String) itemConfig[4])).getScore();
                             int scoreTarget = (int) itemConfig[5];
                             float mixed = (float) thisScore / scoreTarget;
                             scbPerc = (int) Math.floor(mixed * 100);
+                            System.out.println("Player: "+String.valueOf(user.getDisplayName().getString()+"| Objective: "+user.getScoreboard().getObjective((String) itemConfig[4]).getName()));
+                            System.out.println("Scoreboard ratio: "+ thisScore+" / "+scoreTarget);
+                            configData3[6] = scbPerc;
                             if (thisScore >= scoreTarget) {
                                 scoreMet = true;
                             }
@@ -320,6 +323,7 @@ public class PlayerFileManager {
                     }
                     if (unlockable){
                     configData3[6] = scbPerc;
+
                     switch ((int) itemConfig[1]) {
                         case 1:
                             if (configData3[5] >= (int) itemConfig[2]) {

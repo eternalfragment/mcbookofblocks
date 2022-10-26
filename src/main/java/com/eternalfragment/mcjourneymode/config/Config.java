@@ -17,7 +17,6 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.function.Function;
 
 public class Config {
 
@@ -165,6 +164,15 @@ public class Config {
                             nameValue = (String) pair.getValue();
                             nameValue = nameValue.toLowerCase().replaceAll("[^a-zA-Z0-9.+_-]", "");
                             int itemID = GetItemIdFromName.getItemIdFromName(nameValue);
+                            if (nameValue=="crimson_nylium"){
+                                System.out.println("FOUND CRIMSON NYLIUM");
+                                System.out.println("nameValue: "+nameValue);
+                                System.out.println("itemID: "+itemID);
+
+                            }
+                            if (itemID==19){
+                                System.out.println("19: "+nameValue);
+                            }
                             settingValue[0] = itemID;
                         }
                         case "Researchable" -> settingValue[1] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
@@ -226,7 +234,7 @@ public class Config {
     }
     public static HashMap<String, Object[]> playerConfigMap = new HashMap<>();
     //playerConfigMap: ['ItemName'][0-ITEM ID, 1-researchable,2-req_amt,3-give_amt, 4-paid_amt, 5-unocked];
-    public static HashMap<String, int[]> globalConfigMap = new HashMap<>();//TODO:POSSIBLE-- implement other options other than the research/unlock process
+    public static HashMap<String, int[]> globalConfigMap = new HashMap<>();//TODO:POSSIBLE-- implement other global options to store here
     public static HashMap<String, Object[]> configStoO(HashMap<String,String> stringMap){
         HashMap<String,Object[]> newMap=new HashMap<>();
         for (Map.Entry<String,String> entry: stringMap.entrySet()){
@@ -264,8 +272,8 @@ public class Config {
         return strData;
     }
     public static void getConfigPacket(PlayerEntity player, PacketByteBuf buf, ServerPlayNetworkHandler handler) throws Exception {
-        Function<PacketByteBuf, String> keyConsumer = PacketByteBuf::readString;
-        Function<PacketByteBuf, String> valConsumer = PacketByteBuf::readString;
+        PacketByteBuf.PacketReader<String> keyConsumer = PacketByteBuf::readString;
+        PacketByteBuf.PacketReader<String> valConsumer = PacketByteBuf::readString;
         HashMap<String, String> getMap = new HashMap<String, String>(buf.readMap(keyConsumer, valConsumer));
         HashMap<String,Object[]> newMap=configStoO(getMap);
         Mcjourneymode.mylogger.atInfo().log("Player updated config: "+player.getName());
@@ -274,8 +282,8 @@ public class Config {
 
     }
     public static void getSingleConfigPacket(PlayerEntity player, PacketByteBuf buf, ServerPlayNetworkHandler handler) throws Exception {
-        Function<PacketByteBuf, String> keyConsumer = PacketByteBuf::readString;
-        Function<PacketByteBuf, String> valConsumer = PacketByteBuf::readString;
+        PacketByteBuf.PacketReader<String> keyConsumer = PacketByteBuf::readString;
+        PacketByteBuf.PacketReader<String> valConsumer = PacketByteBuf::readString;
         HashMap<String, String> getMap = new HashMap<String, String>(buf.readMap(keyConsumer, valConsumer));
         HashMap<String,Object[]> newMap=configStoO(getMap);
         for (Map.Entry<String, Object[]> entry : newMap.entrySet()) {

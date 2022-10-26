@@ -8,7 +8,7 @@ import net.fabricmc.api.Environment;
 @Environment(EnvType.CLIENT)
 public class ScreenList extends CottonClientScreen {
     @Override
-    public boolean isPauseScreen() {
+    public boolean shouldPause() {
         return false;
     }
     public ScreenList(GuiDescription description) {

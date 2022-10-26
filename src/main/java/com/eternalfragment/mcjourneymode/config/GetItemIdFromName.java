@@ -12,7 +12,13 @@ public class GetItemIdFromName {
         int numItems = (int) Registry.ITEM.stream().count();
         for (int i = 0; i < numItems; i++) {
             String itemName = Registry.ITEM.get(i).asItem().toString();
+
             if (Objects.equals(itemName, search)) {
+                if (itemName=="crimson_nylium"){System.out.println("CRIMSON STUFF: "+i);}
+                if (i==19){
+                    System.out.println("19 found||| Search: "+search+" | itemName: "+itemName);
+
+                }
                 return i;
             }
         }

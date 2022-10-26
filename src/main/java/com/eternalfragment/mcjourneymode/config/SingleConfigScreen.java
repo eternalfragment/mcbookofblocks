@@ -12,7 +12,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +32,7 @@ public class SingleConfigScreen {
     public static void buildScreen(String itemName) {
         ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(MinecraftClient.getInstance().currentScreen)
-                .setTitle(new TranslatableText("mjm.config.title"));
+                .setTitle(Text.translatable("mjm.config.title"));
         HashMap<String, Object[]> localConfigMap=Config.configMap;
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
         AtomicReference<String> addResearchable= new AtomicReference();
@@ -46,46 +45,46 @@ public class SingleConfigScreen {
             @Override
             public Iterator<String> iterator() {
                 List<String> ulchoices= new ArrayList<String>();
-                ulchoices.add("0 - "+new TranslatableText("mjm.config.menu.research.remove").getString());
-                ulchoices.add("1 - "+new TranslatableText("mjm.config.menu.research.pay").getString());
-                ulchoices.add("2 - "+new TranslatableText("mjm.config.menu.research.score").getString());
-                ulchoices.add("3 - "+new TranslatableText("mjm.config.menu.research.payascore").getString());
-                ulchoices.add("4 - "+new TranslatableText("mjm.config.menu.research.payoscore").getString());
+                ulchoices.add("0 - "+Text.translatable("mjm.config.menu.research.remove").getString());
+                ulchoices.add("1 - "+Text.translatable("mjm.config.menu.research.pay").getString());
+                ulchoices.add("2 - "+Text.translatable("mjm.config.menu.research.score").getString());
+                ulchoices.add("3 - "+Text.translatable("mjm.config.menu.research.payascore").getString());
+                ulchoices.add("4 - "+Text.translatable("mjm.config.menu.research.payoscore").getString());
 
                 Iterator<String> ulIterator = ulchoices.iterator();
                 return ulIterator;
             }
         };
         Object[] ob = localConfigMap.get(itemName);
-        ConfigCategory general = builder.getOrCreateCategory(new TranslatableText("mjm.config.menu.titleGeneral"));
+        ConfigCategory general = builder.getOrCreateCategory(Text.translatable("mjm.config.menu.titleGeneral"));
 
         String cleanObject = itemName;
         cleanObject=cleanObject.replace("_"," ");
         cleanObject= WordUtils.capitalizeFully(cleanObject);
         general.addEntry(entryBuilder.startTextDescription(Text.of("Edit Item: "+cleanObject)).build());
         //Researchable Option
-        general.addEntry(entryBuilder.startStringDropdownMenu(new TranslatableText("mjm.config.menu.researchable"), Integer.toString((Integer) ob[1]))
+        general.addEntry(entryBuilder.startStringDropdownMenu(Text.translatable("mjm.config.menu.researchable"), Integer.toString((Integer) ob[1]))
                 .setDefaultValue(Integer.toString((Integer) ob[1]))
                 .setSelections(resSelections)
                 .setSaveConsumer(result->addResearchable.set(result))
                 .build());
         //Research Amount
-        general.addEntry(entryBuilder.startIntField(new TranslatableText("mjm.config.menu.resAmt"), (Integer) ob[2])
+        general.addEntry(entryBuilder.startIntField(Text.translatable("mjm.config.menu.resAmt"), (Integer) ob[2])
                 .setDefaultValue((Integer) ob[2])
                 .setSaveConsumer(result->addReqAmt.set(result))
                 .build());
         //Give Amount
-        general.addEntry(entryBuilder.startIntSlider(new TranslatableText("mjm.config.menu.giveAmt"), (Integer) ob[3],1,64)
+        general.addEntry(entryBuilder.startIntSlider(Text.translatable("mjm.config.menu.giveAmt"), (Integer) ob[3],1,64)
                 .setDefaultValue((Integer) ob[3])
                 .setSaveConsumer(result->addGiveAmt.set(result))
                 .build());
         //Scoreboard Objective
-        general.addEntry(entryBuilder.startStrField(new TranslatableText("mjm.config.menu.scbName"),(String) ob[4])
+        general.addEntry(entryBuilder.startStrField(Text.translatable("mjm.config.menu.scbName"),(String) ob[4])
                 .setDefaultValue((String) ob[4])
                 .setSaveConsumer(result->addScbObj.set(result))
                 .build());
         //Scoreboard Amount
-        general.addEntry(entryBuilder.startIntField(new TranslatableText("mjm.config.menu.scbGoal"), (Integer) ob[5])
+        general.addEntry(entryBuilder.startIntField(Text.translatable("mjm.config.menu.scbGoal"), (Integer) ob[5])
                 .setDefaultValue((Integer) ob[5])
                 .setSaveConsumer(result->addScbAmt.set(result))
                 .build());

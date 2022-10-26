@@ -20,9 +20,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -61,7 +59,7 @@ class ObjectStats{
         Give_Amt=giv;
         Paid_Amt=pd;
         Unlocked=ul;
-        Group=gr;
+        if (gr!=null){Group=gr;}else{Group="misc";}
         Category=ca;}
     public int getItemID(){return ItemID;}
     public int getResearchable(){return Researchable;}
@@ -89,8 +87,6 @@ public class ScreenListGui extends LightweightGuiDescription{
 
                 // To sort in descending order revert
                 // the '>' Operator
-                //System.out.println(entry1[7]);
-                //System.out.println(Arrays.toString(entry1));
                 if (entry1[7]!=null) {
                     String ob1 = (String) entry1[7];
                     String ob2 = (String) entry2[7];
@@ -160,16 +156,16 @@ public class ScreenListGui extends LightweightGuiDescription{
                         WGridPanel panelProgress = new WGridPanel(jmItemSize);
                         WGridPanel panelPotential = new WGridPanel(jmItemSize);
                         WGridPanel panelAll = new WGridPanel(jmItemSize);
-                        WLabel lblUnlocked=new WLabel(Text.of("-"+new TranslatableText("mjm.gui.lbl.noDisplay").getString()+"-"));
+                        WLabel lblUnlocked=new WLabel(Text.translatable("mjm.gui.lbl.noDisplay"));
                         lblUnlocked.setColor(textColor_RED.toRgb());
                         panelUnlocked.add(lblUnlocked,0,0);
-                        WLabel lblProgress=new WLabel(Text.of("-"+new TranslatableText("mjm.gui.lbl.noDisplay").getString()+"-"));
+                        WLabel lblProgress=new WLabel(Text.translatable("mjm.gui.lbl.noDisplay"));
                         lblProgress.setColor(textColor_RED.toRgb());
                         panelProgress.add(lblProgress,0,0);
-                        WLabel lblPotential=new WLabel(Text.of("-"+new TranslatableText("mjm.gui.lbl.noDisplay").getString()+"-"));
+                        WLabel lblPotential=new WLabel(Text.translatable("mjm.gui.lbl.noDisplay"));
                         lblPotential.setColor(textColor_RED.toRgb());
                         panelPotential.add(lblPotential,0,0);
-                        WLabel lblAll=new WLabel(Text.of("-"+new TranslatableText("mjm.gui.lbl.noDisplay").getString()+"-"));
+                        WLabel lblAll=new WLabel(Text.translatable("mjm.gui.lbl.noDisplay"));
                         lblAll.setColor(textColor_RED.toRgb());
                         panelAll.add(lblAll,0,0);
                         int panelMaxW = (int) Math.floor((scrollW * 18) / 20) - 2;
@@ -189,7 +185,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                         int ad = 0;
 
                         int cd=0;
-                        ObjectStats[] allObjects= new ObjectStats[numItems];
+                        ObjectStats[] tallObjects= new ObjectStats[numItems];
                         //[ID]-
                         //[0]-ItemID
                         //[1]-Researchable
@@ -208,8 +204,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                 //TODO: Add an int tracker that reports the % done of an objective, and add to the progress if its in progress
                                 //ScoreboardObjective thisObjective = player.getScoreboard().getObjective((String) itemConfig[4]);
                                 //Copy the item data to master list
-                               // System.out.println("Data: "+itemData[0]+" | "+itemData[1]+" | "+itemData[2]+" | "+itemData[3]+" | "+itemData[4]+" | "+itemData[5]+" | ");
-                                allObjects[cd]=new ObjectStats();
+                                tallObjects[cd]=new ObjectStats();
 
                                 ItemGroup grp = (Registry.ITEM.get((int) itemData[0]).asItem().getGroup());
                                 String categoryName= "Misc";
@@ -237,10 +232,13 @@ public class ScreenListGui extends LightweightGuiDescription{
                                     ad++;
                                     ttd++;
                                 }
-                                allObjects[cd].setValues((int)itemData[0],(int)itemData[1],(int)itemData[2],(int)itemData[3],(int)itemData[5],(int)itemData[4],catVal,categoryName);
+                                //System.out.println("0: "+(int)itemData[0]+" | 1: "+(int)itemData[1]+" | 2: "+(int)itemData[2]+" | 3: "+(int)itemData[3]+" | 5: "+(int)itemData[5]+" | 4: "+(int)itemData[4]+" | cat: "+catVal+" | catName: "+categoryName);
+                                tallObjects[cd].setValues((int)itemData[0],(int)itemData[1],(int)itemData[2],(int)itemData[3],(int)itemData[5],(int)itemData[4],catVal,categoryName);
                             cd++;
                             }
                         }
+                        ObjectStats[] allObjects =Arrays.stream(tallObjects).filter(value->value!=null).toArray(size->new ObjectStats[size]);
+                        Arrays.sort(allObjects,Comparator.comparing(ObjectStats::getItemID).thenComparing(ObjectStats::getGroup));
                         int _pd = 0;
                         int _prd = 0;
                         int _ud = 0;
@@ -289,7 +287,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                         int pDisplayed = 0;
                         int prDisplayed = 0;
                         int aDisplayed = 0;
-                        Arrays.sort(allObjects,Comparator.comparing(ObjectStats::getItemID).thenComparing(ObjectStats::getGroup));
+
                         for (int ccd = 0; ccd < numToGen; ccd++) {
                             Object[] itemData = new Object[6];
                             int itemType = 0;//1-unlocked, 2-potential, 3-progress, 4-random
@@ -298,7 +296,10 @@ public class ScreenListGui extends LightweightGuiDescription{
                             itemType=thisObject.getCategory();
                             boolean showItem = true;
                             String name = "" + Registry.ITEM.get(thisObject.getItemID()).asItem().getName();
-
+                            if (name=="zombie_spawn_egg"){
+                                System.out.println("SPAWN EGG FOUND");
+                                //REMOVE THIS SECTION ONCE TESTING DONE
+                            }
                             if (thisObject.getItemID() == 0) {
                                 showItem = false;
                             }
@@ -308,13 +309,15 @@ public class ScreenListGui extends LightweightGuiDescription{
 
                             String itemName = String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem());
                             itemName = itemName.replaceAll("_", " ").toLowerCase();
-                            itemName = WordUtils.capitalizeFully(itemName);
+
 
                             if ((!filter.equals(""))) {
                                 //if the filter is not empty
                                 //if the name of the object contains the filter
                                 showItem = itemName.contains(filter);
+                                System.out.println("Filter exists: "+filter+"| item: "+itemName+ "| filter stat: "+showItem);
                             }
+                            itemName = WordUtils.capitalizeFully(itemName);
 
                             if (showItem) {
                                 generatedItems++;
@@ -338,8 +341,8 @@ public class ScreenListGui extends LightweightGuiDescription{
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
                                                 tooltip.add(Text.of(finalItemName));
-                                                tooltip.add(Text.of(new TranslatableText("mjm.gui.tooltip.lcgive").getString()+" | "+new TranslatableText("mjm.gui.tooltip.lcsgive").getString()+" "+thisObject.getGive_Amt()));
-                                                tooltip.add(new TranslatableText("mjm.gui.tooltip.mcclear"));
+                                                tooltip.add(Text.of(Text.translatable("mjm.gui.tooltip.lcgive").getString()+" | "+Text.translatable("mjm.gui.tooltip.lcsgive").getString()+" "+thisObject.getGive_Amt()));
+                                                tooltip.add(Text.translatable("mjm.gui.tooltip.mcclear"));
                                             }
                                         };
                                         jmItem[it].setOnClick(() -> {
@@ -386,8 +389,10 @@ public class ScreenListGui extends LightweightGuiDescription{
                                             @Environment(EnvType.CLIENT)
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
-                                                tooltip.add(Text.of(finalItemName));
-                                                tooltip.add(Text.of(thisObject.getPaid_Amt() + "/" + thisObject.getReq_Amt()));
+                                                if (thisObject.getResearchable()!=2) {
+                                                    tooltip.add(Text.of(finalItemName));
+                                                    tooltip.add(Text.of(thisObject.getPaid_Amt() + "/" + thisObject.getReq_Amt()));
+                                                }
                                             }
                                         };
 
@@ -419,8 +424,12 @@ public class ScreenListGui extends LightweightGuiDescription{
                                             @Environment(EnvType.CLIENT)
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
-                                                tooltip.add(Text.of(finalItemName));
-                                                tooltip.add(Text.of(thisObject.getPaid_Amt() + "/" + thisObject.getReq_Amt()));
+                                                if (thisObject.getResearchable()!=2) {
+                                                    tooltip.add(Text.of(finalItemName));
+                                                    tooltip.add(Text.of(thisObject.getPaid_Amt() + "/" + thisObject.getReq_Amt()));
+                                                }else{
+                                                    tooltip.add(Text.of(finalItemName));
+                                                }
                                             }
                                         };
                                         jmItem[it].setOnClick(() -> {
@@ -452,8 +461,12 @@ public class ScreenListGui extends LightweightGuiDescription{
                                             @Environment(EnvType.CLIENT)
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
-                                                tooltip.add(Text.of(finalItemName));
-                                                tooltip.add(Text.of(thisObject.getPaid_Amt() + "/" + thisObject.getReq_Amt()));
+                                                if (thisObject.getResearchable()!=2) {
+                                                    tooltip.add(Text.of(finalItemName));
+                                                    tooltip.add(Text.of(thisObject.getPaid_Amt() + "/" + thisObject.getReq_Amt()));
+                                                }else{
+                                                    tooltip.add(Text.of(finalItemName));
+                                                }
                                             }
                                         };
                                         jmItem[it].setOnClick(() -> {
@@ -486,7 +499,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                         int finalPanelMaxW = panelMaxW;
 
                         //panelUnlocked.setBackgroundPainter(contents);
-                        WLabel uLbl = new WLabel(new TranslatableText("mjm.gui.lbl.title.ul"));
+                        WLabel uLbl = new WLabel(Text.translatable("mjm.gui.lbl.title.ul"));
                         uLbl.setVerticalAlignment(VerticalAlignment.BOTTOM);
                         int uRowstoShow = Math.max((int) Math.ceil(uDisplayed / (panelMaxW - 1)), 1);
                         myTallPanel.add(uLbl, 1, panelVOffset - 1);
@@ -494,7 +507,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                         int uSize = Math.max(ud / finalPanelMaxW + ((ud % finalPanelMaxW == 0) ? 0 : 1), 1);
 
                         //panelPotential.setBackgroundPainter(contents);
-                        WLabel pLbl = new WLabel(new TranslatableText("mjm.gui.lbl.title.ii"));
+                        WLabel pLbl = new WLabel(Text.translatable("mjm.gui.lbl.title.ii"));
                         pLbl.setVerticalAlignment(VerticalAlignment.BOTTOM);
                         int pRowstoShow = Math.max((int) Math.ceil(pDisplayed / (panelMaxW - 1)), 1);
                         myTallPanel.add(pLbl, 1, panelVOffset + uSize);
@@ -503,7 +516,7 @@ public class ScreenListGui extends LightweightGuiDescription{
 
 
                         //panelProgress.setBackgroundPainter(contents);
-                        WLabel prLbl = new WLabel(new TranslatableText("mjm.gui.lbl.title.ip"));
+                        WLabel prLbl = new WLabel(Text.translatable("mjm.gui.lbl.title.ip"));
                         prLbl.setVerticalAlignment(VerticalAlignment.BOTTOM);
                         int prRowstoShow = Math.max((int) Math.ceil(prDisplayed / (panelMaxW - 1)), 1);
                         myTallPanel.add(prLbl, 1, panelVOffset + uSize + pSize + 1);
@@ -511,20 +524,20 @@ public class ScreenListGui extends LightweightGuiDescription{
                         int prSize = Math.max(prd / finalPanelMaxW + ((prd % finalPanelMaxW == 0) ? 0 : 1), 1);
 
                         //panelAll.setBackgroundPainter(contents);
-                        WLabel aLbl = new WLabel(new TranslatableText("mjm.gui.lbl.title.o"));
+                        WLabel aLbl = new WLabel(Text.translatable("mjm.gui.lbl.title.o"));
                         aLbl.setVerticalAlignment(VerticalAlignment.BOTTOM);
                         int aRowstoShow = Math.max((int) Math.ceil(aDisplayed / (panelMaxW - 1)), 1);
                         myTallPanel.add(aLbl, 1, panelVOffset + uSize + pSize + prSize + 2);
                         myTallPanel.add(panelAll, 1, panelVOffset + uSize + pSize + prSize + 3, finalPanelMaxW, aRowstoShow);
                         if (generatedItems == 0) {
                             //this means nothing was displayed due to filter settings
-                            WLabel lblEmpty = new WLabel("-" + new TranslatableText("mjm.gui.lbl.search").getString() + "-");
+                            WLabel lblEmpty = new WLabel(Text.translatable("mjm.gui.lbl.search"));
                             lblEmpty.setColor(textColor_RED.toRgb());
                             myTallPanel.add(lblEmpty, 0, 0);
                         }
                     } else {
                         //this means nothing was loaded. means admin disabled all items, or glitch with config.
-                        WLabel lblEmpty = new WLabel(new TranslatableText("mjm.gui.lbl.noneAvail"));
+                        WLabel lblEmpty = new WLabel(Text.translatable("mjm.gui.lbl.noneAvail"));
                         lblEmpty.setColor(textColor_RED.toRgb());
                         myTallPanel.add(lblEmpty, 1, 1);
                     }
@@ -539,7 +552,7 @@ public class ScreenListGui extends LightweightGuiDescription{
             WScrollPanel[] wrapContents = new WScrollPanel[1];
             double scale = mc.getWindow().getScaleFactor();
             WGridPanel root = new WGridPanel();
-            WTextField searchBar = new WTextField(new TranslatableText("mjm.gui.lbl.title.search"));
+            WTextField searchBar = new WTextField(Text.translatable("mjm.gui.lbl.title.search"));
             searchBar.setText(searchDefault);
             int windowWidth = mc.getWindow().getWidth();
             int windowHeight = mc.getWindow().getHeight();
@@ -562,7 +575,7 @@ public class ScreenListGui extends LightweightGuiDescription{
             root.add(searchBar, 1, 1, searchScale, 1);
 
             if (perms) {
-                WButton configButton = new WButton(new LiteralText("⚙"));
+                WButton configButton = new WButton(Text.literal("⚙"));
                 configButton.setOnClick(() -> {
                     PacketByteBuf clickData = PacketByteBufs.create();
                     ClientPlayNetworking.send(Mcjourneymode.send_config_req_packet, clickData);

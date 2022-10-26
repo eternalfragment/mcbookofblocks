@@ -21,9 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.PropertyDelegate;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.text.WordUtils;
@@ -87,8 +85,8 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                     String itemName = String.valueOf(Registry.ITEM.get((int) itemData[0]).asItem());
                     itemName = itemName.replaceAll("_", " ").toLowerCase();
                     itemName = WordUtils.capitalizeFully(itemName);
-                    itemNameLabel = new WLabel(itemName);
-                    itemIDLabel = new WLabel(itemName);
+                    itemNameLabel = new WLabel(Text.of(itemName));
+                    itemIDLabel = new WLabel(Text.of(itemName));
                     int lblLen = itemName.length();
                     Identifier barBg = new Identifier(Mcjourneymode.MOD_ID, "prog_bar_bg.png");
                     Identifier barProg = new Identifier(Mcjourneymode.MOD_ID, "prog_bar_2.png");
@@ -117,7 +115,7 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                         thisProp.set(1, 100);
                         achProg = new WBar(barBg, barProg, 0, 1, WBar.Direction.UP);
                         achProg.setProperties(thisProp);
-                        achProg.withTooltip(new TranslatableText("mjm.gui.tooltip.scbProg").getString()+": " + itemData[6] + "%");
+                        achProg.withTooltip(Text.translatable("mjm.gui.tooltip.scbProg").getString()+": " + itemData[6] + "%");
                     }
                     //int totalWidth = Math.max(180, scalingIcon[it].getWidth() + itemNameLabel[it].getWidth() + 40);
                     int totalWidth = Math.max(200, scalingIcon.getWidth() + (lblLen * 6));
@@ -126,7 +124,7 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                     /* Cost Details */
                     String progressString = itemData[5] + "/" + itemData[2];
                     int progStrLen = progressString.length() * 6;
-                    WLabel progressLabel = new WLabel(progressString);
+                    WLabel progressLabel = new WLabel(Text.of(progressString));
                     if ((int)itemData[2]!=0){
                         if (((int) itemData[5] / (int) itemData[2]) < 0.5) {
                             progressLabel.setColor(textColor_RED.toRgb());
@@ -137,7 +135,7 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                     /* Current Amt in inventory */
                     String containStr = String.valueOf("(" + itemCount + ")");
                     int containStrLen = containStr.length() * 6;
-                    WLabel containLabel = new WLabel(containStr);
+                    WLabel containLabel = new WLabel(Text.of(containStr));
                     containLabel.setSize(containStrLen, 12);
                     if (itemCount >= neededCount) {
                         containLabel.setColor(textColor_GREEN.toRgb());
@@ -148,14 +146,16 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                     WLabeledSlider paySlider = null;
                     WLabel noItems = null;
                     if (itemCount != 0) {
+                        if (neededCount==0){neededCount=1;}
                         paySlider = new WLabeledSlider(0, Math.min(neededCount, itemCount), Axis.HORIZONTAL, Text.of("amt"));
                         paySlider.setSize(totalWidth - 64 - 36 - 12, 12);
-                        paySlider.setLabelUpdater(value -> new LiteralText("amt: " + value));
+                        
+                        paySlider.setLabelUpdater(value -> Text.literal("amt: " + value));
                     } else {
-                        noItems = new WLabel("-"+new TranslatableText("mjm.gui.lbl.none").getString()+"-");
+                        noItems = new WLabel(Text.translatable("mjm.gui.lbl.none"));
                     }
                     /*Button for payment submit*/
-                    WButton butpay = new WButton(new TranslatableText("mjm.gui.but.pay"));
+                    WButton butpay = new WButton(Text.translatable("mjm.gui.but.pay"));
                     /* Add modules to the panel */
                     item.add(scalingIcon, 6, 6, 48, 48);
                     item.add(itemNameLabel, 56, 5, lblLen * 6, 12);
@@ -174,7 +174,7 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                         }
                     }
                     else{
-                        item.add(new WLabel("-"+new TranslatableText("mjm.gui.lbl.scbOnly").getString()+"-"), 56, 28);
+                        item.add(new WLabel(Text.translatable("mjm.gui.lbl.scbOnly")), 56, 28);
                     }
                     itemIDLabel.setText(Text.of(String.valueOf(itemData[0])));
                     WLabeledSlider finalPaySlider = paySlider;
@@ -183,22 +183,23 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                         assert finalPaySlider != null;
                         int valueTransmit = finalPaySlider.getValue();
                         int[] dataArr = new int[2];
-                        dataArr[0] = Integer.parseInt((itemIDLabel.getText().asString()));
+                        dataArr[0] = Integer.parseInt(itemIDLabel.getText().getString());
                         dataArr[1] = valueTransmit;
-                        int itemID = Integer.parseInt(itemIDLabel.getText().asString());
+                        int itemID = Integer.parseInt(itemIDLabel.getText().getString());
                         Object[] plOb = data.get(String.valueOf(Registry.ITEM.get(itemID).asItem()));
                         plOb[3] = (int)plOb[3] - dataArr[0];
                         data.put(String.valueOf(Registry.ITEM.get(itemID).asItem()), plOb);
                         PacketByteBuf dataclick = PacketByteBufs.create();
+                        System.out.println("ID: "+dataArr[0]+"| payAmt: "+dataArr[1]);
                         dataclick.writeIntArray(dataArr);
                         ClientPlayNetworking.send(Mcjourneymode.pay_packet, dataclick);
                     });
                     root.setSize(totalWidth+18,126);
-                    WLabel payLbl=new WLabel(new TranslatableText("mjm.gui.lbl.paytounlock"));
+                    WLabel payLbl=new WLabel(Text.translatable("mjm.gui.lbl.paytounlock"));
                     payLbl.setHorizontalAlignment(HorizontalAlignment.CENTER);
                     root.add(payLbl, cellSize, cellSize,root.getWidth(),18);
 
-                    WButton butBack=new WButton(new TranslatableText("mjm.gui.but.Back"));
+                    WButton butBack=new WButton(Text.translatable("mjm.gui.but.Back"));
                     butBack.setOnClick(()-> mc.execute(() -> {
                         ScreenList daScreen = new ScreenList(new ScreenListGui(Config.playerConfigMap, "",perms));
                         MinecraftClient.getInstance().setScreen(daScreen);
@@ -209,14 +210,14 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                 }
 
             }else{
-                WLabel lblEmpty = new WLabel(new TranslatableText("mjm.gui.lbl.noneAvail"));
+                WLabel lblEmpty = new WLabel(Text.translatable("mjm.gui.lbl.noneAvail"));
                 lblEmpty.setColor(textColor_RED.toRgb());
                 root.add(lblEmpty, 1, 1);
                 root.setSize(2,4);
             }
             //root.validate(passThis);
             if (perms) {/*
-                WButton configButton = new WButton(new LiteralText("⚙"));
+                WButton configButton = new WButton(Text.literal("⚙"));
                 configButton.setOnClick(() -> {
                     PacketByteBuf clickData = PacketByteBufs.create();
                     ClientPlayNetworking.send(Mcjourneymode.send_config_req_packet, clickData);

@@ -12,7 +12,7 @@ import com.eternalfragment.mcjourneymode.operators.invManager;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
@@ -22,8 +22,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.registry.Registry;
@@ -33,7 +33,6 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Function;
 
 
 public class Mcjourneymode implements ModInitializer {
@@ -59,6 +58,7 @@ public class Mcjourneymode implements ModInitializer {
     public static Identifier get_single_config_packet=null;
     public static EnvType type;//holds whether mod is loaded in client or server
     public static int permLevel=4;
+
     @Override
     public void onInitialize() {
 
@@ -80,9 +80,10 @@ public class Mcjourneymode implements ModInitializer {
         send_single_config_packet=send_single_config_packet.tryParse("mjm:send_single_config_packet");
         get_single_config_packet=get_single_config_packet.tryParse("mjm:get_single_config_packet");
 
+
         if (Objects.equals(type.toString(), "CLIENT")){
 
-            CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> new Mjm_cmd_give(dispatcher));
+            CommandRegistrationCallback.EVENT.register((dispatcher,registryAccess, dedicated) -> new Mjm_cmd_give(dispatcher));
 
             ClientPlayNetworking.registerGlobalReceiver(sp_dir_packet, (client, handler, buf, pktSnd) -> {
                 worldPath =  Objects.requireNonNull(client.getServer()).getSavePath(WorldSavePath.ROOT).toString().replaceAll("\\.+$","");
@@ -93,8 +94,8 @@ public class Mcjourneymode implements ModInitializer {
                 }
             });
             ClientPlayNetworking.registerGlobalReceiver(send_config_packet, (client, handler, buf, pktSnd) -> {
-                Function<PacketByteBuf, String> keyConsumer = PacketByteBuf::readString;
-                Function<PacketByteBuf, String> valConsumer = PacketByteBuf::readString;
+                PacketByteBuf.PacketReader<String> keyConsumer = PacketByteBuf::readString;
+                PacketByteBuf.PacketReader<String> valConsumer = PacketByteBuf::readString;
                 HashMap<String, String> getMap = new HashMap<>(buf.readMap(keyConsumer, valConsumer));
 
                 Config.configMap= Config.configStoO(getMap);
@@ -102,8 +103,8 @@ public class Mcjourneymode implements ModInitializer {
 
             });
             ClientPlayNetworking.registerGlobalReceiver(send_single_config_packet, (client, handler, buf, pktSnd) -> {
-                Function<PacketByteBuf, String> keyConsumer = PacketByteBuf::readString;
-                Function<PacketByteBuf, String> valConsumer = PacketByteBuf::readString;
+                PacketByteBuf.PacketReader<String> keyConsumer = PacketByteBuf::readString;
+                PacketByteBuf.PacketReader<String> valConsumer = PacketByteBuf::readString;
                 HashMap<String, String> getMap = new HashMap<>(buf.readMap(keyConsumer, valConsumer));
                 HashMap<String, Object[]> single = Config.configStoO(getMap);
                 String openName="";
@@ -126,7 +127,7 @@ public class Mcjourneymode implements ModInitializer {
             ClientPlayNetworking.registerGlobalReceiver(menu_populate_perms, DoSetScreen::doSetScreenPerms);
         }
         if (Objects.equals(type.toString(), "SERVER")){
-            CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> new Mjm_cmd_give(dispatcher));
+            CommandRegistrationCallback.EVENT.register((dispatcher,registryAccess, dedicated) -> new Mjm_cmd_give(dispatcher));
             ServerLifecycleEvents.SERVER_STARTED.register((handler)->{
                 worldPath =  handler.getSavePath(WorldSavePath.ROOT).toString().replaceAll("\\.+$","");
                 try {
@@ -157,7 +158,8 @@ public class Mcjourneymode implements ModInitializer {
                 PacketByteBuf data = PacketByteBufs.create();
                 data.writeMap(transmitData, PacketByteBuf::writeString, PacketByteBuf::writeString);
                 ServerPlayNetworking.send(player, send_single_config_packet, data);
-                }else{System.out.println("OB NULL");}
+                }else{Mcjourneymode.mylogger.atError().log("Config Object Map returned null");
+            }
             }
         });
         ServerPlayNetworking.registerGlobalReceiver(clear_packet,(server,player,handler,buf,pktSnd)->{
@@ -166,7 +168,9 @@ public class Mcjourneymode implements ModInitializer {
                 String itemName = String.valueOf(Registry.ITEM.get(itemID).asItem());
                 itemName = itemName.replaceAll("_", " ").toLowerCase();
                 itemName = WordUtils.capitalizeFully(itemName);
-                player.sendMessage(Text.of(new TranslatableText("mjm.msg.cleared").getString()+" "+cleared+" "+itemName+new TranslatableText("mjm.msg.fromInventory").getString()), false);
+                MutableText txtCleared = Text.translatable("mjm.msg.cleared");
+                MutableText txtFromInv = Text.translatable("mjm.msg.fromInventory");
+                player.sendMessage(txtCleared.append(" "+cleared+" "+itemName).append(txtFromInv), false);
         });
 
         ServerPlayNetworking.registerGlobalReceiver(get_config_packet,  (server, player, handler, buf, pktSnd) -> {
@@ -209,21 +213,29 @@ public class Mcjourneymode implements ModInitializer {
                 String iName = String.valueOf(Registry.ITEM.get(getData[0]).asItem());
                 assert playerFile != null;
                 int[] iDetails = playerFile.get(iName);
+                System.out.println("Item name: "+iName);
                 Object[] configInfo = Config.configMap.get(iName);
                 //iDetails[0] -- unlocked
                 //iDetails[1] -- amt paid
+                System.out.println("Pack Rec'd");
                 if (configInfo != null) {
                     //if the config has the item
+                    System.out.println("config has item");
                     if (((int)configInfo[1] == 1)||((int)configInfo[1] == 3)||((int)configInfo[1] == 4)) {
                         //if the config says its researchable
+                        System.out.println("Item is researchable");
                         if (iDetails != null) {
+                            System.out.println("iDetails: "+iDetails[0]+" "+iDetails[1]+" " );
                             if (iDetails[0] == 0) {
+                                System.out.println("Player still needs it: "+iDetails[1]);
                                 //if the item still needs researched
                                 if (iDetails[1] < (int)configInfo[2]) {
                                     //if player file has contributed LESS than required unlock amt
+                                    System.out.println("configinfo2: "+configInfo[2]);
                                     int maxPayAmt = (int)configInfo[2] - iDetails[1];
                                     int payAmt = Math.min(maxPayAmt, getData[1]);
                                     int dedAmt = invManager.inv_PayItem(handler.getPlayer(), getData[0], payAmt);
+                                    System.out.println("item: "+iName+"  dedAmt: "+dedAmt+"  payAmt: "+payAmt);
                                     PlayerFileManager.writePlayerFile(handler.getPlayer(), iName, dedAmt);
                                 } else {
                                     PlayerFileManager.writePlayerFile(handler.getPlayer(), iName, 0);//do a write to the player file with a 0 count, to trip the update for unlock
@@ -232,9 +244,11 @@ public class Mcjourneymode implements ModInitializer {
                                 Mcjourneymode.mylogger.atError().log("User attempting to send data to server when item already unlocked -- SEND REFRESH SIGNAL");
                             }
                         } else {
+                            System.out.println("Item not in system: ");
                             int maxPayAmt = (int)configInfo[2];
                             int payAmt = Math.min(maxPayAmt, getData[1]);
                             int dedAmt = invManager.inv_PayItem(handler.getPlayer(), getData[0], payAmt);
+                            System.out.println("item: "+iName+"  dedAmt: "+dedAmt+"  payAmt: "+payAmt);
                             PlayerFileManager.writePlayerFile(handler.getPlayer(), iName, dedAmt);
                         }
                     } else {
