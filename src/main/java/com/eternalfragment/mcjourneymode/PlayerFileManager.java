@@ -313,8 +313,6 @@ public class PlayerFileManager {
                             int scoreTarget = (int) itemConfig[5];
                             float mixed = (float) thisScore / scoreTarget;
                             scbPerc = (int) Math.floor(mixed * 100);
-                            System.out.println("Player: "+String.valueOf(user.getDisplayName().getString()+"| Objective: "+user.getScoreboard().getObjective((String) itemConfig[4]).getName()));
-                            System.out.println("Scoreboard ratio: "+ thisScore+" / "+scoreTarget);
                             configData3[6] = scbPerc;
                             if (thisScore >= scoreTarget) {
                                 scoreMet = true;

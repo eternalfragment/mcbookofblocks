@@ -14,17 +14,17 @@ public class CommandFunctions {
                 boolean bl = serverPlayerEntity.getInventory().insertStack(Mcjourneymode.GUI_ITEM.asItem().getDefaultStack());
                 if ((bl) && (emptySlot != -1)) {
                     if (serverPlayerEntity != cmdOriginator) {
-                        cmdOriginator.sendMessage(Text.translatable("mjm.msg.mjmitem.gavePlayer").append(" \"" + serverPlayerEntity.getDisplayName() + "\" ").append(Text.translatable("mjm.msg.mjmitem.jmItem")), false);
+                        cmdOriginator.sendMessage(Text.translatable("mjm.msg.mjmitem.gavePlayer").append(" \"" + serverPlayerEntity.getDisplayName().getString() + "\" ").append(Text.translatable("mjm.msg.mjmitem.jmItem")), false);
                     }
                     serverPlayerEntity.sendMessage(Text.translatable("mjm.msg.mjmitem.youGiven"), false);
                 } else {
                     if (serverPlayerEntity != cmdOriginator) {
-                        cmdOriginator.sendMessage(Text.translatable("mjm.msg.mjmitem.Player").append(" \"" + serverPlayerEntity.getDisplayName() + "\" ").append(Text.translatable("mjm.msg.mjmitem.invFull").getString()), false);
+                        cmdOriginator.sendMessage(Text.translatable("mjm.msg.mjmitem.Player").append(" \"" + serverPlayerEntity.getDisplayName().getString() + "\" ").append(Text.translatable("mjm.msg.mjmitem.invFull")), false);
                     }
                     serverPlayerEntity.sendMessage(Text.translatable("mjm.msg.mjmitem.invFullNotice"), false);
                 }
             } else {
-                cmdOriginator.sendMessage(Text.translatable("mjm.msg.mjmitem.Player").append(" \"" + serverPlayerEntity.getDisplayName() + "\" ").append(Text.translatable("mjm.msg.mjmitem.already").getString()), false);
+                cmdOriginator.sendMessage(Text.translatable("mjm.msg.mjmitem.Player").append(" \"" + serverPlayerEntity.getDisplayName().getString() + "\" ").append(Text.translatable("mjm.msg.mjmitem.already")), false);
             }
         }
     }
