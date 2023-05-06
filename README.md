@@ -90,3 +90,5 @@ This template is available under the MIT license.
 
 ### CURRENT REMARKS
 Most blocks have been added to the default config, however items have not been trial balanced as of yet.
+
+This is a hobby project, originally created for myself and some friends, and as such, programming will be wonky, and updates may be slow.
