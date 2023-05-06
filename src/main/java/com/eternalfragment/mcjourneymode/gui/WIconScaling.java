@@ -44,7 +44,8 @@ public class WIconScaling extends WWidget {
         modelViewMatrices.translate(x, y, 0);
         modelViewMatrices.scale(wscale, hscale, 1);
         RenderSystem.applyModelViewMatrix();
-        renderer.renderInGui(stack, 0, 0);
+        MatrixStack mtx=new MatrixStack();
+        renderer.renderInGui(mtx,stack, 0, 0);
         modelViewMatrices.pop();
         RenderSystem.applyModelViewMatrix();
     }

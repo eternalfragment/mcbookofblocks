@@ -19,14 +19,14 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.WorldSavePath;
-import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.text.WordUtils;
 import org.apache.logging.log4j.LogManager;
 import org.json.simple.parser.ParseException;
@@ -37,7 +37,7 @@ import java.util.*;
 
 public class Mcjourneymode implements ModInitializer {
     public static org.apache.logging.log4j.Logger mylogger = LogManager.getLogger();
-    public static Item GUI_ITEM = new GuiItem(new Item.Settings().group(ItemGroup.MISC).maxCount(1));
+    public static Item GUI_ITEM = new GuiItem(new Item.Settings());
     public static Item InInventoryAlertItem = new MjmInInventoryAlertItem(new Item.Settings().maxCount(0));
     public static String worldPath = "world"; //default setting is 'world' if system is unable to detect world from settings, it will default to this
     public static final String MOD_ID = "mjm";
@@ -63,8 +63,8 @@ public class Mcjourneymode implements ModInitializer {
     public void onInitialize() {
 
         mylogger.atInfo().log("Mod Booting....");
-        Registry.register(Registry.ITEM, new Identifier(Mcjourneymode.MOD_ID, "menu_item"), GUI_ITEM);
-        Registry.register(Registry.ITEM, new Identifier(Mcjourneymode.MOD_ID, "in_inv_alert"), InInventoryAlertItem);
+        Registry.register(Registries.ITEM, new Identifier(Mcjourneymode.MOD_ID, "menu_item"), GUI_ITEM);
+        Registry.register(Registries.ITEM, new Identifier(Mcjourneymode.MOD_ID, "in_inv_alert"), InInventoryAlertItem);
         type = FabricLoader.getInstance().getEnvironmentType();
         give_packet =  give_packet.tryParse("mjm:process_give");
         give_packet_single=give_packet_single.tryParse("mjm:process_give_single");
@@ -82,7 +82,6 @@ public class Mcjourneymode implements ModInitializer {
 
 
         if (Objects.equals(type.toString(), "CLIENT")){
-
             CommandRegistrationCallback.EVENT.register((dispatcher,registryAccess, dedicated) -> new Mjm_cmd_give(dispatcher));
 
             ClientPlayNetworking.registerGlobalReceiver(sp_dir_packet, (client, handler, buf, pktSnd) -> {
@@ -165,7 +164,7 @@ public class Mcjourneymode implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(clear_packet,(server,player,handler,buf,pktSnd)->{
                 int itemID=buf.readInt();
                 int cleared=invManager.inv_clearItem(player,itemID);
-                String itemName = String.valueOf(Registry.ITEM.get(itemID).asItem());
+                String itemName = String.valueOf(Registries.ITEM.get(itemID).asItem());
                 itemName = itemName.replaceAll("_", " ").toLowerCase();
                 itemName = WordUtils.capitalizeFully(itemName);
                 MutableText txtCleared = Text.translatable("mjm.msg.cleared");
@@ -210,7 +209,7 @@ public class Mcjourneymode implements ModInitializer {
             int[] getData = buf.readIntArray();
             try {
                 HashMap<String, int[]> playerFile = PlayerFileManager.getPlayerFile(handler.getPlayer());
-                String iName = String.valueOf(Registry.ITEM.get(getData[0]).asItem());
+                String iName = String.valueOf(Registries.ITEM.get(getData[0]).asItem());
                 assert playerFile != null;
                 int[] iDetails = playerFile.get(iName);
                 System.out.println("Item name: "+iName);

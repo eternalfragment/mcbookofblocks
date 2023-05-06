@@ -10,9 +10,10 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.TagKey;
 
 import java.util.Collections;
 import java.util.List;
@@ -58,9 +59,10 @@ public class WJMItemAlert extends WWidget {
 
         MinecraftClient mc = MinecraftClient.getInstance();
         ItemRenderer renderer = mc.getItemRenderer();
-        renderer.zOffset = 110f;
-        renderer.renderInGui(items.get(current), x + getWidth() / 2 - 9, y + getHeight() / 2 - 9);
-        renderer.zOffset = 0f;
+        //renderer.zOffset = 110f;
+        MatrixStack mtx=new MatrixStack();
+        renderer.renderInGui(mtx, items.get(current), x + getWidth() / 2 - 9, y + getHeight() / 2 - 9);
+        //renderer.zOffset = 0f;
     }
 
     public int getDuration() {
@@ -91,7 +93,7 @@ public class WJMItemAlert extends WWidget {
 
     private static List<ItemStack> getRenderStacks(TagKey<? extends ItemConvertible> tag) {
         ImmutableList.Builder<ItemStack> builder = ImmutableList.builder();
-        Registry<ItemConvertible> registry = (Registry<ItemConvertible>) Registry.REGISTRIES.get(tag.registry().getValue());
+        Registry<ItemConvertible> registry = (Registry<ItemConvertible>) Registries.REGISTRIES.get(tag.registry().getValue());
 
         for (RegistryEntry<ItemConvertible> item : registry.getOrCreateEntryList((TagKey<ItemConvertible>) tag)) {
             builder.add(new ItemStack((ItemConvertible) item));

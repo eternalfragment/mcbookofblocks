@@ -1,6 +1,6 @@
 # MC Journey Mode
 
-REQUIREMENTS: Fabric API 0.55.1+1.19 | MC 1.19
+REQUIREMENTS: Fabric API 0.80.0+1.19.4 | MC 1.19.4
 
 Would you like to donate as a thank you for this mod?
 
@@ -33,7 +33,7 @@ The default config that generates includes about 150 items and basic building ma
 
 ## Config
 With the JourneyMode screen up, those with permissions (perm lvl 4 required / OP), will see a gear in the top right of the JourneyMode screen.
-Clicking on this button will show the config settings for the mod. Within these settings you can add new items to the options, as well as edit existing items.
+Clicking on this button will open a screen to add new items. NOTE: If you add an item that already exists in the config, the new options will overwrite the previous options.
 
 You can also right-click any item within the JourneyMode item screen to open the options for a single item.
 
@@ -53,7 +53,7 @@ Saving the config will instantly adjust those options in-game, and save it to th
 An example for adding a scoreboard objective. In game, do the command "/scoreboard objectives add Zombie_Kill_Tracker minecraft.killed:minecraft.zombie
 ". This will create a scoreboard objective called 'Zombie_Kill_Tracker', which will track each time players kill zombies. You would enter 'Zombie_Kill_Tracker' into the scoreboard name, and set the goal to be whatever you wanted.
 
---NOTE: A player will unlock an item when the criteria is met, and they open the JourneyMode menu. Changing the goals to unlock the item may not remove the unlock from players who already unlocked it.
+--NOTE: A player will unlock an item when the criteria is met, and they open the JourneyMode menu. Changing the goals to unlock the item will not remove the unlock from players who already unlocked it.
 
 ## Usage
 
@@ -87,4 +87,6 @@ There is a small datapack that provides a slight glow to the JourneyMode item wh
 ## License
 
 This template is available under the MIT license.
- 
+
+### CURRENT REMARKS
+Most blocks have been added to the default config, however items have not been trial balanced as of yet.

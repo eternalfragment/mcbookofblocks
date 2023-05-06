@@ -12,10 +12,11 @@ import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.tag.TagKey;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
@@ -66,9 +67,11 @@ public class WJMItem extends WWidget {
 
         MinecraftClient mc = MinecraftClient.getInstance();
         ItemRenderer renderer = mc.getItemRenderer();
-        renderer.zOffset = 100f;
-        renderer.renderInGui(items.get(current), x + getWidth() / 2 - 9, y + getHeight() / 2 - 9);
-        renderer.zOffset = 0f;
+
+        //renderer.zOffset = 100f;
+        MatrixStack mtx=new MatrixStack();
+        renderer.renderInGui(mtx,items.get(current), x + getWidth() / 2 - 9, y + getHeight() / 2 - 9);
+        //renderer.zOffset = 0f;
     }
 
     public int getDuration() {
@@ -99,7 +102,8 @@ public class WJMItem extends WWidget {
 
     private static List<ItemStack> getRenderStacks(TagKey<? extends ItemConvertible> tag) {
         ImmutableList.Builder<ItemStack> builder = ImmutableList.builder();
-        Registry<ItemConvertible> registry = (Registry<ItemConvertible>) Registry.REGISTRIES.get(tag.registry().getValue());
+        Registry<ItemConvertible> registry = (Registry<ItemConvertible>) Registries.REGISTRIES.get(tag.registry().getValue());
+
 
         for (RegistryEntry<ItemConvertible> item : registry.getOrCreateEntryList((TagKey<ItemConvertible>) tag)) {
             builder.add(new ItemStack((ItemConvertible) item));
@@ -132,10 +136,11 @@ public class WJMItem extends WWidget {
     }
     @Environment(EnvType.CLIENT)
     @Override
-    public void onKeyPressed(int ch, int key, int modifiers) {
+    public InputResult onKeyPressed(int ch, int key, int modifiers) {
         if (isActivationKey(ch)) {
             onClick(0, 0, 0);
         }
+        return null;
     }
     @Nullable
     public Runnable getOnClick() {

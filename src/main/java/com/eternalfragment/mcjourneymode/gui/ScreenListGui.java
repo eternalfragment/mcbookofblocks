@@ -18,10 +18,9 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
-import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.Arrays;
@@ -206,18 +205,24 @@ public class ScreenListGui extends LightweightGuiDescription{
                                 //Copy the item data to master list
                                 tallObjects[cd]=new ObjectStats();
 
-                                ItemGroup grp = (Registry.ITEM.get((int) itemData[0]).asItem().getGroup());
                                 String categoryName= "Misc";
-                                if (grp!=null){
-                                    categoryName = grp.getName();
+                                for (int tabIt=0;tabIt<Config.tabNames.length;tabIt++){
+                                    if (Config.tabNames[tabIt].indexOf(name.charAt(0))!=-1){
+                                        //if the first letter is within the category list set that as the name
+                                        categoryName=Config.tabNames[tabIt];
+                                    }
                                 }
+                                categoryName=categoryName.replace("_"," ");
+                                categoryName=WordUtils.capitalizeFully(categoryName);
+
+
                                 int catVal=0;
                                 //if the item is unlocked, add to unlocked array
                                 if ((int) itemData[4] == 1) {
                                     catVal=1;
                                     ud++;
                                     ttd++;
-                                } else if ((player.getInventory().count(Registry.ITEM.get((int) itemData[0]).asItem()) > 0) && (((int) itemData[1] == 1) || ((int) itemData[1] == 3) || ((int) itemData[1] == 4))) {
+                                } else if ((player.getInventory().count(Registries.ITEM.get((int) itemData[0]).asItem()) > 0) && (((int) itemData[1] == 1) || ((int) itemData[1] == 3) || ((int) itemData[1] == 4))) {
                                     //if the player has the item in their inventory, and the item is required in the research status
                                     catVal=2;
                                     pd++;
@@ -295,7 +300,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                             ObjectStats thisObject = allObjects[ccd];
                             itemType=thisObject.getCategory();
                             boolean showItem = true;
-                            String name = "" + Registry.ITEM.get(thisObject.getItemID()).asItem().getName();
+                            String name = "" + Registries.ITEM.get(thisObject.getItemID()).asItem().getName();
                             if (name=="zombie_spawn_egg"){
                                 System.out.println("SPAWN EGG FOUND");
                                 //REMOVE THIS SECTION ONCE TESTING DONE
@@ -307,7 +312,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                 showItem = false;
                             }
 
-                            String itemName = String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem());
+                            String itemName = String.valueOf(Registries.ITEM.get(thisObject.getItemID()).asItem());
                             itemName = itemName.replaceAll("_", " ").toLowerCase();
 
 
@@ -321,7 +326,7 @@ public class ScreenListGui extends LightweightGuiDescription{
 
                             if (showItem) {
                                 generatedItems++;
-                                int itemCount = player.getInventory().count(Registry.ITEM.get(thisObject.getItemID()).asItem());
+                                int itemCount = player.getInventory().count(Registries.ITEM.get(thisObject.getItemID()).asItem());
                                 jmItemSlot[it] = new WGridPanel();
                                 jmItemSlot[it].setBackgroundPainter(contents);
                                 jmItemSlot[it].setInsets(itemInset);
@@ -336,7 +341,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                     case 1:
                                         //Unlocked panel
                                         panelUnlocked.remove(lblUnlocked);
-                                        jmItem[it] = new WJMItem(Registry.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
+                                        jmItem[it] = new WJMItem(Registries.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
                                             @Environment(EnvType.CLIENT)
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
@@ -361,7 +366,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         jmItem[it].setOnRightClick(() -> {
                                             if (perms) {
                                                 PacketByteBuf clickData = PacketByteBufs.create();
-                                                clickData.writeString(String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()));
+                                                clickData.writeString(String.valueOf(Registries.ITEM.get(thisObject.getItemID()).asItem()));
                                                 ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
                                             }
                                         });
@@ -385,7 +390,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                     case 2:
                                         //Potential panel
                                         panelPotential.remove(lblPotential);
-                                        jmItem[it] = new WJMItem(Registry.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
+                                        jmItem[it] = new WJMItem(Registries.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
                                             @Environment(EnvType.CLIENT)
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
@@ -398,7 +403,7 @@ public class ScreenListGui extends LightweightGuiDescription{
 
                                         jmItem[it].setOnClick(() -> {
                                             mc.execute(() -> {
-                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()),passThis));
+                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registries.ITEM.get(thisObject.getItemID()).asItem()),passThis));
                                                 MinecraftClient.getInstance().setScreen(daScreen);
                                             });
 
@@ -406,7 +411,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         jmItem[it].setOnRightClick(() -> {
                                             if (perms) {
                                                 PacketByteBuf clickData = PacketByteBufs.create();
-                                                clickData.writeString(String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()));
+                                                clickData.writeString(String.valueOf(Registries.ITEM.get(thisObject.getItemID()).asItem()));
                                                 ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
                                             }
                                         });
@@ -420,7 +425,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                     case 3:
                                         //Progress panel
                                         panelProgress.remove(lblProgress);
-                                        jmItem[it] = new WJMItem(Registry.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
+                                        jmItem[it] = new WJMItem(Registries.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
                                             @Environment(EnvType.CLIENT)
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
@@ -434,7 +439,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         };
                                         jmItem[it].setOnClick(() -> {
                                             mc.execute(() -> {
-                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()),passThis));
+                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registries.ITEM.get(thisObject.getItemID()).asItem()),passThis));
                                                 MinecraftClient.getInstance().setScreen(daScreen);
                                             });
 
@@ -442,7 +447,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         jmItem[it].setOnRightClick(() -> {
                                             if (perms) {
                                                 PacketByteBuf clickData = PacketByteBufs.create();
-                                                clickData.writeString(String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()));
+                                                clickData.writeString(String.valueOf(Registries.ITEM.get(thisObject.getItemID()).asItem()));
                                                 ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
                                             }
                                         });
@@ -457,7 +462,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                     case 4:
                                         //All panel
                                         panelAll.remove(lblAll);
-                                        jmItem[it] = new WJMItem(Registry.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
+                                        jmItem[it] = new WJMItem(Registries.ITEM.get(thisObject.getItemID()).asItem().getDefaultStack()) {
                                             @Environment(EnvType.CLIENT)
                                             @Override
                                             public void addTooltip(TooltipBuilder tooltip) {
@@ -471,7 +476,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         };
                                         jmItem[it].setOnClick(() -> {
                                             mc.execute(() -> {
-                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()),passThis));
+                                                ScreenList daScreen = new ScreenList(new ScreenSingleGui(Config.playerConfigMap, "",perms,String.valueOf(Registries.ITEM.get(thisObject.getItemID()).asItem()),passThis));
                                                 MinecraftClient.getInstance().setScreen(daScreen);
                                             });
 
@@ -479,7 +484,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                                         jmItem[it].setOnRightClick(() -> {
                                             if (perms) {
                                                 PacketByteBuf clickData = PacketByteBufs.create();
-                                                clickData.writeString(String.valueOf(Registry.ITEM.get(thisObject.getItemID()).asItem()));
+                                                clickData.writeString(String.valueOf(Registries.ITEM.get(thisObject.getItemID()).asItem()));
                                                 ClientPlayNetworking.send(Mcjourneymode.send_single_config_req_packet, clickData);
                                             }
                                         });

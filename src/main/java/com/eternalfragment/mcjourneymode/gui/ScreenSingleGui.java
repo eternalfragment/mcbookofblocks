@@ -20,10 +20,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.HashMap;
@@ -62,7 +62,7 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                 Object[] itemData = data.get(singleName);
                 //NEW ITEM
                 assert player != null;
-                int itemCount = player.getInventory().count(Registry.ITEM.get((int)itemData[0]).asItem());
+                int itemCount = player.getInventory().count(Registries.ITEM.get((int)itemData[0]).asItem());
                 WPlainPanel item;
                 WIconScaling scalingIcon;
                 WLabel itemNameLabel;
@@ -75,14 +75,14 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                     item = new WPlainPanel();
                     item.setBackgroundPainter(itemSlot);
                     /* Item Image */
-                    Item regItem = Registry.ITEM.get((int) itemData[0]).asItem();
+                    Item regItem = Registries.ITEM.get((int) itemData[0]).asItem();
                     if (regItem.toString() == null) {
-                        regItem = Registry.ITEM.get(1).asItem();
+                        regItem = Registries.ITEM.get(1).asItem();
                     }
                     scalingIcon = new WIconScaling(new ItemStack(regItem));
                     scalingIcon.setSize(48, 48);
                     /* Item Name */
-                    String itemName = String.valueOf(Registry.ITEM.get((int) itemData[0]).asItem());
+                    String itemName = String.valueOf(Registries.ITEM.get((int) itemData[0]).asItem());
                     itemName = itemName.replaceAll("_", " ").toLowerCase();
                     itemName = WordUtils.capitalizeFully(itemName);
                     itemNameLabel = new WLabel(Text.of(itemName));
@@ -186,9 +186,9 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                         dataArr[0] = Integer.parseInt(itemIDLabel.getText().getString());
                         dataArr[1] = valueTransmit;
                         int itemID = Integer.parseInt(itemIDLabel.getText().getString());
-                        Object[] plOb = data.get(String.valueOf(Registry.ITEM.get(itemID).asItem()));
+                        Object[] plOb = data.get(String.valueOf(Registries.ITEM.get(itemID).asItem()));
                         plOb[3] = (int)plOb[3] - dataArr[0];
-                        data.put(String.valueOf(Registry.ITEM.get(itemID).asItem()), plOb);
+                        data.put(String.valueOf(Registries.ITEM.get(itemID).asItem()), plOb);
                         PacketByteBuf dataclick = PacketByteBufs.create();
                         System.out.println("ID: "+dataArr[0]+"| payAmt: "+dataArr[1]);
                         dataclick.writeIntArray(dataArr);

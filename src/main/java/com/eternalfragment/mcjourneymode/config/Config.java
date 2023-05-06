@@ -23,6 +23,7 @@ public class Config {
     public static HashMap<String, Object[]> configMap = new HashMap<String, Object[]>();
     //Global config map structure ['name'][0-ITEM ID, 1-researchable,2-req_amt,3-give-amt,4-scb_obj,5-scb_amt];
     private static FileWriter file;
+    public static String[] tabNames={"ABCD","EFGH","IJKL","MNOP","QRST","UVW","XYZ"};
     public static boolean copyContent(File a, File b) throws Exception {
         try (FileInputStream in = new FileInputStream(a); FileOutputStream out = new FileOutputStream(b)) {
             int n;

@@ -12,12 +12,10 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
-import net.minecraft.util.registry.Registry;
-import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -73,11 +71,10 @@ public class ConfigScreen {
         general.addEntry(entryBuilder.startTextDescription(Text.translatable("mjm.config.menu.addItem")).build());
         general.addEntry(entryBuilder.startDropdownMenu(Text.translatable("mjm.config.menu.item"),  DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(Items.DIRT))
                 .setDefaultValue(Items.DIRT) // You should define a default value here
-                .setSelections(Registry.ITEM.stream().collect(Collectors.toSet()))
+                .setSelections(Registries.ITEM.stream().collect(Collectors.toSet()))
                 .setSaveConsumer(item -> addItem.set(item)) // You should save it here, cast the item because Java is "smart"
                 .build());
         //Researchable Option
-
         general.addEntry(entryBuilder.startStringDropdownMenu(Text.translatable("mjm.config.menu.researchable"), "1 - "+Text.translatable("mjm.config.menu.research.pay").getString())
                 .setDefaultValue("1 - "+Text.translatable("mjm.config.menu.research.pay").getString())
                 .setSelections(resSelections)
@@ -111,68 +108,35 @@ public class ConfigScreen {
         }
         nameArray = Stream.of(nameArray).sorted().toArray(String[]::new);
         for (int i=0;i<nameArray.length;i++){
-            int finali = i;
-            String object =nameArray[finali];
+
+            String object =nameArray[i];
             Object[] ob = localConfigMap.get(object);
-            ItemGroup grp = Registry.ITEM.get((Integer) ob[0]).getGroup();
-            String categoryName= "Misc";
-            if (grp!=null){
-                categoryName=grp.getName();
-            }
-            categoryName=categoryName.replace("_"," ");
-            categoryName=WordUtils.capitalizeFully(categoryName);
-            ConfigCategory thisCategory = builder.getOrCreateCategory(Text.of(categoryName));
             //Item Option
-            configItem[finali] = new AtomicReference<>(Registry.ITEM.get((Integer) ob[0]));
-            String cleanObject = object;
-            cleanObject=cleanObject.replace("_"," ");
-            cleanObject=WordUtils.capitalizeFully(cleanObject);
-            thisCategory.addEntry(entryBuilder.startTextDescription(Text.of("              "+cleanObject)).build());
-            thisCategory.addEntry(entryBuilder.startDropdownMenu(Text.translatable("mjm.config.menu.item"),  DropdownMenuBuilder.TopCellElementBuilder.ofItemObject(configItem[finali].get()))
-                    .setDefaultValue(Registry.ITEM.get((Integer) ob[0])) // You should define a default value here
-                    .setSelections(Registry.ITEM.stream().collect(Collectors.toSet()))
-                    .setSaveConsumer(item -> configItem[finali].set((Item) item)) // You should save it here, cast the item because Java is "smart"
-                    .build());
-            //Researchable Option
-            configResearchable[finali] = new AtomicReference(ob[1]);
-            thisCategory.addEntry(entryBuilder.startStringDropdownMenu(Text.translatable("mjm.config.menu.researchable"), Integer.toString((Integer) ob[1]))
-                    .setDefaultValue(Integer.toString((Integer) ob[1]))
-                    .setSelections(resSelections)
-                    .setSaveConsumer(result->configResearchable[finali].set(result))
-                    .build());
-            //Research Amount
-            configReqAmt[finali]=new AtomicReference(ob[2]);
-            int reqAmt =configReqAmt[finali].get();
-            thisCategory.addEntry(entryBuilder.startIntField(Text.translatable("mjm.config.menu.resAmt"), reqAmt)
-                    .setDefaultValue(reqAmt)
-                    .setSaveConsumer(result->configReqAmt[finali].set(result))
-                    .build());
-            //Give Amount
-            configGiveAmt[finali]=new AtomicReference(ob[3]);
-            int giveAmt=configGiveAmt[finali].get();
-            thisCategory.addEntry(entryBuilder.startIntSlider(Text.translatable("mjm.config.menu.giveAmt"), giveAmt,1,64)
-                    .setDefaultValue(giveAmt)
-                    .setSaveConsumer(result->configGiveAmt[finali].set(result))
-                    .build());
-            //Scoreboard Objective
-            configScbObj[finali]=new AtomicReference(ob[4]);
-            String scbObj=configScbObj[finali].get();
-            thisCategory.addEntry(entryBuilder.startStrField(Text.translatable("mjm.config.menu.scbName"),scbObj)
-                    .setDefaultValue(scbObj)
-                    .setSaveConsumer(result->configScbObj[finali].set(result))
-                    .build());
-            //Scoreboard Amount
-            configScbAmt[finali]=new AtomicReference(ob[5]);
-            int scbAmt =configScbAmt[finali].get();
-            thisCategory.addEntry(entryBuilder.startIntField(Text.translatable("mjm.config.menu.scbGoal"), scbAmt)
-                    .setDefaultValue(scbAmt)
-                    .setSaveConsumer(result->configScbAmt[finali].set(result))
-                    .build());
-            thisCategory.addEntry(entryBuilder.startTextDescription(Text.of("              ")).build());
+            configItem[i] = new AtomicReference<>(Registries.ITEM.get((Integer) ob[0]));
+            configResearchable[i] = new AtomicReference(ob[1]);
+            configReqAmt[i]=new AtomicReference(ob[2]);
+            configGiveAmt[i]=new AtomicReference(ob[3]);
+            configScbObj[i]=new AtomicReference(ob[4]);
+            configScbAmt[i]=new AtomicReference(ob[5]);
         }
         builder.setSavingRunnable(()->{
             //Storing data in string map, only for packet transmission (cannot transmit object[]-- will convert on other side)
             HashMap<String, String> tempConfigMap = new HashMap<String, String>();
+            //existing config changes
+            for (int s=0; s<numOptions; s++){
+                Object[] data=new Object[6];
+                String key=configItem[s].get().toString();
+                data[0]=GetItemIdFromName.getItemIdFromName(key);
+                data[1]=configResearchable[s].get();
+                data[2]=Math.abs(Integer.parseInt(configReqAmt[s].get().toString().replaceAll("[^0-9]", "")));
+                data[3]=Math.abs(Integer.parseInt(configGiveAmt[s].get().toString().replaceAll("[^0-9]", "")));
+                data[4]=configScbObj[s].get().replaceAll("[^a-zA-Z0-9.+_-]", "");
+                data[5]=Math.abs(Integer.parseInt(configScbAmt[s].get().toString().replaceAll("[^0-9]", "")));
+                String strData=data[0]+"|"+data[1]+"|"+data[2]+"|"+data[3]+"|"+data[4]+"|"+data[5];
+                if (configResearchable[s].get()!="0"){
+                    tempConfigMap.put(key,strData);
+                }
+            }
             //New Config
                 Object[] newData=new Object[6];
                 String newKey=addItem.get().toString();
@@ -202,37 +166,7 @@ public class ConfigScreen {
                 if (newResearchInt!=0){
                     tempConfigMap.put(newKey,newStrData);
                 }
-            //existing config changes
-            for (int s=0; s<numOptions; s++){
-                Object[] data=new Object[6];
-                String key=configItem[s].get().toString();
-                int researchInt = 0;
-                if (configResearchable[s].get().contains("0")){
-                    researchInt=0;
-                }
-                if (configResearchable[s].get().contains("1")){
-                    researchInt=1;
-                }
-                if (configResearchable[s].get().contains("2")){
-                    researchInt=2;
-                }
-                if (configResearchable[s].get().contains("3")){
-                    researchInt=3;
-                }
-                if (configResearchable[s].get().contains("4")){
-                    researchInt=4;
-                }
-                data[0]=GetItemIdFromName.getItemIdFromName(key);
-                data[1]=researchInt;
-                data[2]=Math.abs(Integer.parseInt(configReqAmt[s].get().toString().replaceAll("[^0-9]", "")));
-                data[3]=Math.abs(Integer.parseInt(configGiveAmt[s].get().toString().replaceAll("[^0-9]", "")));
-                data[4]=configScbObj[s].get().replaceAll("[^a-zA-Z0-9.+_-]", "");
-                data[5]=Math.abs(Integer.parseInt(configScbAmt[s].get().toString().replaceAll("[^0-9]", "")));
-                String strData=data[0]+"|"+data[1]+"|"+data[2]+"|"+data[3]+"|"+data[4]+"|"+data[5];
-                if (researchInt!=0){
-                    tempConfigMap.put(key,strData);
-                }
-            }
+
             PacketByteBuf data = PacketByteBufs.create();
             data.writeMap(tempConfigMap, PacketByteBuf::writeString, PacketByteBuf::writeString);
             ClientPlayNetworking.send(Mcjourneymode.get_config_packet, data);//send the config data set here to the server for parsing/saving.
