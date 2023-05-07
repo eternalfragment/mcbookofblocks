@@ -8,7 +8,7 @@ Would you like to donate as a thank you for this mod?
 
 Need support? Join the discord
 
-![Discord Banner 2](https://discordapp.com/api/guilds/965017631855902810/widget.png?style=banner2)
+[![Discord Banner 2](https://discordapp.com/api/guilds/965017631855902810/widget.png?style=banner2)](https://discord.gg/KJZyqpJf3T)
 
 ## Introduction
 
