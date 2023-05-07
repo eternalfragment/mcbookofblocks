@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "mjm",
+  "id": "bob",
   "version": "${version}",
 
-  "name": "MC Journey Mode",
-  "description": "Journey mode.... in Minecraft!",
+  "name": "MC Book of Blocks",
+  "description": "Terraria's Journey mode.... in Minecraft!",
   "authors": [
     "EternalFragment"
   ],
@@ -14,12 +14,12 @@
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/mjm/icon.png",
+  "icon": "assets/bob/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.eternalfragment.mcjourneymode.Mcjourneymode"
+      "com.eternalfragment.bookofblocks.Bookofblocks"
     ]
   },
   "mixins": [

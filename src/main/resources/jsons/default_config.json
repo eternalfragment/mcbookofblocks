@@ -333,7 +333,7 @@
       "Researchable": 2,
       "req_amt": 0,
       "give_amt": 12,
-      "scb_obj": "mjmVillagerKill",
+      "scb_obj": "bobVillagerKill",
       "scb_amt": 20
     },
     {
@@ -365,7 +365,7 @@
       "Researchable": 2,
       "req_amt": 512,
       "give_amt": 1,
-      "scb_obj": "mjmZombieKill",
+      "scb_obj": "bobZombieKill",
       "scb_amt": 30
     },
     {
