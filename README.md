@@ -7,6 +7,7 @@ Would you like to donate as a thank you for this mod?
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y8VAGKEDWKDGQ)
 
 Need support? Join the discord
+
 ![Discord Banner 2](https://discordapp.com/api/guilds/965017631855902810/widget.png?style=banner2)
 
 ## Introduction
