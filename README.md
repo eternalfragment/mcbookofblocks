@@ -1,4 +1,4 @@
-# MC Journey Mode
+# MC Book of Blocks
 
 REQUIREMENTS: Fabric API 0.80.0+1.19.4 | MC 1.19.4
 
