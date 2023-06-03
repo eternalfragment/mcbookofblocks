@@ -89,6 +89,9 @@ Once a player completes the requirements to unlock the item, it will be unlocked
 
 This template is available under the MIT license.
 
+###Known Incompatibilities
+* Essential.gg Mod System -- Will prevent client from connecting to a host using Essential's built in system
+
 ### CURRENT REMARKS
 Most blocks have been added to the default config, however items have not been trial balanced as of yet.
 
