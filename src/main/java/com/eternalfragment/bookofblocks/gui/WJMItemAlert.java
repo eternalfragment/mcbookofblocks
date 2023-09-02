@@ -5,9 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.cottonmc.cotton.gui.widget.WWidget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -51,7 +49,8 @@ public class WJMItemAlert extends WWidget {
             current = (current + 1) % items.size();
         }
     }
-
+/*
+//1.19.4 code:
     @Environment(EnvType.CLIENT)
     @Override
     public void paint(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
@@ -63,7 +62,14 @@ public class WJMItemAlert extends WWidget {
         MatrixStack mtx=new MatrixStack();
         renderer.renderInGui(mtx, items.get(current), x + getWidth() / 2 - 9, y + getHeight() / 2 - 9);
         //renderer.zOffset = 0f;
+    }*/
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void paint(DrawContext context, int x, int y, int mouseX, int mouseY) {
+        RenderSystem.enableDepthTest();
+        context.drawItemWithoutEntity(items.get(current), x + getWidth() / 2 - 8, y + getHeight() / 2 - 8);
     }
+
 
     public int getDuration() {
         return duration;

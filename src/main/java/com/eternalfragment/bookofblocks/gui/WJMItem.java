@@ -7,9 +7,8 @@ import io.github.cottonmc.cotton.gui.widget.data.InputResult;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -60,6 +59,9 @@ public class WJMItem extends WWidget {
         }
     }
 
+
+    /*
+    //1.19.4 code::
     @Environment(EnvType.CLIENT)
     @Override
     public void paint(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
@@ -72,6 +74,12 @@ public class WJMItem extends WWidget {
         MatrixStack mtx=new MatrixStack();
         renderer.renderInGui(mtx,items.get(current), x + getWidth() / 2 - 9, y + getHeight() / 2 - 9);
         //renderer.zOffset = 0f;
+    }*/
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void paint(DrawContext context, int x, int y, int mouseX, int mouseY) {
+        RenderSystem.enableDepthTest();
+        context.drawItemWithoutEntity(items.get(current), x + getWidth() / 2 -8, y + getHeight() / 2 -8);
     }
 
     public int getDuration() {

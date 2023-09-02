@@ -107,7 +107,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                 static void generatePanels(HashMap<String, Object[]> newData, String FilterTxt, WScrollPanel[] wrapContents, WGridPanel root, GuiDescription passThis, boolean perms) {
                     //TODO: establish mod's general config passing to this method for proper generation? or.. pass to parent method to generate at window open
                     root.remove(wrapContents[0]);
-                    int jmItemSize = 20;
+                    int jmItemSize = 24;
                     Config.playerConfigMap = newData;
                     String filterCheck = FilterTxt.replaceAll(" ", "").toLowerCase();
                     if (!(filterCheck.length() > 0)) {
@@ -129,8 +129,8 @@ public class ScreenListGui extends LightweightGuiDescription{
                     root.setInsets(Insets.ROOT_PANEL);
                     WGridPanel myTallPanel = new WGridPanel(jmItemSize);
                     WScrollPanel rem_scrollPanel = new WScrollPanel(myTallPanel);
-                    int scrollW = (root.getWidth() / 18) - 2;
-                    int scrollH = (root.getHeight() / 18) - 2;
+                    int scrollW = (root.getWidth() / 16) - 2;
+                    int scrollH = (root.getHeight() / 18) - 3;
                     rem_scrollPanel.setSize(scrollW, scrollH);
                     rem_scrollPanel.setScrollingHorizontally(TriState.FALSE);
                     rem_scrollPanel.setScrollingVertically(TriState.TRUE);
@@ -167,7 +167,7 @@ public class ScreenListGui extends LightweightGuiDescription{
                         WLabel lblAll=new WLabel(Text.translatable("bob.gui.lbl.noDisplay"));
                         lblAll.setColor(textColor_RED.toRgb());
                         panelAll.add(lblAll,0,0);
-                        int panelMaxW = (int) Math.floor((scrollW * 18) / 20) - 2;
+                        int panelMaxW = (int) Math.floor((scrollW * 18) / jmItemSize) - 2;
                         int[] rowTracker;
                         int it = 0;
                         int currentRow = 0;

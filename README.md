@@ -1,6 +1,6 @@
 # MC Book of Blocks
 
-REQUIREMENTS: Fabric API 0.80.0+1.19.4 | MC 1.19.4
+REQUIREMENTS: Fabric API 0.87.0+1.20.1 | MC 1.20.1
 
 Would you like to donate as a thank you for this mod?
 

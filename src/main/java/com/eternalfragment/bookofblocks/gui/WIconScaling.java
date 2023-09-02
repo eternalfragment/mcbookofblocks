@@ -4,8 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.cottonmc.cotton.gui.widget.WWidget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
@@ -28,7 +27,8 @@ public class WIconScaling extends WWidget {
     public void setSize(int x, int y) {
         super.setSize(x, y);
     }
-
+    /*
+    //1.19.4 code:
     @Environment(EnvType.CLIENT)
     @Override
     public void paint(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
@@ -48,5 +48,23 @@ public class WIconScaling extends WWidget {
         renderer.renderInGui(mtx,stack, 0, 0);
         modelViewMatrices.pop();
         RenderSystem.applyModelViewMatrix();
+    }
+    */
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void paint(DrawContext context, int x, int y, int mouseX, int mouseY) {
+        RenderSystem.enableDepthTest();
+        int wsize = getWidth();
+        int hsize = getHeight();
+        float wscale = wsize != 16 ? ((float) wsize / 16f) : 1f;
+        float hscale = hsize != 16 ? ((float) hsize / 16f) : 1f;
+        MatrixStack matrices = context.getMatrices();
+        matrices.push();
+        matrices.translate(x, y, 0);
+        matrices.scale(wscale, hscale, 1);
+        context.drawItemWithoutEntity(stack, 0, 0);
+        matrices.pop();
+
+
     }
 }
