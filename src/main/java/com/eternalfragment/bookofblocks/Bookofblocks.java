@@ -33,6 +33,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class Bookofblocks implements ModInitializer {
@@ -79,7 +80,7 @@ public class Bookofblocks implements ModInitializer {
         send_config_packet = send_config_packet.tryParse("bob:send_config_packet");
         send_single_config_packet=send_single_config_packet.tryParse("bob:send_single_config_packet");
         get_single_config_packet=get_single_config_packet.tryParse("bob:get_single_config_packet");
-
+        AtomicBoolean payPacketStatus = new AtomicBoolean(false);
 
         if (Objects.equals(type.toString(), "CLIENT")){
             CommandRegistrationCallback.EVENT.register((dispatcher,registryAccess, dedicated) -> new Bob_cmd_give(dispatcher));
@@ -213,49 +214,56 @@ public class Bookofblocks implements ModInitializer {
                 String iName = String.valueOf(Registries.ITEM.get(getData[0]).asItem());
                 assert playerFile != null;
                 int[] iDetails = playerFile.get(iName);
-                System.out.println("Item name: "+iName);
+                //System.out.println("Item name: " + iName);
                 Object[] configInfo = Config.configMap.get(iName);
                 //iDetails[0] -- unlocked
                 //iDetails[1] -- amt paid
                 System.out.println("Pack Rec'd");
-                if (configInfo != null) {
-                    //if the config has the item
-                    System.out.println("config has item");
-                    if (((int)configInfo[1] == 1)||((int)configInfo[1] == 3)||((int)configInfo[1] == 4)) {
-                        //if the config says its researchable
-                        System.out.println("Item is researchable");
-                        if (iDetails != null) {
-                            System.out.println("iDetails: "+iDetails[0]+" "+iDetails[1]+" " );
-                            if (iDetails[0] == 0) {
-                                System.out.println("Player still needs it: "+iDetails[1]);
-                                //if the item still needs researched
-                                if (iDetails[1] < (int)configInfo[2]) {
-                                    //if player file has contributed LESS than required unlock amt
-                                    System.out.println("configinfo2: "+configInfo[2]);
-                                    int maxPayAmt = (int)configInfo[2] - iDetails[1];
-                                    int payAmt = Math.min(maxPayAmt, getData[1]);
-                                    int dedAmt = invManager.inv_PayItem(handler.getPlayer(), getData[0], payAmt);
-                                    System.out.println("item: "+iName+"  dedAmt: "+dedAmt+"  payAmt: "+payAmt);
-                                    PlayerFileManager.writePlayerFile(handler.getPlayer(), iName, dedAmt);
+                if (payPacketStatus.get() == false)
+                {
+                    payPacketStatus.set(true);
+                    if (configInfo != null) {
+                        //if the config has the item
+                        //System.out.println("config has item");
+                        if (((int) configInfo[1] == 1) || ((int) configInfo[1] == 3) || ((int) configInfo[1] == 4)) {
+                            //if the config says its researchable
+                            //System.out.println("Item is researchable");
+                            if (iDetails != null) {
+                                //System.out.println("iDetails: " + iDetails[0] + " " + iDetails[1] + " ");
+                                if (iDetails[0] == 0) {
+                                    //System.out.println("Player still needs it: " + iDetails[1]);
+                                    //if the item still needs researched
+                                    if (iDetails[1] < (int) configInfo[2]) {
+                                        //if player file has contributed LESS than required unlock amt
+                                        //System.out.println("configinfo2: " + configInfo[2]);
+                                        int maxPayAmt = (int) configInfo[2] - iDetails[1];
+                                        int payAmt = Math.min(maxPayAmt, getData[1]);
+                                        int dedAmt = invManager.inv_PayItem(handler.getPlayer(), getData[0], payAmt);
+                                        //System.out.println("item: " + iName + "  dedAmt: " + dedAmt + "  payAmt: " + payAmt);
+                                        PlayerFileManager.writePlayerFile(handler.getPlayer(), iName, dedAmt);
+                                    } else {
+                                        PlayerFileManager.writePlayerFile(handler.getPlayer(), iName, 0);//do a write to the player file with a 0 count, to trip the update for unlock
+                                    }
                                 } else {
-                                    PlayerFileManager.writePlayerFile(handler.getPlayer(), iName, 0);//do a write to the player file with a 0 count, to trip the update for unlock
+                                    Bookofblocks.mylogger.atError().log("User attempting to send data to server when item already unlocked -- SEND REFRESH SIGNAL");
                                 }
                             } else {
-                                Bookofblocks.mylogger.atError().log("User attempting to send data to server when item already unlocked -- SEND REFRESH SIGNAL");
+                                //System.out.println("Item not in system: ");
+                                int maxPayAmt = (int) configInfo[2];
+                                int payAmt = Math.min(maxPayAmt, getData[1]);
+                                int dedAmt = invManager.inv_PayItem(handler.getPlayer(), getData[0], payAmt);
+                                //System.out.println("item: " + iName + "  dedAmt: " + dedAmt + "  payAmt: " + payAmt);
+                                PlayerFileManager.writePlayerFile(handler.getPlayer(), iName, dedAmt);
                             }
                         } else {
-                            System.out.println("Item not in system: ");
-                            int maxPayAmt = (int)configInfo[2];
-                            int payAmt = Math.min(maxPayAmt, getData[1]);
-                            int dedAmt = invManager.inv_PayItem(handler.getPlayer(), getData[0], payAmt);
-                            System.out.println("item: "+iName+"  dedAmt: "+dedAmt+"  payAmt: "+payAmt);
-                            PlayerFileManager.writePlayerFile(handler.getPlayer(), iName, dedAmt);
+                            Bookofblocks.mylogger.atError().log("Item not able to be researched -- illegal packet send. -- SEND REFRESH SIGNAL");
                         }
                     } else {
-                        Bookofblocks.mylogger.atError().log("Item not able to be researched -- illegal packet send. -- SEND REFRESH SIGNAL");
+                        Bookofblocks.mylogger.atError().log("Item not listed in config file -- illegal packet send. -- SEND REFRESH SIGNAL");
                     }
-                } else {
-                    Bookofblocks.mylogger.atError().log("Item not listed in config file -- illegal packet send. -- SEND REFRESH SIGNAL");
+                    payPacketStatus.set(false);
+            } else{
+                    Bookofblocks.mylogger.atError().log("Multiple Pay packets received. Cancelling subsequent packets");
                 }
             } catch (IOException | ParseException e) {
                 e.printStackTrace();

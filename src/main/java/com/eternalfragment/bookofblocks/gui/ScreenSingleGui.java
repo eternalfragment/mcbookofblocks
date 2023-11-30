@@ -182,6 +182,7 @@ public class ScreenSingleGui extends LightweightGuiDescription{
                         // This code runs on the client when you click the button.
                         assert finalPaySlider != null;
                         int valueTransmit = finalPaySlider.getValue();
+                        finalPaySlider.setValue(0);
                         int[] dataArr = new int[2];
                         dataArr[0] = Integer.parseInt(itemIDLabel.getText().getString());
                         dataArr[1] = valueTransmit;
