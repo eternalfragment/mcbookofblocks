@@ -37,48 +37,55 @@ public class PlayerFileManager {
         //get the player's file as map for tracking what the player has unlocked and their progress
         HashMap<String, int[]> bobPlayerData = new HashMap<>();
         String userID = user.getUuidAsString();
-        File f = new File(Bookofblocks.worldPath + "\\" + Bookofblocks.modPlayerDir + userID + ".json");
+        Boolean waitforfile = true;
+        while (waitforfile)
+        {
+            File f = new File(Bookofblocks.worldPath + "\\" + Bookofblocks.modPlayerDir + userID + ".json");
         if (f.exists()) {
             try {
-            Object obj = new JSONParser().parse(new FileReader(Bookofblocks.worldPath + "\\" + Bookofblocks.modPlayerDir + userID + ".json"));
-            JSONObject jo = (JSONObject) obj;
-            if (jo.get("Items") != null) {
-                //check if the player file has an 'items' wrapper. if not, error with player file
-                JSONArray ja = (JSONArray) jo.get("Items");
-                for (Object o : ja) {
-                    Iterator<Map.Entry> itr1 = ((Map) o).entrySet().iterator();
-                    String namevalue = "";
-                    int[] settingvalue = new int[2];
-                    while (itr1.hasNext()) {
-                        Map.Entry pair = itr1.next();
-                        String key = (String) pair.getKey();
-                        switch (key) {
-                            case "Name" -> {
-                                namevalue = (String) pair.getValue();
-                                namevalue = namevalue.toLowerCase().replaceAll("[^a-zA-Z0-9.+_-]", "");
+                Object obj = new JSONParser().parse(new FileReader(Bookofblocks.worldPath + "\\" + Bookofblocks.modPlayerDir + userID + ".json"));
+                JSONObject jo = (JSONObject) obj;
+                if (jo.get("Items") != null) {
+                    //check if the player file has an 'items' wrapper. if not, error with player file
+                    JSONArray ja = (JSONArray) jo.get("Items");
+                    for (Object o : ja) {
+                        Iterator<Map.Entry> itr1 = ((Map) o).entrySet().iterator();
+                        String namevalue = "";
+                        int[] settingvalue = new int[2];
+                        while (itr1.hasNext()) {
+                            Map.Entry pair = itr1.next();
+                            String key = (String) pair.getKey();
+                            switch (key) {
+                                case "Name" -> {
+                                    namevalue = (String) pair.getValue();
+                                    namevalue = namevalue.toLowerCase().replaceAll("[^a-zA-Z0-9.+_-]", "");
+                                }
+                                case "unlocked" -> settingvalue[0] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
+                                case "paid" -> settingvalue[1] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
+                                default -> Bookofblocks.mylogger.atError().log("INVALID CONFIG IMPORT: " + pair.getValue());
                             }
-                            case "unlocked" -> settingvalue[0] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
-                            case "paid" -> settingvalue[1] = Math.abs(Integer.parseInt(pair.getValue().toString().replaceAll("[^0-9]", "")));
-                            default -> Bookofblocks.mylogger.atError().log("INVALID CONFIG IMPORT: " + pair.getValue());
                         }
-                    }
 
-                    bobPlayerData.put(namevalue, settingvalue);
+                        bobPlayerData.put(namevalue, settingvalue);
+                    }
+                    waitforfile=false;
+                    return bobPlayerData;
+                } else {
+                    waitforfile=false;
+                    Bookofblocks.mylogger.atError().log("Error in user file");
+                    return null;
                 }
-                return bobPlayerData;
-            } else {
-                Bookofblocks.mylogger.atError().log("Error in user file");
-                return null;
-            }
-        }
-        catch (Exception e){
+            } catch (Exception e) {
+                waitforfile=false;
                 Bookofblocks.mylogger.atFatal().log("Player File Error! Error parsing player file (illegal character). Printing stack Trace...");
                 e.printStackTrace();
             }
         } else {
+            waitforfile=false;
             Bookofblocks.mylogger.atFatal().log("Error with player config file: " + userID);
             return null;
         }
+    }
         return bobPlayerData;
     }
     public static JSONObject setPlayerFile(HashMap<String, int[]> rawData) throws IOException, ParseException {
@@ -163,7 +170,7 @@ public class PlayerFileManager {
 
                         if (bobPlayerData.get(item) != null) {
                             //if the item is already in the player's config
-
+                            Bookofblocks.mylogger.atError().log("LAG FIXER: item already in config");
                             int[] pldata = bobPlayerData.get(item);//get the user data
                             int currentPaid = (int)pldata[1];
                             int newPaid = currentPaid + amt;
@@ -200,6 +207,7 @@ public class PlayerFileManager {
                             writer.close();
                         } else {
                             //if the item is not in the player's config, create the entry with the defined amts
+                            Bookofblocks.mylogger.atError().log("LAG FIXER: item not in config, create new entry");
                             int[] pldata=new int[2];
                             pldata[0]=0;
                             pldata[1]=amt;

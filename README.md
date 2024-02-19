@@ -1,4 +1,4 @@
-# MC Book of Blocks
+# EB's Book of Blocks
 
 REQUIREMENTS: Fabric API 0.87.0+1.20.1 | MC 1.20.1
 
@@ -85,9 +85,6 @@ You can use the search bar to search for specific items. The displayed items wil
 
 Once a player completes the requirements to unlock the item, it will be unlocked when they open the BoB Menu.
 
-## License
-
-This template is available under the MIT license.
 
 ### Known Incompatibilities
 * Essential.gg Mod System -- Will prevent client from connecting to a host using Essential's built in system

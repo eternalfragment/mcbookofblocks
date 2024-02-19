@@ -218,7 +218,6 @@ public class Bookofblocks implements ModInitializer {
                 Object[] configInfo = Config.configMap.get(iName);
                 //iDetails[0] -- unlocked
                 //iDetails[1] -- amt paid
-                System.out.println("Pack Rec'd");
                 if (payPacketStatus.get() == false)
                 {
                     payPacketStatus.set(true);
